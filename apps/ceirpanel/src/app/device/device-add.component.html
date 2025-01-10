@@ -1,0 +1,423 @@
+<div class="card">
+  <div class="card-header">
+    <h4 class="card-title">Device Add Management</h4>
+  </div>
+  <div class="card-block">
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-lg-12 clr-col-xl-12">
+        <table class="table mt0 pt0 table-noborder table-compact">
+          <thead>
+            <tr>
+              <th class="left">{{ "device.manufacturer.label" | translate }}</th>
+              <th class="left">{{ "device.marketingName.label" | translate }}</th>
+              <th class="left">{{ "device.deviceId.label" | translate }}</th>
+              <th class="left">{{ "device.manufacturingAddress.label" | translate }}</th>
+              <th class="left">{{ "device.brandName.label" | translate }}</th>
+              <th class="left">{{ "device.modelName.label" | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input clrInput placeholder="Input" name="manufacturer" [(ngModel)]="device.manufacturer" class="w-95" [placeholder]="'device.manufacturer.placeholder' | translate"/></td>
+              <td><input clrInput placeholder="Input" name="marketingName" [(ngModel)]="device.marketingName" class="w-95" [placeholder]="'device.manufacturer.placeholder' | translate"/></td>
+              <td><input clrInput placeholder="Input" name="deviceId" [(ngModel)]="device.deviceId" class="w-95" [placeholder]="'device.deviceId.placeholder' | translate"/></td>
+              <td><input clrInput placeholder="Input" name="manufacturingAddress" [(ngModel)]="device.manufacturingAddress" class="w-95" [placeholder]="'device.manufacturingAddress.placeholder' | translate"/></td>
+              <td><input clrInput placeholder="Input" name="brandName" [(ngModel)]="device.brandName" class="w-95" [placeholder]="'device.brandName.placeholder' | translate"/></td>
+              <td><input clrInput placeholder="Input" name="modelName" [(ngModel)]="device.modelName" class="w-95" [placeholder]="'device.modelName.placeholder' | translate"/></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="clr-row">
+      <div class="clr-col-9 clr-col-lg-9 clr-col-xl-9">
+        <form clrForm class="clr-form clr-form-compact" clrLabelSize="4">
+          <clr-tabs clrLayout="horizontal" class="w-100">
+            <clr-tab>
+              <button clrTabLink id="link1" class="p6 m-0 p-0 text-truncate w-100">{{ "device.tabs.net" | translate }}</button>
+              <clr-tab-content id="content1" *clrIfActive>
+                <clr-checkbox-container clrInline>
+                  <label class="clr-required-mark">Technology</label>
+                  <clr-checkbox-wrapper>
+                    <input type="checkbox" clrCheckbox name="options1" required value="option1" />
+                    <label>GSM</label>
+                  </clr-checkbox-wrapper>
+                  <clr-checkbox-wrapper>
+                    <input type="checkbox" clrCheckbox name="options2" required value="option2" />
+                    <label>CDMA</label>
+                  </clr-checkbox-wrapper>
+                  <clr-checkbox-wrapper>
+                    <input type="checkbox" clrCheckbox name="options2" required value="option2" />
+                    <label>EVDO</label>
+                  </clr-checkbox-wrapper>
+                  <clr-checkbox-wrapper>
+                    <input type="checkbox" clrCheckbox name="options2" required value="option2" />
+                    <label>LTE</label>
+                  </clr-checkbox-wrapper>
+                  <clr-checkbox-wrapper>
+                    <input type="checkbox" clrCheckbox name="options2" required value="option2" />
+                    <label>5G</label>
+                  </clr-checkbox-wrapper>
+                </clr-checkbox-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">2G Band</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">3G Band</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">5G Band</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">Network Speed</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">Brand Details</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+              </clr-tab-content>
+            </clr-tab>
+            <clr-tab>
+              <button clrTabLink class="p6 m-0 p-0 text-truncate w-100">{{ "device.tabs.launch" | translate }}</button>
+              <clr-tab-content *clrIfActive>
+                <clr-date-container>
+                  <label class="clr-required-mark">Announce Date</label>
+                  <input autocomplete="off" clrDate type="date" name="example" />
+                </clr-date-container>
+                <clr-date-container>
+                  <label class="clr-required-mark">Launch Date</label>
+                  <input autocomplete="off" clrDate type="date" name="example" />
+                </clr-date-container>
+                <clr-select-container>
+                  <label class="clr-required-mark">Device Status</label>
+                  <select clrSelect name="options">
+                    <option value="one">Available</option>
+                    <option value="two">Not Available</option>
+                  </select>
+                </clr-select-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">OEM</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">Organization ID</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-date-container>
+                  <label class="clr-required-mark">Device ID Allocation Date</label>
+                  <input autocomplete="off" clrDate type="date" name="example" />
+                </clr-date-container>
+                <clr-date-container>
+                  <label class="clr-required-mark">Disconinued Date</label>
+                  <input autocomplete="off" clrDate type="date" name="example" />
+                </clr-date-container>
+              </clr-tab-content>
+            </clr-tab>
+            <clr-tab>
+              <button clrTabLink class="p6 m-0 p-0">{{ "device.tabs.body" | translate }}</button>
+              <clr-tab-content *clrIfActive>
+                <clr-select-container>
+                  <label class="clr-required-mark">Number Of Sim Slots</label>
+                  <select clrSelect name="options">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
+                </clr-select-container>
+                <clr-select-container>
+                  <label class="clr-required-mark">Number Of IMEI</label>
+                  <select clrSelect name="options">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
+                </clr-select-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">SIM Type</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">Dimension (In Mm)</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">Body Weight</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-select-container>
+                  <label class="clr-required-mark">ESIM Support</label>
+                  <select clrSelect name="options">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </clr-select-container>
+                <clr-select-container>
+                  <label class="clr-required-mark">Soft SIM Support</label>
+                  <select clrSelect name="options">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </clr-select-container>
+              </clr-tab-content>
+            </clr-tab>
+            <clr-tab>
+              <button clrTabLink class="p6 m-0 p-0">{{ "device.tabs.dis" | translate }}</button>
+              <clr-tab-content *clrIfActive>
+                <clr-input-container>
+                  <label class="clr-required-mark">Type</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">Size</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">Resolution</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">Protection</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+              </clr-tab-content>
+            </clr-tab>
+            <clr-tab>
+              <button clrTabLink class="p6 m-0 p-0">{{ "device.tabs.platform" | translate }}</button>
+              <clr-tab-content *clrIfActive>
+                <clr-input-container>
+                  <label class="clr-required-mark">OS</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">OS Version</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">Internal Memory</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">RAM</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-select-container>
+                  <label class="clr-required-mark">Memory Card Slot</label>
+                  <select clrSelect name="options">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </clr-select-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">CPU</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">GPU</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+              </clr-tab-content>
+            </clr-tab>
+            <clr-tab>
+              <button clrTabLink class="p6 m-0 p-0">{{ "device.tabs.camera" | translate }}</button>
+              <clr-tab-content *clrIfActive>
+                <clr-select-container>
+                  <label class="clr-required-mark">Main Camera Type</label>
+                  <select clrSelect name="options">
+                    <option value="1">Single Camera</option>
+                    <option value="2">Dual Camera</option>
+                    <option value="3">Triple Camera</option>
+                  </select>
+                </clr-select-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">Main Camera Specs</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">Main Camera Feature</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">Main Camera Video</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-select-container>
+                  <label class="clr-required-mark">Selfie Camera Type</label>
+                  <select clrSelect name="options">
+                    <option value="1">Single Camera</option>
+                    <option value="2">Dual Camera</option>
+                    <option value="3">Triple Camera</option>
+                  </select>
+                </clr-select-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">Selfie Camera Specs</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">Selfie Camera Feature</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">Selfie Camera Video</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+              </clr-tab-content>
+            </clr-tab>
+            <clr-tab>
+              <button clrTabLink class="p6 m-0 p-0">{{ "device.tabs.sound" | translate }}</button>
+              <clr-tab-content *clrIfActive>
+                <clr-select-container>
+                  <label class="clr-required-mark">Loudspeaker</label>
+                  <select clrSelect name="options">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </clr-select-container>
+                <clr-select-container>
+                  <label class="clr-required-mark">Sound 3.5MM Jack</label>
+                  <select clrSelect name="options">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </clr-select-container>
+              </clr-tab-content>
+            </clr-tab>
+            <clr-tab>
+              <button clrTabLink class="p6 m-0 p-0 text-truncate w-95">{{ "device.tabs.comm" | translate }}</button>
+              <clr-tab-content *clrIfActive>
+                <clr-input-container>
+                  <label class="clr-required-mark">WLAN Support</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">Bluetooth Support</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">GPS Support</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">USB Support</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-select-container>
+                  <label class="clr-required-mark">Radio Support</label>
+                  <select clrSelect name="options">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </clr-select-container>
+                <clr-select-container>
+                  <label class="clr-required-mark">NFC Support</label>
+                  <select clrSelect name="options">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </clr-select-container>
+              </clr-tab-content>
+            </clr-tab>
+            <clr-tab>
+              <button clrTabLink class="p6 m-0 p-0 text-truncate w-100">{{ "device.tabs.misc" | translate }}</button>
+              <clr-tab-content *clrIfActive>
+                <clr-input-container>
+                  <label class="clr-required-mark">Sensors</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">Device Color</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">UICC</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">EUICC</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">Battery Capacity</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">Battery Charging Support</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">Battery Charging Support</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+              </clr-tab-content>
+            </clr-tab>
+            <clr-tab>
+              <button clrTabLink class="p6 m-0 p-0">{{ "device.tabs.price" | translate }}</button>
+              <clr-tab-content *clrIfActive>
+                <clr-input-container>
+                  <label class="clr-required-mark">Asia</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">US</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">Europe</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">International</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">Launch Price In Cambodia Market</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">Source Of Cambodia Market Price</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">Custom Price Of Device</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+              </clr-tab-content>
+            </clr-tab>
+            <clr-tab>
+              <button clrTabLink class="p6 m-0 p-0">{{ "device.tabs.iss" | translate }}</button>
+              <clr-tab-content *clrIfActive>
+                <clr-input-container>
+                  <label class="clr-required-mark">Global Reported Issue</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+                <clr-input-container>
+                  <label class="clr-required-mark">Local Reported Issue</label>
+                  <input clrInput type="text" name="example" />
+                </clr-input-container>
+              </clr-tab-content>
+            </clr-tab>
+          </clr-tabs>
+          <div class="clr-row" style="bottom:0px;">
+            <div class="clr-col-4 clr-col-lg-4 clr-col-xl-4">
+            </div>
+            <div class="clr-col-4 clr-col-lg-4 clr-col-xl-4">
+              <button type="submit" class="btn btn-warning btn-block mt1">Cancel</button>
+            </div>
+            <div class="clr-col-4 clr-col-lg-4 clr-col-xl-4">
+              <button type="submit" class="btn btn-primary btn-block mt1" (click)="confirmation()">Save</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="clr-col-3 clr-col-lg-3 clr-col-xl-3">
+        <ceirpanel-image-viewer></ceirpanel-image-viewer>
+      </div>
+    </div>
+  </div>
+</div>
+<ceirpanel-ceir-confirmation [open]="open" (confirmation)="openClose($event)"></ceirpanel-ceir-confirmation>

@@ -1,0 +1,16 @@
+<div class="main-container">
+  <ceirpanel-ceir-header [title]="title" *ngIf="authService.isLogin()  || url.includes('register-ticket') || url.includes('view-ticket') || url.includes('forgot-ticket')|| url.includes('verify-ticket-otp')|| url.includes('end-user')|| url.includes('ticket-thread')"></ceirpanel-ceir-header>
+  <div class="content-container">
+    <clr-vertical-nav [clr-nav-level]="iscollapse ? 2 : 1" class="bg8 ma0 pa0 mt-3"
+      [ngClass]="{'iconsidenav': iscollapse, 'sidenav': !iscollapse}" *ngIf="inIframe === false && authService.isLogin() && hidesidebar==='no'">
+      <ceirpanel-sidebar (main)="init($event)" [menu]="menu"></ceirpanel-sidebar>
+    </clr-vertical-nav>
+    <div class="content-area" id="visibilityContainer" [ngStyle]="header==='yes' ? authService.isLogin() ? {'background-color': '#f1f1f1'} : {'background-color': '#ffffff'} : url.includes('register-ticket') ? {'background-color': '#ffffff'} : {'background-color': '#f1f1f1'}">
+      <ceirpanel-app-alert></ceirpanel-app-alert>
+      <router-outlet></router-outlet>
+      <div class="copyright mt-4" *ngIf="header==='no'">
+        {{ "copyright" | translate:copyright }}
+      </div>
+    </div>
+  </div>
+</div>

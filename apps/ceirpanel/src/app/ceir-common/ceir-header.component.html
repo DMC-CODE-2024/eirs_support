@@ -1,0 +1,114 @@
+<clr-alert [clrAlertType]="'warning'" [clrAlertAppLevel]="true" class="bg-danger" *ngIf="passwordprompt">
+    <clr-alert-item>
+        <span class="alert-text text-white text-center">{{'message.passwordExpired' |
+            translate:paswordpromptdays}}</span>
+        <div class="alert-actions text-center">
+            <button class="btn alert-action" [routerLink]="['change-password']">
+                Reset Password Now
+            </button>
+        </div>
+    </clr-alert-item>
+</clr-alert>
+<clr-progress-bar clrValue="0" clrMax="100" clrLoop="true" clrFlashDanger="true" clrDanger="true"
+    *ngIf="progress"></clr-progress-bar>
+<div *ngIf="header==='yes'; then withheader else noheader"></div>
+<ng-template #withheader>
+    <header class="header-3 bg8">
+        <div class="branding">
+            <a routerlink="/" class="logo-and-title" href="/">
+                <span class="clr-icon clarity-logo">
+                    <img [src]="logo" alt="Clarity Design System" class="rounded-circle img-fluid" />
+                </span>
+                <span class="text-center text-white fw-bold mt-3" [innerHtml]="title"></span>
+            </a>
+        </div>
+        <div class="username" style="margin-left:50px;" *ngIf="authService.isLogin()">
+            <a href="javascript://" class="nav-link nav-text text-white border border-0">{{ "header.welcome" | translate
+                }}
+                EIRS ({{ jwtService.getUsername() }})</a>
+        </div>
+        <div class="header-actions mx-2">
+            <div *ngIf="authService.isLogin(); then head"></div>
+            <ng-template #head>
+                <a download="b82d8486-a931-421c-b594-f4d3129746e5.pdf" target="_blank" [href]="usermanulaurl"
+                    class="nav-link nav-text text-white">
+                    <img src="assets/images/Download.svg" alt="" style="width:26px;height:26px;" />
+                </a>
+            </ng-template>
+            <clr-dropdown *ngIf="authService.isLogin()">
+                <a href="javascript://" class="nav-link nav-icon-text mb-2 me-4" clrDropdownTrigger
+                    aria-label="toggle settings menu" style="opacity: none !important;">
+                    <span class="nav-text text-white">
+                        <img [src]="language.image" class="rounded-circle img-fluid" style="width24px;height:24px;" />
+                        {{language.name}}
+                    </span>
+                </a>
+                <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right" class="text-white m-0 p-0">
+                    <a href="javascript://" clrDropdownItem *ngFor="let lang of languages"
+                        (click)="changeSiteLanguage(lang.code);language=lang;">
+                        <img [src]="lang.image" class="rounded-circle img-fluid" style="width24px;height:24px;" />
+                        {{lang.name}}
+                    </a>
+                </clr-dropdown-menu>
+            </clr-dropdown>
+            <clr-dropdown *ngIf="authService.isLogin()">
+                <a href="javascript://" class="nav-link nav-icon-text mb-2" clrDropdownTrigger
+                    aria-label="toggle settings menu" style="opacity: none !important;">
+                    <span class="nav-text text-white">
+                        <i class="bi bi-person-circle"></i>
+                    </span>
+                </a>
+                <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right" class="text-white m-0 p-0">
+                    <a clrDropdownItem [routerLink]="['change-password']"
+                        [queryParams]="{url,lang:lang,type:this.type,header:this.header,hidesidebar:'no'}">
+                        {{ 'profile.changePassword' | translate }}
+                    </a>
+                    <a clrDropdownItem (click)="logout()">
+                        {{ 'profile.logout' | translate }}
+                    </a>
+                </clr-dropdown-menu>
+            </clr-dropdown>
+        </div>
+    </header>
+</ng-template>
+<ng-template #noheader>
+    <header class="header-3 bg8" *ngIf="!jwtService.getIframeLogin().inIframe">
+        <div class="header-actions">
+            <span class="text-center text-white fw-bold mt-4">{{headertitle}}</span>
+        </div>
+        <div class="header-actions mx-2">
+            <!--clr-dropdown *ngIf="!authService.isLogin()">
+                <a href="javascript://" class="nav-link nav-icon-text mb-2 me-4" clrDropdownTrigger
+                    aria-label="toggle settings menu" style="opacity: none !important;">
+                    <span class="nav-text text-white">
+                        <img [src]="language.image" class="rounded-circle img-fluid" style="width24px;height:24px;" />
+                        {{language.name}}
+                    </span>
+                </a>
+                <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right" class="text-white m-0 p-0">
+                    <a [routerLink]="[currenturl]" [queryParams]="{lang:lang.code,type:this.type,header:this.header}"
+                        clrDropdownItem *ngFor="let lang of languages">
+                        <img [src]="lang.image" class="rounded-circle img-fluid" style="width24px;height:24px;" />
+                        {{lang.name}}
+                    </a>
+                </clr-dropdown-menu>
+            </clr-dropdown-->
+            <!--clr-dropdown *ngIf="authService.isLogin()">
+                <a href="javascript://" class="nav-link nav-icon-text mb-2 me-4" clrDropdownTrigger
+                    aria-label="toggle settings menu" style="opacity: none !important;">
+                    <span class="nav-text text-white">
+                        <img [src]="language.image" class="rounded-circle img-fluid" style="width24px;height:24px;" />
+                        {{language.name}}
+                    </span>
+                </a>
+                <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right" class="text-white m-0 p-0">
+                    <a href="javascript://" clrDropdownItem *ngFor="let lang of languages"
+                        (click)="changeSiteLanguage(lang.code);language=lang;">
+                        <img [src]="lang.image" class="rounded-circle img-fluid" style="width24px;height:24px;" />
+                        {{lang.name}}
+                    </a>
+                </clr-dropdown-menu>
+            </clr-dropdown-->
+        </div>
+    </header>
+</ng-template>

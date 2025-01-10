@@ -1,0 +1,315 @@
+<div class="clr-row m-0 p-0 clr-justify-content-center">
+  <div [ngClass]="authService.isLogin() && header==='yes' ? 'clr-col-12 m-0 p-0': 'clr-col-11'">
+    <div class="card m-0 p-0" style="min-height: 500px;" [ngClass]="authService.isLogin() && header==='yes' ? 'border border-1 shadow-none': 'shadow-none'">
+      <div class="card-header" [ngClass]="authService.isLogin() && header==='yes' ? '' : 'border border-0'">
+        <div class="clr-row clr-justify-content-between">
+          <div class="clr-col-12" style="margin-top: 5px;">
+            <h4 class="card-title text-capitalize">
+              <div *ngIf="authService.isLogin() && header==='yes'; then login else logout"></div>
+              <ng-template #login>
+                <ng-template [ngxPermissionsOnly]="['SSYSADMIN']" [ngxPermissionsOnlyElse]="cc"></ng-template>
+                <ng-template #cc>
+                  <a routerLink="/xcally/check-ticket-status" [queryParams]="{msisdn,redirect}" *ngIf="!lodash.isEmpty(msisdn)">
+                    <cds-icon shape="arrow" direction="left" solid="true" class="text-black" size="md"></cds-icon>
+                  </a>
+                  <a routerLink="/ticket" *ngIf="lodash.isEmpty(msisdn)">
+                    <cds-icon shape="arrow" direction="left" solid="true" class="text-black" size="md"></cds-icon>
+                  </a>
+                  &nbsp;
+                </ng-template>
+                <span class="text-black">{{'ticketThread.ticketId' | translate}}: <span class="fw-lighter">{{ticketId}}</span></span>
+              </ng-template>
+              <ng-template #logout>{{'ticketThread.viewTicket' | translate}}: {{ticketId}}</ng-template>
+            </h4>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card-block" *ngIf="ticket.issue">
+        <div class="card border mt-1 shadow-none">
+          <div class="card-header">
+            <ul class="list-group list-group-horizontal border-0 d-flex" *ngIf="ticket.issue">
+              <li class="list-group-item border-0 m-0 p-0 subjectline">{{'ticketThread.createdOn' | translate}}: {{ticket.issue.createdOn | date: 'medium'}}</li>
+              <li class="list-group-item border-0 m-0 p-0 subjectline d-sm-none d-md-block d-none d-sm-block">{{'ticketThread.updatedOn' | translate}}: {{ticket.issue.updatedOn | date: 'medium'}}</li>
+              <div *ngIf="ticket.raisedBy===ticket.mobileNumber then country else mail"></div>
+              <ng-template #country>
+                <li class="list-group-item border-0 m-0 p-0 subjectline text-truncate">{{'ticketThread.raisedBy' | translate}}: {{ticket.mobileNumber}}</li>
+              </ng-template>
+              <ng-template #mail>
+                <li class="list-group-item border-0 m-0 p-0 subjectline">{{'ticketThread.raisedBy' | translate}}: {{ticket.raisedBy}}</li>
+              </ng-template>
+              <div *ngIf="ticket.category; then category"></div>
+              <ng-template #category>
+                <li class="list-group-item border-0 m-0 p-0 subjectline d-sm-none d-md-block d-none d-sm-block">{{'ticketThread.category' | translate}}: {{ticket.category}}</li>
+              </ng-template>
+              <!--li class="list-group-item border-0 m-0 p-0 subjectline">Category: {{ticket.category}}</li-->
+              <li class="list-group-item border-0 m-0 p-0 subjectline">{{'ticketThread.contactNumber' | translate}}: {{ticket.mobileNumber}}</li>
+              <li class="list-group-item border-0 m-0 p-0 fw-bold ms-auto"
+                [ngClass]="ticket.issue.status.name==='New' || ticket.issue.status.name==='InProgress' ? 'blue': 'green'">
+                {{'ticketThread.status' | translate}}: {{ticket.issue.status.name}}
+              </li>
+            </ul>
+          </div>
+          <div class="card-block m-0 p-0" *ngIf="ticket.issue">
+            <p class="border border-light-subtle p-2 m-0 p-0" style="background-color:#EFF5FF;">
+              <span class="fw-semibold text-secondary">&nbsp;{{'ticketThread.subject' | translate}}:</span> <span
+                class="text-black fw-semibold mx-2">{{ticket.issue.subject}}</span>
+            </p>
+            <h5 class="m-1 text-secondary mt-2 pt-2 mb-1 pb-1 m-0 p-0">{{'ticketThread.description' | translate}}:</h5>
+            <p class="m-2 m-0 p-0">{{ticket.issue.description}}</p>
+            <div class="d-flex flex-row-reverse bd-highlight">
+              <div class="p-2 bd-highlight" *ngFor="let img of ticketupload;let i = index">
+                <p class="align-bottom float-lg-end text-truncate" [title]="img.description">
+                  <a [href]="img.contentUrl" target="_blank" class="label label-blue clickable border border-0">
+                    <span class="text">{{img?.filename}}({{img?.size?.size+img?.filesize}})</span>
+                    <cds-icon shape="eye"></cds-icon>
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <form clrStepper clrForm clrLayout="vertical" class="m-0 p-0" #f="ngForm" (ngSubmit)="f.form.valid && onSubmit(f)">
+          <div *ngIf="ticket.issue && !allowStatusForComments.includes(ticket.issue.status.name) then comment"></div>
+          <ng-template #comment>
+            <ng-template [ngxPermissionsOnly]="['TICKET_VISIBILITY']" [ngxPermissionsOnlyThen]="visibility"></ng-template>
+            <ng-template #visibility>
+            <div class="clr-row mt-2 m-0 p-0 clr-justify-content-between" *ngIf="authService.isLogin()">
+              <div class="clr-col-3">
+                <clr-radio-wrapper class="float-start">
+                  <input type="radio" clrRadio value="public" name="visibility" [(ngModel)]="notes.visibility"/>
+                  <label>{{'ticketThread.public' | translate}}</label>
+                </clr-radio-wrapper>
+              </div>
+              <div class="clr-col-3">
+                <clr-radio-wrapper class="float-end">
+                  <input type="radio" clrRadio value="private" name="visibility" [(ngModel)]="notes.visibility"/>
+                  <label>{{'ticketThread.private' | translate}}</label>
+                </clr-radio-wrapper>
+              </div>
+            </div>
+            </ng-template>
+            <div class="row mt-2 border m-1 rounded">
+              <div class="col-12 m-0 p-0">
+                <div class="form-group shadow-none">
+                  <textarea name="notes" required class="form-control form-control-sm border border-0 shadow-none text-black" [(ngModel)]="notes.notes"
+                  [placeholder]="'ticketThread.message' | translate" [maxlength]="cnf.get('maxCommentLength') || 200" aria-autocomplete="none"></textarea>
+                </div>
+              </div>
+              <div class="col-12 m-0 p-0">
+                
+                <div class="row row-cols-lg-3 row-cols-md-7 m-0 p-0 justify-content-md-end">
+                  <div class="col col-sm-12 m-0 p-0">
+                    <label for="document" class="m-2 d-block d-sm-none">{{'ticket.document.documentLabel' | translate}}</label>
+                    <div class="input-group ms-2">
+                      <label for="document" class="float-end me-2 mt-1 d-none d-sm-block">{{'ticket.document.documentLabel' | translate}}</label>
+                      <select class="form-select form-control form-control-sm float-end me-2" name="documentType" [(ngModel)]="ticket.documentType"
+                        #documentType="ngModel" [ngClass]="{ 'is-invalid': f.submitted && documentType.errors }">
+                        <option selected [value]="''" disabled>{{ "ticket.document.placeholder" | translate }}</option>
+                        <option *ngFor="let document of documents" [value]="document">{{document}}</option>
+                      </select>
+                      <div *ngIf="f.submitted && documentType.errors" class="invalid-feedback">
+                        <div *ngIf="documentType.errors['required']">{{ "ticket.document.error.required" | translate }}</div>
+                      </div>
+                      <input type="file" accept="image/png, image/jpg, image/jpeg, application/pdf" #document style="display: none;" (change)="documentSelect($event)" multiple>
+                      <button type="button" class="btn btn-primary-outline text-black" (click)="document.click()" style="border-style: dotted;">
+                        {{ "ticket.document.placeholder" | translate }}<cds-icon shape="paperclip"></cds-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="row flex-row-reverse mt-1 mb-1">
+                  <div class="col-sm-8 col-xs-12 col-md-7 col-lg-5 col-xl-5 col-xxl-5">
+                    <p class="m-0 p-0 lh-sm float-md-end float-lg-end float-xl-end float-xxl-end ms-2">{{'ticket.image.accept1' | translate}}</p>
+                    <p class="m-0 p-0 lh-sm float-md-end float-lg-end float-xl-end float-xxl-end ms-2">{{'ticket.image.accept2' | translate}}</p>
+                  </div>
+                  <div class="col-sm-12 col-xs-12 col-md-7 col-lg-7 col-xl-7 col-xxl-7 text-right">
+                    <label (click)="documentObject.splice(i, 1)" class="align-bottom" *ngFor="let img of documentObject;let i = index">
+                      <a href="javascript://" class="label label-blue clickable border border-0">
+                        <span class="text">{{img?.name}}({{img?.size?.size+img?.size.type}})</span>
+                        <cds-icon shape="close"></cds-icon>
+                      </a>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="clr-row m-1">
+              <div class="m-0 p-0 mt-2" [ngClass]="{'clr-col-12': authService.isLogin(), 'clr-col-10': !authService.isLogin()}">
+                <span class="fw-semibold text-danger">{{'ticketThread.note' | translate}}:</span><span class="text-black font-bolder">&nbsp;"{{'ticketThread.noteText' | translate}}"</span>
+              </div>
+            </div>
+            <div class="clr-row clr-justify-content-between m-0 p-0">
+              <div class="m-0 p-0 mt-2 clr-col-12">
+                <div class="d-flex justify-content-between flex-wrap">
+                  <button type="submit" class="btn btn-primary mt-2" [disabled]="f.form.invalid"
+                     [disabled]="ticket.issue.status.name === 'Resolved' || ticket.issue.status.name === 'Closed'">
+                      <cds-icon shape="plus"></cds-icon> {{'ticketThread.addComment' | translate}}
+                    </button>
+                    <button type="button" class="btn btn-primary mt-2" (click)="openResolved(true)">
+                      {{'ticketThread.resolved' | translate}}
+                    </button>
+                    <button type="button" class="btn btn-primary mt-2" (click)="feedback=true" *ngIf="ticket.issue.status.name==='Resolved' && !authService.isLogin()">
+                      {{'ticketThread.resolvedGrivance' | translate}}
+                    </button>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </form>
+        <div class="clr-row clr-justify-content-center m-0 p-0 mt-2 " *ngFor="let j of sortData">
+          <div *ngIf="authService.isLogin() then login else logout"></div>
+          <ng-template #login>
+            <div class="m-0 p-0 mt-2 clr-col-12" *ngIf="j.notes && j.notes !== 'null'">
+              <div *ngIf="j?.privateNotes then private else public"></div>
+              <ng-template #private>
+                <ng-template [ngxPermissionsOnly]="['TICKET_VISIBILITY']" [ngxPermissionsOnlyThen]="visibility"></ng-template>
+                <ng-template #visibility>
+                  <div class="clr-row clr-justify-content-between m-0 p-0">
+                    <div class="clr-col-3 text-right fw-medium">
+                      <span class="text-break">{{j.user.name}}:</span>
+                    </div>
+                    <div class="clr-col-9 rounded-1 m-0 p-0 border" style="min-height: 100px;">
+                      <div class="clr-row clr-justify-content-between m-0 p-0 ms-4 me-4 mt-3">
+                        <div class="clr-col-6 text-secondary">{{'ticketThread.postedOn' | translate}} {{j.createdOn | date: 'medium'}}</div>
+                        <div class="clr-col-6 text-right fw-bolder" [ngClass]="j?.privateNotes ? 'text-danger': 'text-success'">
+                          <div *ngIf="j?.privateNotes then private else public"></div>
+                          <ng-template #public>Public</ng-template>
+                          <ng-template #private><cds-icon shape="lock" solid="true"></cds-icon> Private</ng-template>
+                        </div>
+                      </div>
+                      <div class="clr-row m-0 p-0">
+                        <div class="clr-col-6 ms-4 me-4 fw-medium">{{j?.notes}}</div>
+                      </div>
+                      <div class="row m-0 p-0 mb-1" *ngIf="j.details && j.details.length > 0">
+                        <div class="col-11 m-4 mt-0 mb-1">
+                          <p>List of Attachments</p>
+                          <div *ngFor="let u of j.details;let i = index">
+                            <a href="javascript://" class="label label-blue clickable border border-0" >
+                              <span class="text">{{u?.filename}} ({{u?.filesize}}kb)</span>
+                            </a>
+                            <a [href]="u.contentUrl">
+                              <cds-icon shape="eye"></cds-icon>
+                            </a>
+                            <p *ngIf="u.description" class="text m-0 p-0">Document Type: {{u.description}}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </ng-template>
+              <ng-template #public>
+                <div class="clr-row clr-justify-content-between m-0 p-0">
+                  <div class="clr-col-3 text-right fw-medium">
+                    <div *ngIf="!endUsers.includes(j.user.id); then cc else eu"></div>
+                    <ng-template #cc><span class="text-break">{{j.user.name}}:</span></ng-template>
+                    <ng-template #eu><span class="text-break">{{ticket.firstName}} {{ticket.lastName}}:</span></ng-template>
+                  </div>
+                  <div class="clr-col-9 rounded-1 m-0 p-0 border" style="min-height: 100px;">
+                    <div class="clr-row clr-justify-content-between m-0 p-0 ms-4 me-4 mt-3">
+                      <div class="clr-col-6 text-secondary">{{'ticketThread.postedOn' | translate}} {{j.createdOn | date: 'medium'}}</div>
+                      <div class="clr-col-6 text-right fw-bolder" [ngClass]="j?.privateNotes ? 'text-danger': 'text-success'">
+                        <div *ngIf="j?.privateNotes then private else public"></div>
+                        <ng-template #public>Public</ng-template>
+                        <ng-template #private><cds-icon shape="lock" solid="true"></cds-icon> Private</ng-template>
+                      </div>
+                    </div>
+                    <div class="clr-row m-0 p-0">
+                      <div class="clr-col-6 ms-4 me-4 fw-medium">{{j?.notes}}</div>
+                    </div>
+                    <div class="row m-0 p-0 mb-1" *ngIf="j.details && j.details.length > 0">
+                      <div class="col-11 m-4 mt-0 mb-1">
+                        <p>List of Attachments</p>
+                        <div *ngFor="let u of j.details;let i = index">
+                          <a href="javascript://" class="label label-blue clickable border border-0" >
+                            <span class="text">{{u?.filename}} ({{u?.filesize}}kb)</span>
+                          </a>
+                          <a [href]="u.contentUrl">
+                            <cds-icon shape="eye"></cds-icon>
+                          </a>
+                          <p *ngIf="u.description" class="text m-0 p-0">Document Type: {{u.description}}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+          </ng-template>
+          <ng-template #logout>
+            <div class="m-0 p-0 mt-2 clr-col-12" *ngIf="j.notes && j.notes !== 'null'">
+              <div *ngIf="endUsers.includes(j.user.id); then eu else cc"></div>
+              <ng-template #cc>
+                <div class="clr-row clr-justify-content-between m-0 p-0" *ngIf="j.privateNotes===false">
+                  <label class="clr-col-3 text-right d-none d-sm-block">{{'ticketThread.supportTitle' | translate}}</label>
+                  <label class="clr-col-12 text-right d-block d-sm-none m-0 p-0">{{'ticketThread.supportTitle' | translate}}</label>
+                  <div class="clr-col-sm-12 clr-col-md-9 clr-col-lg-9 clr-col-xl-9 rounded-1 m-0 p-0 border" style="min-height: 100px;">
+                    <div class="clr-row clr-justify-content-between m-0 p-0 ms-4 me-4 mt-3">
+                      <div class="clr-col-6 text-secondary">{{'ticketThread.postedOn' | translate}} {{j.createdOn | date: 'medium'}}</div>
+                    </div>
+                    <div class="clr-row m-0 p-0">
+                      <div class="clr-col-6 ms-4 me-4 fw-medium">{{j?.notes}}</div>
+                    </div>
+                    <div class="row m-0 p-0 mb-1" *ngIf="j.details && j.details.length > 0">
+                      <div class="col-12 m-4 mt-0 mb-1">
+                        <p>{{'ticket.viewTicket.listOfAttachments' | translate}}</p>
+                        <div *ngFor="let u of j.details;let i = index">
+                          <a href="javascript://" class="label label-blue clickable border border-0 w-50" >
+                            <span class="text text-truncate" [title]="u.filename + u.filesize+'kb'">{{u?.filename}} ({{u?.filesize}}kb)</span>
+                          </a>
+                          <a [href]="u.contentUrl" target="_blank">
+                            <cds-icon shape="eye"></cds-icon>
+                          </a>
+                          <p *ngIf="u.description" class="w-75 text m-0 p-0 text-truncate" [title]="'Document Type: '+ u.description">Document Type: {{u.description}}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template #eu>
+                <div class="clr-row clr-justify-content-between m-0 p-0">
+                  <div class="clr-col-3 text-right fw-medium d-none d-sm-block">
+                    <span class="text-break">{{ticket.firstName}} {{ticket.lastName}}:</span>
+                  </div>
+                  <div class="clr-col-12 fw-medium d-block d-sm-none m-0 p-0">
+                    <span class="text-break">{{ticket.firstName}} {{ticket.lastName}}:</span>
+                  </div>
+                  <div class="clr-col-sm-12 clr-col-md-9 clr-col-lg-9 clr-col-xl-9 rounded-1 m-0 p-0 border" style="min-height:100px;">
+                    <div class="clr-row clr-justify-content-between m-0 p-0 ms-4 me-4 mt-3">
+                      <div class="clr-col-12 text-secondary text-truncate" [title]="j.createdOn | date: 'medium'">{{'ticketThread.postedOn' | translate}} {{j.createdOn | date: 'medium'}}</div>
+                    </div>
+                    <div class="clr-row m-0 p-0">
+                      <div class="clr-col-12 ms-3 me-3 fw-medium text-truncate w-75" [title]="j.notes">{{j?.notes}}</div>
+                    </div>
+                    <div class="row m-0 p-0 mb-1" *ngIf="j.details && j.details.length > 0">
+                      <div class="col-12 m-3 mt-0 mb-1">
+                        <p>{{'ticket.viewTicket.listOfAttachments' | translate}}</p>
+                        <div *ngFor="let u of j.details;let i = index"> 
+                          <a href="javascript://" class="label label-blue clickable border border-0 w-50">
+                            <span class="text text-truncate" [title]="u.filename + u.filesize+'kb'">{{u?.filename}} ({{u?.filesize}}kb)</span>
+                          </a>
+                          <a [href]="u.contentUrl" target="_blank">
+                            <cds-icon shape="eye"></cds-icon>
+                          </a>
+                          <p *ngIf="u.description" class="w-75 text m-0 p-0 text-truncate" [title]="'Document Type: '+ u.description">
+                            Document Type: {{u.description}}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ceirpanel-ticket-resolve [ticketId]="ticketId" [open]="open" (confirmation)="resolve($event)"></ceirpanel-ticket-resolve>
+<ceirpanel-ticket-feedback [ticketId]="ticketId" [open]="feedback" (confirmation)="endUserFeedback($event)"></ceirpanel-ticket-feedback>
+<ceirpanel-ceir-alert></ceirpanel-ceir-alert>

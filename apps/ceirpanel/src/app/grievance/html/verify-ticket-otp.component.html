@@ -1,0 +1,62 @@
+<div class="row justify-content-center m-0 p-0">
+    <div class="col-lg-5 col-xl-5 col-xxl-5 col-md-8 col-sm-10 col-xs-12">
+        <div class="card card shadow-none rounded">
+            <div class="card-block border border-1 shadow-none rounded">
+                <clr-alert *ngIf="alert" [clrAlertType]="alert.type" [clrAlertAppLevel]="true">
+                    <clr-alert-item>
+                        <span class="alert-text text-white">{{ "message." + alert.message | translate }}</span>
+                    </clr-alert-item>
+                </clr-alert>
+                <form clrStepper clrForm clrLayout="vertical" class="m-0 p-0 row" #f="ngForm"
+                    (ngSubmit)="f.form.valid && onSubmit(f)" style="height: calc(100vh - 200px);" autocomplete="off">
+                    <div class="row justify-content-center">
+                        <div class="col-12 text-center m-0 p-0">
+                            <h3>
+                                <small class="fs-5 fw-bold text-dark">{{'ticket.verifyOtp.forgotTicketId' | translate}}</small>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-12 text-center m-0 p-0">
+                            <p class="fs-6 fw-bold text-dark">{{'ticket.verifyOtp.verifyOtp' | translate}}</p>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center mt-2">
+                        <div class="col-12 text-center m-0 p-0">
+                            <p class="m-0 p-0 text-dark">{{'ticket.verifyOtp.smsVerify' | translate}}</p>
+                        </div>
+                        <div class="col-12 text-center m-0 p-0">
+                            <p class="m-0 p-0 text-dark">{{config.get('countryCode')}}  {{ticket.mobileNumber}}</p>
+                        </div>
+                        <div class="col-12 text-center m-0 p-0">
+                            <p class="m-0 p-0 text-dark">{{'ticket.verifyOtp.enterOtp' | translate}}</p>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center mt-3">
+                        <div class="col-12 text-center m-0 p-0">
+                            <ng-otp-input #ngOtpInput (onInputChange)="onOtpChange($event)" [config]="{length:allowedOtpLength}"></ng-otp-input>   
+                        </div>
+                    </div>
+                    <div class="row mt-3 justify-content-around">
+                        <div class="col-9 text-center m-0 p-0">
+                            <button type="submit" class="btn btn-primary btn-block m-0 p-0">{{'button.verify' | translate}}</button>   
+                        </div>
+                    </div>
+                    <div class="row justify-content-around">
+                        <div class="col-9 text-center">
+                            <button type="button" class="btn btn-link m-0 p-0 float-start" 
+                             [disabled]="timeLeft > 0" (click)="sendotp()">{{'button.resend' | translate}}</button>  
+                            <button type="button" class="btn btn-link m-0 p-0 float-end"
+                             [routerLink]="['/forgot-ticket', ticket.mobileNumber]" [queryParams]="{lang, header}">{{'button.back' | translate}}</button>
+                        </div>
+                    </div>
+                    <div class="row justify-content-around">
+                        <div class="col-9">
+                            <p class="m-0 p-0 text-primary">{{'ticket.verifyOtp.timeRemaining' | translate}}: 00:{{timeLeftDisplay}}</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

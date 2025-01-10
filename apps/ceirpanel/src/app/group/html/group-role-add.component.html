@@ -1,0 +1,64 @@
+<div class="card" style="min-height: 85vh;">
+    <div class="card-header">
+      <div class="clr-row clr-justify-content-between">
+        <div class="clr-col-4" style="margin-top: 5px;">
+          <h4 class="card-title text-capitalize">{{ "groupRole.pageTitle." + page | translate }}</h4>
+        </div>
+        <div class="clr-col-4 text-right" style="padding-right: 0.1rem">
+          <div class="btn-group btn-primary text-right">
+            <button class="btn" aria-label="Check" (click)="_location.back()">
+              <i class="bi bi-arrow-left-circle"></i> {{ "button.back" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-block m-1 p-1">
+    <form clrStepper clrForm clrLayout="vertical" class="m-0 p-0" #f="ngForm" (ngSubmit)="f.form.valid && onSubmit(f)" autocomplete="off">
+      <fieldset [disabled]="readonly" class="scheduler-border">
+        <legend class="scheduler-border">{{ "groupRole.pageTitle.title" | translate }}</legend>
+        <div class="clr-row m-0 p-0">
+          <div class="clr-col-6 m-0 p-0">
+            <div *ngIf="page === 'add'; then add else edit"></div>
+            <ng-template #add>
+              <div class="form-group">
+                <label class="clr-required-mark">{{ "groupRole.groupId.label" | translate }}</label>
+                <select class="form-select form-control form-control-sm" name="groupId" [(ngModel)]="role.groupId" pattern="^[1-9][0-9]*$"
+                  #groupId="ngModel" [ngClass]="{ 'is-invalid': f.submitted && groupId.errors }" (change)="onGroupChange($event)" [disabled]="page==='view' || page==='edit'">
+                  <option selected [value]="0">{{ "groupRole.groupId.placeholder" | translate }}</option>
+                  <option *ngFor="let group of groups" [value]="group.id" [disabled]="page === 'view' || page === 'edit'">{{group?.groupName}}</option>
+                </select>
+                <div *ngIf="f.submitted && groupId.errors" class="invalid-feedback">
+                  <div *ngIf="groupId.errors['pattern']">{{'groupRole.groupId.error.required' | translate}}</div>
+                </div>
+              </div>
+            </ng-template>
+            <ng-template #edit>
+              <div class="form-group">
+                <label class="clr-required-mark">{{ "groupRole.groupId.label" | translate }}</label>
+                <select class="form-select form-control form-control-sm" name="groupId" [(ngModel)]="role.groupId">
+                  <option selected [value]="0">{{ "groupRole.groupId.placeholder" | translate }}</option>
+                  <option *ngFor="let group of groups" [value]="group.id" [disabled]="page === 'view' || page === 'edit'">{{group?.groupName}}</option>
+                </select>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+        <div class="clr-row m-0 p-0 mt-3">
+          <div class="clr-col-12 m-0 p-0" style="margin-top:20px;">
+            <dual-list [source]="roles" [(destination)]="confirmed" [key]="key" [display]="display" [filter]="false" height="350"></dual-list>
+          </div>
+        </div>
+        <div class="clr-row clr-justify-content-end mt-3">
+          <div class="clr-col-2">
+            <button type="submit" class="btn btn-primary btn-block">{{ "button.save" | translate }}</button>
+          </div>
+          <div class="clr-col-2">
+            <button type="button" class="btn btn-outline btn-block" (click)="cancel=true">{{ "button.cancel" | translate }}</button>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+    </div>
+   </div>
+   <ceirpanel-ceir-cancel [open]="cancel" (confirmation)="cancelOpenClose($event)"></ceirpanel-ceir-cancel>

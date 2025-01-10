@@ -1,0 +1,54 @@
+<div class="card m-0 p-0 border border-1 shadow-none" style="min-height: 85vh;">
+  <div class="card-header">
+    <div class="clr-row clr-justify-content-between">
+      <div class="clr-col-4" style="margin-top: 5px">
+        <h4 class="card-title text-capitalize text-black">
+          {{ 'ticket.pageTitle.check' | translate }}
+        </h4>
+      </div>
+    </div>
+  </div>
+  <div class="card-block m-1 p-1">
+    <form clrStepper clrForm clrLayout="vertical" class="m-0 p-0" #f="ngForm" (ngSubmit)="f.form.valid && onSubmit(f)">
+      <div class="clr-row m-0 p-0">
+        <div class="clr-col-3 m-0 p-0">
+          <div class="form-group">
+            <label>{{'ticket.phone.label' | translate}}</label>
+            
+            <div class="input-group input-group-sm">
+              <span class="input-group-text">{{config.get('countryCode') || '+855'}}</span>
+              <input type="text" name="mobileNumber" class="form-control form-control-sm" id="mobileNumber" [(ngModel)]="ticket.mobileNumber"
+               [pattern]="'^[1-9][0-9]{7,8}$'" [placeholder]="'ticket.phone.placeholder' | translate" #mobileNumber="ngModel"
+                [ngClass]="{ 'is-invalid': (f.submitted || f.touched) && mobileNumber.errors }" autocomplete="ticketoff">
+              <div *ngIf="(f.submitted || f.touched) && mobileNumber.errors" class="invalid-feedback">
+                <div *ngIf="mobileNumber.errors['required']">{{'ticket.phone.error.required' | translate}}</div>
+                <div *ngIf="mobileNumber.errors['pattern']">{{'ticket.forgotTicket.pattern' | translate}}</div>
+              </div>
+            </div>
+            </div>
+          </div>
+        <div class="clr-col-1 mt-4 p-0">
+          <span class="ms-4">Or</span>
+        </div>
+        <div class="clr-col-3">
+          <div class="form-group">
+            <label>{{'ticket.ticketId.label' | translate}}</label>
+            <input type="text" name="ticketId" class="form-control form-control-sm" [(ngModel)]="ticket.ticketId"
+              [placeholder]="'ticket.ticketId.placeholder' | translate" #ticketId="ngModel"
+               [ngClass]="{ 'is-invalid': f.submitted && ticketId.errors }" autocomplete="ticketoff"/>
+            <div *ngIf="f.submitted && ticketId.errors" class="invalid-feedback" aria-autocomplete="none">
+              <div *ngIf="ticketId.errors['required']">{{'ticket.ticketId.error' | translate}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="clr-col-3 mt-3">
+          <button type="submit" class="btn btn-primary btn-block">
+            {{ 'button.search' | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+    <ceirpanel-verify-ticket-otp (verifyEvent)="verified = $event; verifyOtp.open = false;"></ceirpanel-verify-ticket-otp>
+    <ceirpanel-ticket-list-by-user *ngIf="verified" [mobileNumber]="countrycode + ticket.mobileNumber" [redirect]="redirect"></ceirpanel-ticket-list-by-user>
+  </div>
+</div>

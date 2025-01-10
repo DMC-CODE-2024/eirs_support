@@ -1,0 +1,149 @@
+<div class="card" style="min-height: 85vh;">
+    <div class="card-header">
+      <div class="clr-row clr-justify-content-between">
+        <div class="clr-col-4" style="margin-top: 5px;">
+          <h4 class="card-title">{{ "user.pageTitle.list" | translate }}</h4>
+        </div>
+        <div class="clr-col-8 m-0 p-0">
+          <div class="btn-group btn-primary float-end">
+            <ng-template [ngxPermissionsOnly]="['USER_DELETE']" [ngxPermissionsOnlyThen]="showDelete"></ng-template>
+            <ng-template #showDelete>
+              <clr-toggle-container class="clr-toggle-right m-0 p-0 mt-1">
+                <clr-toggle-wrapper>
+                  <label>{{ "button.multiSelect" | translate }}</label>
+                  <input type="checkbox" clrToggle (change)="changeView($event)"/>
+                </clr-toggle-wrapper>
+              </clr-toggle-container>
+              <button class="btn btn-outline me-1" aria-label="Check" [disabled]="!multiselect" (click)="openDeleteModel(selecton)">
+                {{ "user.pageTitle.delete" | translate }}
+              </button>
+            </ng-template>
+            <ng-template [ngxPermissionsOnly]="['USER_GROUP']" [ngxPermissionsOnlyThen]="assign"></ng-template>
+            <ng-template #assign>
+              <button class="btn btn-outline mx-1 border" aria-label="Check" [disabled]="!multiselect" (click)="assignGroup(selecton)">
+                {{ "userGroup.pageTitle.assignGroup" | translate }}
+              </button>
+            </ng-template>
+            <ng-template [ngxPermissionsOnly]="['USER_ADD']" [ngxPermissionsOnlyThen]="showReset"></ng-template>
+            <ng-template #showReset>
+              <button class="btn mx-1 btn-outline border" (click)="openResetModel(selecton)" [disabled]="!multiselect">
+                {{ "user.pageTitle.reset" | translate }}
+              </button>
+            </ng-template>
+            <ng-template [ngxPermissionsOnly]="['USER_ADD']" [ngxPermissionsOnlyThen]="showAdd"></ng-template>
+            <ng-template #showAdd>
+              <button class="btn border" aria-label="Check" [routerLink]="['add','']">
+                <cds-icon shape="plus" solid="true" inverse="true"></cds-icon>  {{ "user.pageTitle.add" | translate }}
+              </button>
+            </ng-template>
+          </div>  
+        </div>
+      </div>
+    </div>
+    <div class="card-block">
+      <ng-template [ngxPermissionsOnly]="['USER_FILTER']" [ngxPermissionsOnlyThen]="showFilter"></ng-template>
+      <ng-template #showFilter>
+          <ceirpanel-filter (filter)="applyFilter($event);refresh(state)" [startDate]="true" [endDate]="true" [firstName]="true" [lastName]="true" [organization]="true"></ceirpanel-filter>
+      </ng-template>
+      <clr-datagrid class="datagrid-compact" (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading" [(clrDgSelected)]="selecton">
+        <clr-dg-placeholder>We couldn't find any users!</clr-dg-placeholder>
+        <clr-dg-action-bar>
+          <ceirpanel-list-action [state]="state" (download)="export($event)" (refresh)="refresh($event)"
+          (filter)="callFilter()" (resetFilter)="resetFilter()" [feature]="'USER'"></ceirpanel-list-action>
+        </clr-dg-action-bar>
+        <clr-dg-column [clrDgSortBy]="'createdOn'">{{ "datalist.createDate" | translate }}</clr-dg-column>
+        <clr-dg-column [clrDgSortBy]="'firstName'">{{ "datalist.firstName" | translate }}</clr-dg-column>
+        <clr-dg-column [clrDgSortBy]="'lastName'">{{ "datalist.lastName" | translate }}</clr-dg-column>
+        <clr-dg-column [clrDgSortBy]="'userName'">{{ "datalist.userName" | translate }}</clr-dg-column>
+        <clr-dg-column>{{ "datalist.organization" | translate }}</clr-dg-column>
+        <clr-dg-column [clrDgSortBy]="'currentStatus'">{{ "datalist.status" | translate }}</clr-dg-column>
+        <clr-dg-column>{{ "datalist.action" | translate }}</clr-dg-column>
+        <clr-dg-row *ngFor="let user of list; let i = index;" [clrDgItem]="user">
+          <clr-dg-cell>{{user?.createdOn|date:'yyyy-MM-dd'}}</clr-dg-cell>
+          <clr-dg-cell>{{user?.profile?.firstName}}</clr-dg-cell>
+          <clr-dg-cell>{{user?.profile?.lastName}}</clr-dg-cell>
+          <clr-dg-cell>{{user?.userName}}</clr-dg-cell>
+          <clr-dg-cell>{{user?.profile?.companyName}}</clr-dg-cell>
+          <clr-dg-cell>
+            <span *ngIf="!user?.currentStatus ||user?.currentStatus==='0'" class="badge badge-info">{{ "status.inactive"| translate }}</span>
+            <span *ngIf="user?.currentStatus==='3'" class="badge badge-success">{{ "status.active"| translate }}</span>
+            <span *ngIf="user?.currentStatus==='4'" class="badge badge-warning">{{ "status.suspended"| translate }}</span>
+            <span *ngIf="user?.currentStatus==='5'" class="badge">{{ "status.locked"| translate }}</span>
+            <span *ngIf="user?.currentStatus==='21'" class="badge badge-danger">{{ "status.deleted"| translate }}</span>
+          </clr-dg-cell>
+          <clr-dg-cell>
+            <clr-dropdown [clrCloseMenuOnItemClick]="false">
+              <button clrDropdownTrigger aria-label="Dropdown demo button" class="m-0 p-0">
+                <cds-icon shape="ellipsis-vertical"></cds-icon>
+              </button>
+              <clr-dropdown-menu *clrIfOpen [clrPosition]="'bottom-right'">
+                <ng-template [ngxPermissionsOnly]="['USER_VIEW']" [ngxPermissionsOnlyThen]="showView" [ngxPermissionsOnlyElse]="hideView"></ng-template>
+                <ng-template #showView>
+                  <button class="action-item" [routerLink]="['view',user.id]" clrDropdownItem>
+                    <cds-icon shape="view-list"></cds-icon> {{ "button.view"| translate }}
+                  </button>
+                </ng-template>
+                <ng-template #hideView>
+                  <button class="action-item" [routerLink]="['view',user.id]" disabled clrDropdownItem>
+                    <cds-icon shape="view-list"></cds-icon> {{ "button.view"| translate }}
+                  </button>
+                </ng-template>
+                <ng-template [ngxPermissionsOnly]="['USER_EDIT']" [ngxPermissionsOnlyThen]="showEdit" [ngxPermissionsOnlyElse]="hideEdit"></ng-template>
+                <ng-template #showEdit>
+                  <button class="action-item" [routerLink]="['edit',user.id]" clrDropdownItem>
+                    <cds-icon shape="pencil"></cds-icon> {{ "button.edit"| translate }}
+                  </button>
+                </ng-template>
+                <ng-template #hideEdit>
+                  <button class="action-item" [routerLink]="['edit',user.id]" disabled clrDropdownItem>
+                    <cds-icon shape="pencil"></cds-icon> {{ "button.edit"| translate }}
+                  </button>
+                </ng-template>
+                <ng-template [ngxPermissionsOnly]="['USER_DELETE']" [ngxPermissionsOnlyThen]="showDelete" [ngxPermissionsOnlyElse]="hideDelete"></ng-template>
+                <ng-template #showDelete>
+                   <div *ngIf="user?.currentStatus!=='21' && user?.currentStatus !== '0'; then delete else active"></div>
+                    <ng-template #delete>
+                      <button class="action-item" (click)="openDeleteModel(user)" clrDropdownItem>
+                        <cds-icon shape="trash"></cds-icon> {{ "button.delete"| translate }}
+                      </button>
+                    </ng-template>
+                    <ng-template #active>
+                      <button class="action-item" (click)="openDeleteModel(user)" clrDropdownItem>
+                        <cds-icon shape="plus"></cds-icon> {{ "button.active"| translate }}
+                      </button>
+                    </ng-template>
+                </ng-template>
+                <ng-template #hideDelete>
+                  <button class="action-item" (click)="confirmation([user])" disabled clrDropdownItem>
+                    <cds-icon shape="trash"></cds-icon> {{ "button.delete"| translate }}
+                  </button>
+                </ng-template>
+                <ng-template [ngxPermissionsOnly]="['USER_GROUP']" [ngxPermissionsOnlyThen]="assign"></ng-template>
+                <ng-template #assign>
+                  <button class="action-item" (click)="assignGroup([user])" clrDropdownItem>
+                    <cds-icon shape="users"></cds-icon>&nbsp;{{ "button.assignGroup"| translate }}
+                  </button>
+                </ng-template>
+              </clr-dropdown-menu>
+            </clr-dropdown>
+          </clr-dg-cell>
+        </clr-dg-row>
+        <!--clr-dg-detail *clrIfDetail="let detail">
+          <clr-dg-detail-body class="m-0 p-0">
+            <ceirpanel-user-detail-view [detail]="detail"></ceirpanel-user-detail-view>
+          </clr-dg-detail-body>
+        </clr-dg-detail-->
+        <clr-dg-footer>
+          <clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems]="total">
+            <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">
+              <span class="text-capitalize">{{ "footer.users"| translate }}</span> {{ "footer.perPage"| translate }}
+            </clr-dg-page-size>
+            {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+            {{ "footer.of"| translate }} {{pagination.totalItems}} {{ "footer.users"| translate }}
+          </clr-dg-pagination>
+        </clr-dg-footer>
+      </clr-datagrid>
+    </div>
+  </div> 
+  <ceirpanel-user-delete (confirmation)="deleteRecord($event)" (aconfirmation)="activateRecord($event)"></ceirpanel-user-delete>
+  <ceirpanel-password-reset (confirmation)="resetpassword($event)"></ceirpanel-password-reset>

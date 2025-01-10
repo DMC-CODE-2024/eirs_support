@@ -1,0 +1,112 @@
+
+<div class="clr-row m-0 p-0" *ngIf="!authService.isLogin()">
+    <div class="clr-col-6">
+      <div class="img-holder">
+        <div class="bg"></div>
+        <div class="info-holder">
+          <img src="assets/images/logo.png" alt="" />
+        </div>
+      </div>
+    </div>
+    <div class="clr-col-6">
+      <clr-alert *ngIf="alert"
+        [clrAlertType]="alert.type"
+        [clrAlertAppLevel]="true"
+      >
+      <clr-alert-item>
+        <span class="alert-text text-white">{{ "message." + alert.message | translate }}</span>
+      </clr-alert-item>
+      </clr-alert>
+      <div class="clr-row clr-justify-content-center m-0 p-0">
+        <div class="clr-col-8">
+          <div class="card bg-secondary-subtle shadow-none">
+            <div
+              class="card-header bg-secondary-subtle border border-0"
+            ></div>
+            <div class="card-block">
+              <form #f="ngForm" (ngSubmit)="f.form.valid && onSubmit()" autocomplete="off">
+                <div class="clr-row clr-justify-content-center">
+
+                  <div class="clr-col-10">
+                    <div class="form-group">
+                      <label
+                        for="username"
+                        class="form-label clr-required-mark fw-semibold"
+                        >{{ "login.username.label" | translate }}</label
+                      >
+                      <input
+                        type="text"
+                        name="userName"
+                        class="form-control form-control-sm"
+                        id="userName"
+                        #userName="ngModel" [ngClass]="{ 'is-invalid': f.submitted && userName.errors }"
+                        [(ngModel)]="user.userName" required
+                      />
+                      <div *ngIf="f.submitted && userName.errors" class="invalid-feedback">
+                        <div *ngIf="userName.errors['required']">{{'login.username.error.required' | translate}}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="clr-col-10 mt-3">
+                    <div class="form-group">
+                      <label
+                        for="password"
+                        class="form-label clr-required-mark fw-semibold"
+                        >{{ "login.password.label" | translate }}</label
+                      >
+                      <input
+                        type="password"
+                        name="password"
+                        class="form-control form-control-sm"
+                        id="password"
+                        #password="ngModel" [ngClass]="{ 'is-invalid': f.submitted && password.errors }"
+                        [(ngModel)]="user.password" required
+                      />
+                      <div *ngIf="f.submitted && password.errors" class="invalid-feedback">
+                        <div *ngIf="password.errors['required']">{{'login.password.error.required' | translate}}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="clr-col-10 mt-4" *ngIf="siteKey && !isLocalhost">
+                    <div class="form-group">
+                      <re-captcha [siteKey]="siteKey" [(ngModel)]="user.captcha" name="captcha"
+                       required #captcha="ngModel" [ngClass]="{ 'is-invalid': f.submitted && captcha.errors }" ></re-captcha>
+                       <div *ngIf="f.submitted && captcha.errors" class="invalid-feedback">
+                        <div *ngIf="captcha.errors['required']">{{'ticket.viewTicket.captcha' | translate}}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="clr-col-7 mt-4">
+                    <button
+                      type="submit"
+                      class="btn btn-primary btn-block border border-0 text-uppercase ceirloginbutton"
+                    >
+                      Login
+                    </button>
+                  </div>
+                  <div
+                    class="clr-col-9 mt-4 border-bottom border-dark-subtle"
+                  ></div>
+                  <div class="clr-col-10 mt-5"></div>
+                  <div class="clr-col-10">
+                      <!--div class="clr-row clr-justify-content-between ceirloginfooter">
+                          <div class="clr-col-6">
+                              <button class="btn btn-link " aria-label="Check">
+                                  {{ 'button.newUser' | translate }}?
+                              </button>
+                          </div>
+                          <div class="clr-col-6 float-right">
+                              <button class="btn btn-link text-right" aria-label="home">
+                                  {{ 'button.forgotPassword' | translate }}?
+                              </button>
+                          </div>
+                      </div-->
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

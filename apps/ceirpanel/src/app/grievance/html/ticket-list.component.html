@@ -1,0 +1,137 @@
+<div class="clr-row m-0 p-0 clr-justify-content-center border border-0">
+  <div [ngClass]="{'clr-col-12 m-0 p-0': authService.isLogin(), 'clr-col-10': !authService.isLogin()}">
+    <div class="card border border-1 shadow-none m-0 p-0" style="min-height: 85vh;" [ngClass]="{'border border-1 shadow-none': authService.isLogin(), 'shadow-none': !authService.isLogin()}">
+      <div class="card-header" [ngClass]="{'': authService.isLogin(), 'border border-0': !authService.isLogin()}">
+        <div class="clr-row clr-justify-content-between">
+          <div class="clr-col-4" style="margin-top: 5px;">
+            <div *ngIf="authService.isLogin(); then login else logout"></div>
+            <ng-template #login><h4 class="card-title text-black">
+              <ng-template [ngxPermissionsOnly]="['SSYSADMIN']" [ngxPermissionsOnlyThen]="ss" [ngxPermissionsOnlyElse]="cc"></ng-template>
+              <ng-template #ss>{{ "ticket.pageTitle.support" | translate }}</ng-template>
+              <ng-template #cc>{{ "ticket.pageTitle.view" | translate }}</ng-template>
+            </h4></ng-template>
+            <ng-template #logout><h4 class="card-title text-black">Ticket Status</h4></ng-template>
+          </div>
+          <div class="clr-col-6 m-0 p-0" *ngIf="authService.isLogin()">
+            <div class="btn-group btn-primary-outline float-end">
+              <ng-template [ngxPermissionsOnly]="['TICKET_ADD']" [ngxPermissionsOnlyThen]="showAdd"></ng-template>
+              <ng-template #showAdd>
+                <ng-template [ngxPermissionsOnly]="['SSYSADMIN']" [ngxPermissionsOnlyThen]="ss"></ng-template>
+                <ng-template #ss>
+                  <button class="btn" aria-label="Check" [routerLink]="['/ticket/register-ticket']">
+                    <cds-icon shape="plus" solid="true"></cds-icon>
+                    <ng-template [ngxPermissionsOnly]="['SSYSADMIN']" [ngxPermissionsOnlyThen]="sss" [ngxPermissionsOnlyElse]="ccc"></ng-template>
+                    <ng-template #sss>{{ "button.registerNewTicket" | translate }}</ng-template>
+                    <ng-template #ccc>{{ "button.registerNewTicket" | translate }}</ng-template>
+                  </button>
+                </ng-template>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-block border border-0">
+        <ng-template [ngxPermissionsOnly]="['TICKET_FILTER']" [ngxPermissionsOnlyThen]="showFilter"></ng-template>
+        <ng-template #showFilter>
+          <ng-template [ngxPermissionsOnly]="['SSYSADMIN']" [ngxPermissionsOnlyThen]="sysadmin" [ngxPermissionsOnlyElse]="nsysadmin"></ng-template>
+          <ng-template #sysadmin>
+            <ceirpanel-filter *ngIf="authService.isLogin()" (filter)="applyFilter($event);refresh(state)" [startDate]="true" [endDate]="true"
+            [phoneNo]="false" [ticketId]="true" [userId]="true" [ticketStatus]="true" [filterModel]="filterModel"></ceirpanel-filter>
+          </ng-template>
+          <ng-template #nsysadmin>
+            <ceirpanel-filter *ngIf="authService.isLogin()" (filter)="applyFilter($event);refresh(state)" [startDate]="true" [endDate]="true"
+            [phoneNo]="true" [ticketId]="true" [raisedBy]="true" [ticketStatus]="true" [filterModel]="filterModel"></ceirpanel-filter>
+          </ng-template>
+        </ng-template>
+        <clr-datagrid class="datagrid-compact" [clrDgLoading]="loading" (clrDgRefresh)="refresh($event)" [(clrDgSelected)]="selecton">
+          <clr-dg-action-bar *ngIf="authService.isLogin()">
+            <ceirpanel-list-action [state]="state" (download)="export($event)" (refresh)="refresh($event)"
+              (filter)="callFilter()" (resetFilter)="resetFilter()" [feature]="'TICKET'"></ceirpanel-list-action>
+          </clr-dg-action-bar>
+          <ng-template [ngxPermissionsOnly]="['SSYSADMIN']" [ngxPermissionsOnlyThen]="sysadmin" [ngxPermissionsOnlyElse]="nsysadmin"></ng-template>
+          <ng-template #sysadmin>
+            <clr-dg-column [clrDgSortBy]="'ticketId'">{{ "datalist.ticketId" | translate }}</clr-dg-column>
+            <clr-dg-column [clrDgSortBy]="'subject'">{{ "datalist.subject" | translate }}</clr-dg-column>
+            <clr-dg-column [clrDgSortBy]="'createDate'">{{ "datalist.createDate" | translate }}</clr-dg-column>
+            <clr-dg-column [clrDgSortBy]="'modifiedDate'">{{ "datalist.modifiedDate" | translate }}</clr-dg-column>
+            <clr-dg-column [clrDgSortBy]="'raisedBy'">{{ "datalist.userId" | translate }}</clr-dg-column>
+            <clr-dg-column [clrDgSortBy]="'status'">{{ "datalist.status" | translate }}</clr-dg-column>
+            <clr-dg-column>{{ "datalist.action" | translate }}</clr-dg-column>
+            <clr-dg-row *ngFor="let ticket of tickets; let i = index;" [clrDgItem]="ticket">
+              <clr-dg-cell>{{ticket.ticketId}}</clr-dg-cell>
+              <clr-dg-cell>{{ticket.issue.subject}}</clr-dg-cell>
+              <clr-dg-cell>{{ticket.issue.createdOn |date:'yyyy-MM-dd'}}</clr-dg-cell>
+              <clr-dg-cell>{{ticket.issue.updatedOn |date:'yyyy-MM-dd'}}</clr-dg-cell>
+              <clr-dg-cell class="text-truncate">{{ticket.raisedBy}}</clr-dg-cell>
+              <clr-dg-cell class="text-truncate">{{ticket.issue.status.name}}</clr-dg-cell>
+              <clr-dg-cell *ngIf="!authService.isLogin()">
+                <button class="datagrid-action-toggle clr-anchor m-0 p-0" [routerLink]="['/ticket/ticket-thread',ticket.ticketId]">
+                  <cds-icon shape="eye"></cds-icon>
+                </button>
+              </clr-dg-cell>
+              <clr-dg-cell *ngIf="authService.isLogin()">
+                <ng-template [ngxPermissionsOnly]="['TICKET_VIEW']" [ngxPermissionsOnlyThen]="showView"></ng-template>
+                <ng-template #showView>
+                  <button class="btn btn-link btn-sm m-0 p-0" [routerLink]="['/ticket/ticket-thread',ticket.ticketId]">
+                    <cds-icon shape="eye"></cds-icon>
+                  </button>
+                </ng-template>
+              </clr-dg-cell>
+            </clr-dg-row>
+          </ng-template>
+          <ng-template #nsysadmin>
+            <clr-dg-column [clrDgSortBy]="'ticketId'">{{ "datalist.ticketId" | translate }}</clr-dg-column>
+            <clr-dg-column [clrDgSortBy]="'phone'">{{ "datalist.contactNumber" | translate }}</clr-dg-column>
+            <clr-dg-column [clrDgSortBy]="'subject'">{{ "datalist.subject" | translate }}</clr-dg-column>
+            <clr-dg-column [clrDgSortBy]="'createDate'">{{ "datalist.createDate" | translate }}</clr-dg-column>
+            <clr-dg-column [clrDgSortBy]="'modifiedDate'">{{ "datalist.modifiedDate" | translate }}</clr-dg-column>
+            <clr-dg-column [clrDgSortBy]="'raisedBy'" [style.width.px]="130">{{ "datalist.raisedBy" | translate }}</clr-dg-column>
+            <!--clr-dg-column [clrDgSortBy]="'userType'">{{ "datalist.userType" | translate }}</clr-dg-column-->
+            <clr-dg-column [clrDgSortBy]="'status'">{{ "datalist.status" | translate }}</clr-dg-column>
+            <clr-dg-column>{{ "datalist.action" | translate }}</clr-dg-column>
+            <clr-dg-row *ngFor="let ticket of tickets; let i = index;" [clrDgItem]="ticket">
+              <clr-dg-cell><span [title]="ticket.ticketId">{{ticket.ticketId}}</span></clr-dg-cell>
+              <clr-dg-cell>
+                <span [title]="config.get('countryCode') +' '+ ticket.mobileNumber">{{lodash.startsWith(ticket.mobileNumber, '+') ? ticket.mobileNumber: '+' + ticket.mobileNumber}}</span>
+              </clr-dg-cell>
+              <clr-dg-cell class="text-truncate"><span [title]="ticket.issue.subject">{{ticket.issue.subject}}</span></clr-dg-cell>
+              <clr-dg-cell>{{ticket.issue.createdOn |date:'yyyy-MM-dd'}}</clr-dg-cell>
+              <clr-dg-cell>{{ticket.issue.updatedOn |date:'yyyy-MM-dd'}}</clr-dg-cell>
+              <clr-dg-cell class="text-truncate">
+                <div *ngIf="ticket.userType === 'END_USER'; then endUser else registerUser"></div>
+                <ng-template #endUser><span title="End User">End User</span></ng-template>
+                <ng-template #registerUser><span title="Self">Self</span></ng-template>
+              </clr-dg-cell>
+              <!--clr-dg-cell class="text-capitalize">
+                {{ticket.userType}}
+              </clr-dg-cell-->
+              <clr-dg-cell class="text-truncate">{{ticket.issue.status.name}}</clr-dg-cell>
+              <clr-dg-cell *ngIf="!authService.isLogin()">
+                <button class="datagrid-action-toggle clr-anchor m-0 p-0" [routerLink]="['/ticket/ticket-thread',ticket.ticketId]">
+                  <cds-icon shape="eye"></cds-icon>
+                </button>
+              </clr-dg-cell>
+              <clr-dg-cell *ngIf="authService.isLogin()">
+                <ng-template [ngxPermissionsOnly]="['TICKET_VIEW']" [ngxPermissionsOnlyThen]="showView"></ng-template>
+                <ng-template #showView>
+                  <button class="btn btn-link btn-sm m-0 p-0" [routerLink]="['/ticket/ticket-thread',ticket.ticketId]">
+                    <cds-icon shape="eye"></cds-icon>
+                  </button>
+                </ng-template>
+              </clr-dg-cell>
+            </clr-dg-row>
+          </ng-template>
+          <clr-dg-footer>
+            <clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems]="total">
+              <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]"><span
+                  class="text-capitalize">Tickets</span> {{ "footer.perPage"| translate }}
+              </clr-dg-page-size>
+              {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+              {{ "footer.of"| translate }} {{pagination.totalItems}} Tickets
+            </clr-dg-pagination>
+          </clr-dg-footer>
+        </clr-datagrid>
+      </div>
+    </div>
+  </div>
+</div>

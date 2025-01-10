@@ -1,0 +1,16 @@
+:host ::ng-deep ng-image-slider .custom-image-main img {
+  border-radius: 0 !important;
+}
+
+:host ::ng-deep ng-image-slider .img-div.selected-image {
+  border: 3px solid red;
+  box-sizing: border-box;
+}
+
+:host ::ng-deep ng-image-slider .img-div {
+  cursor: pointer;
+}
+:host ::ng-deep ng-image-slider .img-div:hover {
+    cursor: pointer;
+    border: 3px solid yellow;
+  }

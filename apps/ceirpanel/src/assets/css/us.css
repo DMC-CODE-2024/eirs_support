@@ -1,0 +1,32 @@
+ @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,300&display=swap');
+ span.logo-lg {
+    font-family: "Nunito Sans",sans-serif !important;
+}
+
+* {
+    font-family: "Nunito Sans",sans-serif !important;
+}
+
+.mb-4 h1 {
+    font-family: "Nunito Sans",sans-serif !important;
+}
+
+.mb-4 h2 {
+    font-family: "Nunito Sans",sans-serif !important;
+}
+
+.mb-4 h3 {
+    font-family: "Nunito Sans",sans-serif !important;
+}
+
+.p-4 label {
+    font-family: "Nunito Sans",sans-serif !important;
+}
+
+.btn-block {
+    font-family: "Nunito Sans",sans-serif !important;
+}
+
+.footer {
+    font-family: "Nunito Sans",sans-serif !important;
+}

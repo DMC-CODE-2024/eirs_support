@@ -1,0 +1,89 @@
+<div class="card">
+    <div class="card-header">
+      <div class="clr-row clr-justify-content-between">
+        <div class="clr-col-4" style="margin-top: 5px;">
+          <h4 class="card-title text-capitalize">{{ "acl.pageTitle." + page | translate }}</h4>
+        </div>
+        <div class="clr-col-4 text-right" style="padding-right: 0.1rem">
+          <div class="btn-group btn-primary text-right">
+            <button class="btn" aria-label="Check" routerLink="/acl">
+              <i class="bi bi-arrow-left-circle"></i> {{ "button.back" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-block m-1 p-1">
+      <form clrStepper clrForm clrLayout="vertical" class="m-0 p-0" #f="ngForm" (ngSubmit)="f.form.valid && onSubmit(f)" autocomplete="off">
+        <fieldset [disabled]="readonly" class="scheduler-border">
+          <legend class="scheduler-border">Access Control Information</legend>
+          <div class="clr-row m-0 p-0">
+            <div class="clr-col-6 m-0 p-0">
+              <div class="form-group">
+                <label class="clr-required-mark">{{ "acl.roleId.label" | translate }}</label>
+                <select class="form-select form-control form-control-sm" name="groupId" [(ngModel)]="acl.role.id"
+                  #roleId="ngModel" [ngClass]="{ 'is-invalid': f.submitted && roleId.errors }" (change)="onRoleChange($event)"
+                   pattern="^[1-9][0-9]*$" [disabled]="page==='view' || page==='edit'">
+                  <option selected [value]="0" disabled>{{ "acl.roleId.placeholder" | translate }}</option>
+                  <option *ngFor="let role of roles" [value]="role.id" [disabled]="page === 'view' || page === 'edit'">{{role?.roleName}}</option>
+                </select>
+                <div *ngIf="f.submitted && roleId.errors" class="invalid-feedback">
+                  <div *ngIf="roleId.errors['pattern']">{{'acl.roleId.error.required' | translate}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="clr-row m-0 p-0" *ngIf="trees && id > 0">
+            <div class="clr-col-12 m-0 p-0">
+              <table class="table table-compact">
+                <thead>
+                  <tr>
+                    <th class="w-25">
+                      <clr-checkbox-container style="margin-top: -0.6rem;margin-bottom: -0.7rem;">
+                        <clr-checkbox-wrapper>
+                          <input type="checkbox" clrCheckbox value="option1" name="all" [(ngModel)]="trees.selected" (change)="onParent($event)"/>
+                          <label>Feature</label>
+                        </clr-checkbox-wrapper>
+                      </clr-checkbox-container>
+                    </th>
+                    <th class="left ms-0 ps-0 ">Permissions</th>
+                  </tr> 
+                </thead>
+              </table>
+              <table class="table table-vertical m-0 p-0 table-compact">
+                <tbody>
+                  <tr *ngFor="let tree of trees.childs;let i = index;">
+                    <th class="w-25">
+                      <clr-checkbox-container style="margin-top: -0.1rem;margin-bottom: -0.7rem;">
+                        <clr-checkbox-wrapper>
+                          <input type="checkbox" clrCheckbox [name]="'feature'+ i" [(ngModel)]="tree.selected" (change)="onChild($event, tree, tree.childs)"/>
+                          <label class="text-truncate">{{tree?.name}}</label>
+                        </clr-checkbox-wrapper>
+                      </clr-checkbox-container>
+                    </th>
+                    <td *ngFor="let module of tree.childs;let j = index;" class="border">
+                      <clr-checkbox-container clrInline style="margin-top: -0.1rem;margin-bottom: -0.7rem;">
+                        <clr-checkbox-wrapper>
+                          <input type="checkbox" clrCheckbox [name]="'module' + i + j" [(ngModel)]="module.selected" [disabled]="module.disabled"/>
+                          <label class="text-truncate">{{module?.name}}</label>
+                        </clr-checkbox-wrapper>
+                      </clr-checkbox-container>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="clr-row clr-justify-content-end mt-3">
+            <div class="clr-col-2">
+              <button type="submit" class="btn btn-primary btn-block">{{ "button.save" | translate }}</button>
+            </div>
+            <div class="clr-col-2">
+              <button type="button" class="btn btn-outline btn-block" (click)="cancel=true">{{ "button.cancel" | translate }}</button>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+   </div>
+   <ceirpanel-ceir-cancel [open]="cancel" (confirmation)="cancelOpenClose($event)"></ceirpanel-ceir-cancel>

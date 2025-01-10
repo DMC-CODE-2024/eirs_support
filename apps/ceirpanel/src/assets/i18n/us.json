@@ -1,0 +1,755 @@
+{
+    "menu": {
+        "dashboard": "Dashboard",
+        "device": "Device Management",
+        "role": "Role Management",
+        "user-role": "User Role Management",
+        "acl": "Access Control Management",
+        "user": "User Management",
+        "user-feature": "User Feature Management",
+        "group": "Group Management",
+        "group-feature": "Group Feature Management",
+        "group-role": "Group Role Management",
+        "module": "Module Management",
+        "moduleManagement": "Module Management",
+        "tag": "Module TAG Management",
+        "feature": "Feature Management",
+        "feature-module": "Feature Module Management",
+        "user-group": "User Group Management",
+        "ticket": "View Ticket Status",
+        "search-imei": "Search IMEI"
+    },
+    "status": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "suspended": "Suspended",
+        "locked": "Locked",
+        "deleted": "Deleted"
+    },
+    "placeholder": {
+        "startDate": "Start Date",
+        "endDate": "End Date",
+        "groupName": "Group Name",
+        "parentGroupName": "Parent Group Name",
+        "moduleTagName": "Tag name",
+        "featureName": "Feature Name",
+        "featureModuleName": "Feature Module",
+        "phoneNo": "Phone Number",
+        "ticketId": "Ticket ID",
+        "raisedBy": "Raised By",
+        "ticketStatus": "Status"
+    },
+    "button": {
+        "multiSelect": "Multi Select",
+        "reset": "Reset",
+        "filter": "Apply Filter",
+        "export": "Export",
+        "back": "Back",
+        "save": "Save",
+        "cancel": "Cancel",
+        "yes": "Yes",
+        "no": "No",
+        "view": "View",
+        "edit": "Edit",
+        "delete": "Delete",
+        "footer": "Collapse",
+        "search": "Search",
+        "clear": "CLEAR",
+        "register": "Register",
+        "note": "Note",
+        "newUser": "New User",
+        "forgotPassword": "Forgot Password",
+        "rememberMe": "Remember Me"
+    },
+    "filter": {
+        "startDate": "Start Date",
+        "endDate": "End Date",
+        "parentGroupName": "Parent Group",
+        "groupName": "Group Name",
+        "featureName": "Feature Name",
+        "roleName": "Role Name",
+        "userName": "User Name",
+        "moduleName": "Module Name",
+        "moduleTagName": "Module Tag Name",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "organization": "Organization",
+        "phoneNo": "Phone Number",
+        "ticketId": "Ticket ID",
+        "raisedBy": "Raised By",
+        "ticketStatus": "Status"
+    },
+    "footer": {
+        "of": "of",
+        "perPage": "per page",
+        "groups": "groups",
+        "features": "Features",
+        "users": "Users",
+        "groupRoles": "Group Roles",
+        "roles": "Roles",
+        "userGroups": "User Groups",
+        "userRoles": "User Roles",
+        "acl": "Access",
+        "tags": "Tags",
+        "userFeatures": "User Features",
+        "modules": "Modules",
+        "groupFeatures": "Group Features"
+    },
+    "message": {
+        "confirmation": "Are you sure you want to close this window? The form data will be lost.",
+        "registerTicketSuccess": "Ticket registered successfully",
+        "invalidCredentials": "Invalid Username or Password"
+    },
+    "error": {
+        "emailAlreadyRegistered": "Sorry, this email address is already registered."
+    },
+    "brand": "Equipment Identity Registration System",
+    "imei": {
+        "pageTitle": {
+            "title": "IMEI Information",
+            "view": "Search IMEI"
+        },
+        "deviceId": {
+            "label": "Device ID Type",
+            "placeholder": "Search ID Type",
+            "error": "Select ID Type"
+        },
+        "imei": {
+            "label": "IMEI",
+            "placeholder": "Enter IMEI",
+            "error": "IMEI is mandatory"
+        },
+        "msisdn": {
+            "label": "MSISDN",
+            "placeholder": "Enter Msisdn"
+        }
+    },
+    "userRole": {
+        "pageTitle": {
+            "title": "User Role Information",
+            "view": "View User Role",
+            "add": "Create User Role",
+            "edit": "Edit User Role",
+            "list": "User Role Management",
+            "delete": "User Role Delete"
+        },
+        "userId": {
+            "label": "User Name",
+            "placeholder": "Enter User Name"
+        },
+        "description": {
+            "label": "Module Tag Description",
+            "placeholder": "Enter Module Tag Description"
+        }
+    },
+    "acl": {
+        "pageTitle": {
+            "title": "Access Control Information",
+            "view": "View Access Control",
+            "add": "Add Access Control",
+            "edit": "Edit Access Control",
+            "list": "Access Control Management",
+            "delete": "Deleate Access Control"
+        },
+        "roleId": {
+            "label": "Role Name",
+            "placeholder": "Enter Role Name"
+        },
+        "description": {
+            "label": "Module Tag Description",
+            "placeholder": "Enter Module Tag Description"
+        }
+    },
+    "groupRole": {
+        "pageTitle": {
+            "title": "Group Role Information",
+            "view": "View Group Role",
+            "add": "Add Group Role",
+            "edit": "Edit Group Role",
+            "list": "Group Role Management",
+            "delete": "Delete Group Role"
+        },
+        "groupId": {
+            "label": "Group Name",
+            "placeholder": "Enter Group Name"
+        },
+        "description": {
+            "label": "Module Tag Description",
+            "placeholder": "Enter Module Tag Description"
+        }
+    },
+    "userGroup": {
+        "pageTitle": {
+            "title": "User Group Information",
+            "view": "View User Group",
+            "add": "Add User Group",
+            "edit": "Edit User Group",
+            "list": "User Group Management",
+            "delete": "Delete User Group"
+        },
+        "userId": {
+            "label": "User Group",
+            "placeholder": "Enter User Group"
+        },
+        "description": {
+            "label": "Module Tag Description",
+            "placeholder": "Enter Module Tag Description"
+        }
+    },
+    "groupFeature": {
+        "pageTitle": {
+            "title": "Group Feature Information",
+            "view": "View Group Feature",
+            "add": "Add Group Feature",
+            "edit": "Edit Group Feature",
+            "list": "Group Feature Management",
+            "delete": "Delete Group Feature"
+        },
+        "groupId": {
+            "label": "Group Name",
+            "placeholder": "Enter Group Name"
+        },
+        "description": {
+            "label": "Module Tag Description",
+            "placeholder": "Enter Module Tag Description"
+        }
+    },
+    "userFeature": {
+        "pageTitle": {
+            "title": "User Feature Information",
+            "view": "View User Feature",
+            "add": "Add User Feature",
+            "edit": "Edit User Feature",
+            "list": "User Feature Management",
+            "delete": "Delete User Feature"
+        },
+        "userId": {
+            "label": "User Name",
+            "placeholder": "Enter User Name"
+        },
+        "description": {
+            "label": "Module Tag Description",
+            "placeholder": "Enter Module Tag Description"
+        }
+    },
+    "featureModule": {
+        "pageTitle": {
+            "title": "Feature Module Information",
+            "view": "View Feature Module",
+            "add": "Create Feature Module",
+            "edit": "Edit Feature Module",
+            "list": "Feature Module",
+            "delete": "Delete Feature Module"
+        },
+        "featureId": {
+            "label": "Feature Name",
+            "placeholder": "Select Featrue Name"
+        },
+        "description": {
+            "label": "Module Tag Description",
+            "placeholder": "Enter Module Tag Description"
+        }
+    },
+    "tag": {
+        "pageTitle": {
+            "title": "Module Tag Information",
+            "view": "View Tag",
+            "add": "Add Tag",
+            "edit": "Edit Tag",
+            "list": "Tag Management",
+            "delete": "Delete Tag"
+        },
+        "moduleTagName": {
+            "label": "Module Tag Name",
+            "placeholder": "Enter Module Tag Name"
+        },
+        "description": {
+            "label": "Module Tag Description",
+            "placeholder": "Enter Module Tag Description"
+        }
+    },
+    "module": {
+        "pageTitle": {
+            "title": "Module Information",
+            "view": "View Module",
+            "add": "Add Module",
+            "edit": "Edit Module",
+            "list": "Module Management",
+            "delete": "Delete Module"
+        },
+        "moduleName": {
+            "label": "Module Name",
+            "placeholder": "Enter Module Name"
+        },
+        "description": {
+            "label": "Module Description",
+            "placeholder": "Enter Module Description"
+        }
+    },
+    "login": {
+        "pageTitle": "Login",
+        "subTitle": "Use your User ID to sign in or create one now",
+        "username": {
+            "label": "Username",
+            "placeholder": "Password"
+        }
+    },
+    "profile": {
+        "edit": "Edit Info",
+        "enableDisable": "Enable/Disable Account",
+        "changePassword": "Change Password",
+        "logout": "Logout"
+    },
+    "datalist": {
+        "createDate": "Creation Date",
+        "modifiedDate": "Modified Date",
+        "parentGroupName": "Parent Group Name",
+        "groupName": "Group Name",
+        "roleName": "Role Name",
+        "access": "Access",
+        "featureName": "Feature Name",
+        "category": "Category",
+        "moduleName": "Module Name",
+        "moduleTagName": "Module Tag Name",
+        "assignedRoles": "Assigned Roles",
+        "assignedGroups": "Assigned Groups",
+        "assignedFeatures": "Assigned Features",
+        "assignedModules": "Assigned Modules",
+        "action": "Action",
+        "status": "Status",
+        "features": "Features",
+        "roles": "Roles",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "userName": "User Name",
+        "organization": "Organization",
+        "ticketId": "Ticket ID",
+        "phone": "Phone Number",
+        "subject": "Subject",
+        "raisedBy": "Raised By",
+        "userType": "User Type",
+        "tid": "Transaction ID",
+        "feature": "Feature",
+        "message": "Message"
+    },
+    "feature": {
+        "pageTitle": {
+            "title": "Feature Information",
+            "view": "View Feature",
+            "add": "Add Feature",
+            "edit": "Edit Feature",
+            "list": "Feature Management",
+            "delete": "Delete Feature"
+        },
+        "featureName": {
+            "label": "Feature Name",
+            "placeholder": "Enter Feature Name"
+        },
+        "category": {
+            "label": "Category",
+            "placeholder": "Select Category"
+        },
+        "description": {
+            "label": "Feature Description",
+            "placeholder": "Enter Feature Description"
+        },
+        "linkController": {
+            "label": "Link of Controller",
+            "placeholder": "Select Link of Controller"
+        },
+        "logo": {
+            "label": "Logo of Feature",
+            "placeholder": "Select Logo of Feature"
+        },
+        "defaultModule": {
+            "label": "Default Module",
+            "placeholder": "Select Default Module"
+        },
+        "tagName": {
+            "label": "Feature Tag",
+            "placeholder": "Select Feature Tag"
+        }
+    },
+    "role": {
+        "pageTitle": {
+            "title": "Role Information",
+            "view": "View Role",
+            "add": "Add Role",
+            "edit": "Edit Role",
+            "list": "Role Management",
+            "delete": "Delete Role"
+        },
+        "roleName": {
+            "label": "Role Name",
+            "placeholder": "Enter Role Name"
+        },
+        "access": {
+            "label": "Access",
+            "placeholder": "Enter Access"
+        },
+        "description": {
+            "label": "Role Description",
+            "placeholder": "Enter Role Description"
+        }
+    },
+    "ticket": {
+        "pageTitle": {
+            "title": "Ticket Intormation",
+            "view": "View Ticket",
+            "add": "Register Ticket",
+            "edit": "Edit Ticket",
+            "list": "Ticket Management",
+            "delete": "Delete Ticket",
+            "success": "Ticket Registered Successfully",
+            "check": "Check Status",
+            "info": "Do not enter any Personally Identifiable Details (PID) while raising or adding comments in grievance"
+        },
+        "ticketId": {
+            "label": "Ticket ID",
+            "placeholder": "Enter Ticket ID"
+        },
+        "firstName": {
+            "label": "First Name",
+            "placeholder": "Enter First Name",
+            "error": "First Name Required"
+        },
+        "lastName": {
+            "label": "Last Name",
+            "placeholder": "Enter Last Name"
+        },
+        "phone": {
+            "label": "Contact Number",
+            "placeholder": "Enter Contact Number",
+            "error": "Contact Number Required"
+        },
+        "alternateMobileNumber": {
+            "label": "Alternate Contact Number",
+            "placeholder": "Enter alternate contact number"
+        },
+        "email": {
+            "label": "Email",
+            "placeholder": "Enter Email"
+        },
+        "category": {
+            "label": "Category",
+            "placeholder": "Select Category"
+        },
+        "tid": {
+            "label": "Transection ID",
+            "placeholder": "Enter Transection ID"
+        },
+        "priority": {
+            "label": "Priority",
+            "placeholder": "Select Priority"
+        },
+        "severity": {
+            "label": "Severity of Ticket",
+            "placeholder": "Enter Severity of Ticket"
+        },
+        "subject": {
+            "label": "Subject",
+            "placeholder": "Enter Subject",
+            "error": "Subject Required"
+        },
+        "description": {
+            "label": "Description",
+            "placeholder": "Write description here..."
+        },
+        "resolved": {
+            "label": "Mark as Resolved",
+            "placeholder": "Mark as Resolved"
+        },
+        "document": {
+            "label": "Upload Supporting Document(if any)",
+            "placeholder": "Attach"
+        }
+    },
+    "group": {
+        "pageTitle": {
+            "title": "Group Intormation",
+            "view": "View Group",
+            "add": "Add Group",
+            "edit": "Edit Group",
+            "list": "Group Management",
+            "delete": "Delete Group"
+        },
+        "parentGroup": {
+            "label": "Parent Group",
+            "placeholder": "Select Parent Group"
+        },
+        "groupName": {
+            "label": "Group Name",
+            "placeholder": "Enter Group Name"
+        },
+        "description": {
+            "label": "Group Description",
+            "placeholder": "Enter Group Description"
+        }
+    },
+    "device": {
+        "pageTitle": {
+            "view": "Device Information",
+            "add": "Create Device",
+            "edit": "Edit Device",
+            "notification": "Notification Information"
+        },
+        "tabs": {
+            "net": "Net.",
+            "launch": "Launch",
+            "body": "Body",
+            "dis": "Dis.",
+            "platform": "Platform",
+            "camera": "Camera",
+            "sound": "Sound",
+            "comm": "Comm.",
+            "misc": "Misc.",
+            "price": "Price",
+            "iss": "Iss."
+        },
+        "manufacturer": {
+            "label": "Manufacturer",
+            "placeholder": "Enter Manufacturer"
+        },
+        "marketingName": {
+            "label": "Marketing Name",
+            "placeholder": "Enter Marketing Name"
+        },
+        "deviceId": {
+            "label": "TAC",
+            "placeholder": "Enter TAC"
+        },
+        "manufacturingAddress": {
+            "label": "Manufacturing Address",
+            "placeholder": "Enter Manufacturing Address"
+        },
+        "brandName": {
+            "label": "Brand Name",
+            "placeholder": "Enter Brand Name"
+        },
+        "modelName": {
+            "label": "Model Name",
+            "placeholder": "Enter Model Name"
+        },
+        "organizationId" : {
+            "label": "Organisation ID",
+            "placeholder": "Organisation ID"
+        },
+        "deviceStatus" : {
+            "label": "Device Status",
+            "placeholder": "Device Status"
+        },
+        "os" : {
+            "label": "OS Type",
+            "placeholder": "Enter OS Type"
+        },
+        "userType" : {
+            "label": "Handset Type",
+            "placeholder": "Enter Handset Type"
+        },
+        "imei" : {
+            "label": "IMEI",
+            "placeholder": "Enter IMEI"
+        },
+        "imsi" : {
+            "label": "IMSI",
+            "placeholder": "Enter IMSI"
+        },
+        "msisdn" : {
+            "label": "MSISDN",
+            "placeholder": "Enter MSISDN"
+        }
+    },
+    "user": {
+        "pageTitle": {
+            "title": "User Information",
+            "changePasswordTitle": "Change Password",
+            "view": "View User",
+            "add": "Add User",
+            "edit": "Edit User",
+            "delete": "Delete User",
+            "list": "User Management"
+        },
+        "changePassword": {
+            "title": "Change Password Information"
+        },
+        "name": {
+            "title": "Name Information",
+            "firstName": {
+                "label": "First Name",
+                "placeholder": "First Name",
+                "error": "First name is mandatory"
+            },
+            "lastName": {
+                "label": "Last Name",
+                "placeholder": "Last Name"
+            }
+        },
+        "address": {
+            "title": "Address Information",
+            "address": {
+                "label": "Address",
+                "placeholder": "Address",
+                "error": " We need your valid address"
+            },
+            "country": {
+                "label": "Country Name",
+                "placeholder": "Country",
+                "error": "Country is mandatory"
+            },
+            "state": {
+                "label": "Province Name",
+                "placeholder": "Province"
+            },
+            "district": {
+                "label": "District Name",
+                "placeholder": "District"
+            },
+            "commune": {
+                "label": "Commune Name",
+                "placeholder": "Commune"
+            },
+            "village": {
+                "label": "Village Name",
+                "placeholder": "Village"
+            },
+            "street": {
+                "label": "Street Number",
+                "placeholder": "Street"
+            },
+            "locality": {
+                "label": "Locality",
+                "placeholder": "Locality"
+            },
+            "postal": {
+                "label": "Postal Code",
+                "placeholder": "Postal",
+                "error": "Postal is mandatory"
+            }
+        },
+        "id": {
+            "title": "ID Information",
+            "organization": {
+                "label": "Organization",
+                "placeholder": "Organization"
+            },
+            "designation": {
+                "label": "Designation and Title",
+                "placeholder": "Designation"
+            },
+            "nationalId": {
+                "label": "National ID",
+                "placeholder": "National ID",
+                "error": "National ID is mandatory"
+            },
+            "uploadNationalId": {
+                "label": "Upload National ID",
+                "placeholder": "Upload National ID"
+            },
+            "uploadUserPhoto": {
+                "label": "Upload User Photo(File)",
+                "placeholder": "Upload User Photo"
+            },
+            "employeeId": {
+                "label": "Employee ID",
+                "placeholder": "Employee ID"
+            },
+            "employeeIdCard": {
+                "label": "Employee ID Card(File)",
+                "placeholder": "Employee ID Card"
+            },
+            "natureOfEmployment": {
+                "label": "Nature of Employment",
+                "placeholder": "Nature of Employment"
+            }
+        },
+        "reporting": {
+            "title": "Reporting Authiroty",
+            "reportingAuthorityName": {
+                "label": "Reporting Authiroty Name",
+                "placeholder": "Reporting Authiroty Name"
+            },
+            "reportingAuthorityEmailId": {
+                "label": "Reporting Authiroty Email ID",
+                "placeholder": "Reporting Authiroty Email ID"
+            },
+            "reportingAuthorityContactNumber": {
+                "label": "Reporting Authiroty Contact Number",
+                "placeholder": "Reporting Authiroty Contact Number"
+            }
+        },
+        "password": {
+            "title": "Password",
+            "password": {
+                "label": "Password",
+                "placeholder": "Password",
+                "error": "Password should have a min length of 8 alpha-numeric characters, minimum one capital letter, one small letter, one number and one special character"
+            },
+            "confirm": {
+                "label": "Retype Password",
+                "placeholder": "Retype Password",
+                "error": "Password is mandatory",
+                "equal": "Confirm password didn't match with password"
+            },
+            "oldpassword": {
+                "label": "Old Password",
+                "placeholder": "Old Password",
+                "error": "Password is mandatory"
+            }
+        },
+        "contact": {
+            "title": "Contact Information",
+            "email": {
+                "label": "Email ID",
+                "placeholder": "Email ID",
+                "error": "Email is mandatory",
+                "pattern": "Primary email address is not valid",
+                "emailAlreadyTaken": "Email already taken"
+            },
+            "mobile": {
+                "label": "Contact Number",
+                "placeholder": "Contact Number",
+                "error": "Mobile is mandatory"
+            }
+        },
+        "security": {
+            "title": "Security Questions",
+            "question1": {
+                "label": "Security Question 1",
+                "placeholder": "Security Question 1",
+                "error": "Question1 is mandatory"
+            },
+            "question2": {
+                "label": "Security Question 2",
+                "placeholder": "Security Question 2",
+                "error": "Question2 is mandatory"
+            },
+            "question3": {
+                "label": "Security Question 3",
+                "placeholder": "Security Question 3",
+                "error": "Question3 is mandatory"
+            },
+            "answer1": {
+                "label": "Answer 1",
+                "placeholder": "Answer 1",
+                "error": "Answer1 is mandatory"
+            },
+            "answer2": {
+                "label": "Answer 2",
+                "placeholder": "Answer 2",
+                "error": "Answer2 is mandatory"
+            },
+            "answer3": {
+                "label": "Answer 3",
+                "placeholder": "Answer 3",
+                "error": "Answer3 is mandatory"
+            }
+        }
+    },
+    "language": {
+        "options": {
+            "us": "English",
+            "km": " ខ្មែរ"
+        }
+    },
+    "copyright": "All rights reserved. {{currentYear}} {{company}}"
+}

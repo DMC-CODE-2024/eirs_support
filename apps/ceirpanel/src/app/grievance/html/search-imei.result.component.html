@@ -1,0 +1,117 @@
+<div class="card">
+    <div class="card-header">
+      <div class="clr-row clr-justify-content-between">
+        <div class="clr-col-4" style="margin-top: 5px;">
+          <h4 class="card-title text-capitalize">{{ "device.pageTitle.view" | translate }}</h4>
+        </div>
+      </div>
+    </div>
+    <div class="card-block m-1 p-1">
+      <form clrForm clrLayout="vertical" class="m-0 p-0" #f="ngForm" (ngSubmit)="f.form.valid && onSubmit(f)" novalidate>
+        <div class="clr-row m-0 p-0">
+          <div class="clr-col-3 mt-3">
+            <div class="form-group">
+              <label>{{ "device.imei.label" | translate }}</label>
+              <input [(ngModel)]="device.deviceId" class="form-control form-control-sm" [placeholder]="'device.imei.placeholder' | translate" 
+              id="imei" name="imei" required #imeiStr="ngModel" ceirpanelAppValidateImei [ngClass]="{ 'is-invalid': f.submitted && imeiStr.errors }"/>
+              <div *ngIf="f.submitted && imeiStr.errors" class="invalid-feedback">
+                <div *ngIf="imeiStr.errors['required']">{{'device.imei.error.required' | translate}}</div>
+              </div>
+              <div *ngIf="f.touched && imeiStr.errors" class="invalid-feedback">
+                <div *ngIf="imeiStr.errors['imeiNotExist']">{{ "device.imei.error.imeiNotExist" | translate }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="clr-col-3 mt-3">
+            <div class="form-group">
+              <label>{{ "device.imsi.label" | translate }}</label>
+              <input [(ngModel)]="device.deviceId" class="form-control form-control-sm" [placeholder]="'device.imsi.placeholder' | translate" name="imsi" required
+              #imsi="ngModel" [ngClass]="{ 'is-invalid': f.submitted && imsi.errors }"/>
+              <div *ngIf="f.submitted && imsi.errors" class="invalid-feedback">
+                <div *ngIf="imsi.errors['required']">{{'device.imsi.error.required' | translate}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="clr-col-3 mt-3">
+            <div class="form-group">
+              <label>{{ "device.msisdn.label" | translate }}</label>
+              <input [(ngModel)]="device.deviceId" class="form-control form-control-sm"
+                [placeholder]="'device.msisdn.placeholder' | translate" id="msisdn"
+                name="msisdn" />
+            </div>
+          </div>
+          <div class="clr-break-row"></div>
+          <div class="clr-col-3 mt-3">
+            <div class="form-group">
+              <label>{{ "device.userType.label" | translate }}</label>
+              <input [(ngModel)]="device.userType" class="form-control form-control-sm"
+                [placeholder]="'device.userType.placeholder' | translate"
+                name="msisdn" />
+            </div>
+          </div>
+          <div class="clr-col-3 mt-3">
+            <div class="form-group">
+              <label>{{ "device.os.label" | translate }}</label>
+              <input [(ngModel)]="device.os" class="form-control form-control-sm"
+                [placeholder]="'device.os.placeholder' | translate"
+                name="os" />
+            </div>
+          </div>
+          <div class="clr-col-3 mt-3">
+            <div class="form-group">
+              <label>{{ "device.brandName.label" | translate }}</label>
+              <input  [(ngModel)]="device.brandName" class="form-control form-control-sm"
+                [placeholder]="'device.brandName.placeholder' | translate"
+                name="brandName" />
+            </div>
+          </div>
+          <div class="clr-col-3 mt-3">
+            <div class="form-group">
+              <label>{{ "device.modelName.label" | translate }}</label>
+              <input  [(ngModel)]="device.modelName" class="form-control form-control-sm"
+                [placeholder]="'device.modelName.placeholder' | translate"
+                name="msisdn" />
+            </div>
+          </div>
+          <div class="clr-col-3 mt-3">
+            <div class="form-group">
+              <label>{{ "device.marketingName.label" | translate }}</label>
+              <input  [(ngModel)]="device.marketingName" class="form-control form-control-sm"
+                [placeholder]="'device.marketingName.placeholder' | translate"
+                name="msisdn" />
+            </div>
+          </div>
+          <div class="clr-col-3 mt-3">
+            <div class="form-group">
+              <label>{{ "device.manufacturer.label" | translate }}</label>
+              <input  [(ngModel)]="device.manufacturer" class="form-control form-control-sm"
+                [placeholder]="'device.manufacturer.placeholder' | translate"
+                name="manufacturer" />
+            </div>
+          </div>
+          <div class="clr-col-3 mt-3">
+            <div class="form-group">
+              <label>{{ "device.deviceStatus.label" | translate }}</label>
+              <input  [(ngModel)]="device.deviceStatus" class="form-control form-control-sm"
+                [placeholder]="'device.deviceStatus.placeholder' | translate"
+                name="deviceStatus" />
+            </div>
+          </div>
+          <div class="clr-col-3 mt-3">
+            <div class="form-group">
+              <label>{{ "device.organizationId.label" | translate }}</label>
+              <input  [(ngModel)]="device.organizationId" class="form-control form-control-sm"
+                [placeholder]="'device.organizationId.placeholder' | translate"
+                name="msisdn" />
+            </div>
+          </div>   
+        </div>
+      </form>
+      <div class="clr-row m-0 p-0 mt-3">
+        <div class="clr-col-12"><h4 class="card-title text-capitalize m-0 p-0">Device Status</h4></div>
+        <div class="clr-col-6"><ceirpanel-device-status></ceirpanel-device-status></div>
+        <div class="clr-col-6"><ceirpanel-device-state></ceirpanel-device-state></div>
+      </div>
+    </div>
+  </div>
+  

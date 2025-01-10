@@ -1,0 +1,31 @@
+<div class="clr-row" style="background-color: #fff;">
+  <div class="clr-col clr-col-sm-12 clr-col-12 clr-col-lg-6 clr-col-md-6">
+    <h3>{{ "imei.find" | translate}}</h3>
+    <h4 [innerHTML]="'imei.optionA' | translate"></h4>
+    <img src="assets/images/mob2.jpg" alt="" class="clr-col-sm-12 clr-col-lg-12" style="height: 25vh;">
+    <h3 class="text-center">Or</h3>
+    <h4><span class="text-primary">Option A</span> IMEI also written in the box as shown in Image below</h4>
+    <img src="assets/images/DeviceInfo.jpg" alt="" class="clr-col-sm-12 clr-col-lg-12" style="height: 25vh;">
+  </div>
+  <div class="app-divider"></div>
+  <div class="clr-col">
+    <h3>{{ "imei.title" | translate}}</h3>
+    <form clrForm clrLayout="vertical">
+      <clr-input-container>
+        <label class="clr-col-2">{{ "imei.input.label" | translate}}</label>
+        <input class="clr-col-10" clrInput type="text" name="example" required style="width: 80%;" 
+        [placeholder]="'imei.input.placeholder' | translate"/>
+        <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
+        <clr-control-error>Error message that appears after focus is lost and control is invalid</clr-control-error>
+      </clr-input-container>
+      <clr-control-container>
+        <re-captcha siteKey="6LeLYSwmAAAAAFPrU8jvMZc1ziENdczQw9tZ4QYZ" required name="recaptcha"></re-captcha>
+      </clr-control-container>
+      <div class="clr-row">
+        <div class="clr-col-8">
+          <button class="btn btn-primary btn-block clr-col-8" style="margin-top: 70px;">CHECK IMEI</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

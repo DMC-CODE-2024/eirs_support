@@ -1,0 +1,107 @@
+{
+  "name": "ceirpanel",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "ceirpanel",
+  "sourceRoot": "apps/ceirpanel/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/ceirpanel",
+        "index": "apps/ceirpanel/src/index.html",
+        "main": "apps/ceirpanel/src/main.ts",
+        "polyfills": ["zone.js","@angular/localize/init"],
+        "tsConfig": "apps/ceirpanel/tsconfig.app.json",
+        "assets": [
+          "apps/ceirpanel/src/favicon.ico",
+          "apps/ceirpanel/src/assets"
+        ],
+        "styles": [
+          "apps/ceirpanel/src/styles.css",
+          "node_modules/flag-icons/css/flag-icons.min.css",
+          "node_modules/normalize.css/normalize.css"
+        ],
+        "scripts": [],
+        "baseHref": "/eirs_support/",
+        "deployUrl": "/eirs_support/"
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "10mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "5kb",
+              "maximumError": "10kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "ceirpanel:build:production"
+        },
+        "development": {
+          "browserTarget": "ceirpanel:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "ceirpanel:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/ceirpanel/**/*.ts",
+          "apps/ceirpanel/**/*.html"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/ceirpanel/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "ceirpanel:build"
+      }
+    }
+  }
+}

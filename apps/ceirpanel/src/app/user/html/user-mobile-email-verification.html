@@ -1,0 +1,80 @@
+<div class="card" style="overflow: hidden;min-height: 85vh;">
+    <div class="card-header">
+      <div class="clr-row clr-justify-content-between">
+        <div class="clr-col-5" style="margin-top: 5px;">
+          <h4 class="card-title">{{ "user.verification.title" | translate }}</h4>
+        </div>
+      </div>
+    </div>
+    <div class="card-block border border-0 shadow-none rounded">
+        <clr-alert *ngIf="alert" [clrAlertType]="alert.type" [clrAlertAppLevel]="true">
+            <clr-alert-item>
+                <span class="alert-text text-white">{{ "message." + alert.message | translate }}</span>
+            </clr-alert-item>
+        </clr-alert>
+        <form clrStepper clrForm clrLayout="vertical" class="m-0 p-0 row" #f="ngForm"
+            (ngSubmit)="f.form.valid && onSubmit(f)" style="height: calc(100vh - 200px);" autocomplete="off">
+            <div class="row justify-content-center">
+                <div class="col-12 text-center m-0 p-0">
+                    <p class="fs-6 fw-bold text-dark" *ngIf="msisdn!==user?.profile?.phoneNo && email!==user?.profile?.email">
+                        {{ "user.verification.emailSmsOtpLabel" | translate }}
+                    </p>
+                    <p class="fs-6 fw-bold text-dark" *ngIf="msisdn===user?.profile?.phoneNo && email!==user?.profile?.email">
+                        {{ "user.verification.emailOtpLabel" | translate }}
+                    </p>
+                    <p class="fs-6 fw-bold text-dark" *ngIf="msisdn!==user?.profile?.phoneNo && email===user?.profile?.email">
+                        {{ "user.verification.smsOtpLabel" | translate }}
+                    </p>
+                </div>
+            </div>
+            <div class="row justify-content-center mt-2">
+                <div class="col-12 text-center m-0 p-0">
+                    <p class="m-0 p-0 text-dark" *ngIf="msisdn!==user?.profile?.phoneNo && email!==user?.profile?.email"
+                     [innerHtml]="'user.verification.emailSmsMessage' | translate:msgobj">
+                    </p>
+                    <p class="m-0 p-0 text-dark" *ngIf="msisdn===user?.profile?.phoneNo && email!==user?.profile?.email"
+                     [innerHtml]="'user.verification.emailMessage' | translate:msgobj">
+                    </p>
+                    <p class="m-0 p-0 text-dark" *ngIf="msisdn!==user?.profile?.phoneNo && email===user?.profile?.email"
+                     [innerHtml]="'user.verification.smsMessage' | translate:msgobj">
+                    </p>
+                </div>
+                <div class="col-12 text-center m-0 p-0">
+                    <p class="m-0 p-0 text-dark">{{ "user.verification.remarkMessage" | translate }}</p>
+                </div>
+            </div>
+            <div class="row g-1 align-items-center justify-content-center" *ngIf="email!==user?.profile?.email">
+                <div class="col-auto">
+                    <label class="clr-required-mark">{{ "user.verification.email.label" | translate }}</label>
+                </div>
+                <div class="col-auto">
+                    <ng-otp-input #emailOtpInput (onInputChange)="onEmailOtpChange($event)" [config]="{length:allowedOtpLength}"></ng-otp-input> 
+                </div>
+            </div>
+            <div class="row g-1 align-items-center justify-content-center" *ngIf="msisdn!==user?.profile?.phoneNo">
+                <div class="col-auto">
+                    <label class="clr-required-mark">{{ "user.verification.mobile.label" | translate }}</label>
+                </div>
+                <div class="col-auto">
+                    <ng-otp-input #mobileOtpInput (onInputChange)="onMobileOtpChange($event)" [config]="{length:allowedOtpLength}"></ng-otp-input> 
+                </div>
+            </div>
+            <div class="row g-1 align-items-center justify-content-center">
+                <div class="col-1"></div>
+                <div class="col-4">
+                    <button type="submit" class="btn btn-primary btn-block m-0 p-0">
+                        {{ "button.verify" | translate }}
+                    </button>   
+                </div>
+            </div>
+            <div class="row g-1 align-items-center justify-content-center">
+                <div class="col-auto">
+                    <button type="button" class="btn btn-link m-0 p-0 float-start" (click)="sendotp()">{{ "button.resend" | translate }}</button>
+                </div>
+                <div class="col-auto">
+                    <p class="m-0 p-0 text-primary">{{'ticket.verifyOtp.timeRemaining' | translate}}: 00:{{timeLeftDisplay}}</p>
+                </div>
+            </div>
+        </form>
+    </div>
+  </div>

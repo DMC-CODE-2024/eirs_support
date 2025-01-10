@@ -1,0 +1,65 @@
+<div class="row justify-content-center m-0 p-0" (resized)="onResized($event)">
+  <div class="col-lg-5 col-xl-5 col-xxl-5 col-md-8 col-sm-10 col-xs-12">
+    <div class="card shadow-none rounded">
+      <div class="card-block border border-1 shadow-none rounded">
+        <form clrStepper clrForm clrLayout="vertical" class="m-0 p-0 row" #f="ngForm"
+          (ngSubmit)="f.form.valid && onSubmit(f)" style="height: calc(100vh - 200px);" autocomplete="off">
+          <div class="row justify-content-center" *ngIf="header === 'yes'">
+            <div class="col-12 m-0 p-0">
+              <h3 class="text-center">
+                <small class="fs-5 fw-bold text-dark">{{"ticket.viewTicket.title" | translate}}</small>
+              </h3>
+            </div>
+          </div>
+          <div class="row justify-content-center mt-4 m-0 p-0">
+            <div class="col-12 m-0 p-0 col-sm-12 col-xs-12 col-lg-9 col-xl-9">
+              <label class="col-form-label clr-required-mark">{{"ticket.viewTicket.label" | translate}}</label>
+              <input type="text" class="form-control form-control-sm" placeholder="" [(ngModel)]="ticket.ticketId" name="ticketId" ceirpanelAppValidateTicketId
+               required #ticketId="ngModel" [ngClass]="{ 'is-invalid': f.submitted && ticketId.errors }"
+                [placeholder]="'ticket.viewTicket.placeholder' | translate" [ngModelOptions]="{ updateOn: 'blur' }" aria-autocomplete="none">
+              <div *ngIf="ticketId.errors && f.submitted; then error else noerror"></div>
+              <ng-template #error>
+                <div class="invalid-feedback" *ngIf="ticketId.errors">
+                  <div class="row justify-content-around">
+                    <div class="col-6 m-0 p-0 mt-1">
+                      <div *ngIf="ticketId.errors['ticketIdNotExist']">{{'ticket.viewTicket.error' | translate}}</div>
+                      <div *ngIf="ticketId.errors['required']">{{'ticket.viewTicket.error' | translate}}</div>
+                    </div>
+                    <div class="col-4 text-end m-0 p-0">
+                      <button type="button" style="color:#2F80ED" class="btn btn-link m-0 p-0 fw-bold" routerLink="/forgot-ticket" [queryParams]="{lang,header}">{{"ticket.viewTicket.forgot" | translate}}</button>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template #noerror>
+                <div class="row justify-content-around">
+                    <div class="col-6 m-0 p-0 mt-1"></div>
+                    <div class="col-4 text-end m-0 p-0">
+                      <button type="button" style="color:#2F80ED" class="btn btn-link m-0 p-0 fw-bold" routerLink="/forgot-ticket" [queryParams]="{lang,header}">{{"ticket.viewTicket.forgot" | translate}}</button>
+                    </div>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+          <div class="row mt-2 justify-content-center m-0 p-0" *ngIf="siteKey && !isLocalhost">
+            <div class="col-sm-12 col-xs-12 col-lg-9 m-0 p-0">
+              <!--div class="form-group" style="transform-origin:0;" [ngStyle]="{'transform': 'scale(' + scale + ')'}"-->
+              <div class="form-group" style="transform-origin:0;">
+                <re-captcha [siteKey]="siteKey" [(ngModel)]="ticket.captcha" name="captcha"
+                 required #captcha="ngModel" [ngClass]="{ 'is-invalid': f.submitted && captcha.errors }"></re-captcha>
+                <div *ngIf="f.submitted && captcha.errors" class="invalid-feedback">
+                  <div *ngIf="captcha.errors['required']">Captcha Required</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row justify-content-center m-0 p-0" [ngClass]="siteKey && !isLocalhost ? 'mt-3' : 'mt-2' ">
+            <div class="col-12 col-sm-12 col-xs-12 col-lg-9 col-xl-9 m-0 p-0">
+              <button type="submit" class="btn btn-primary btn-block m-0 p-0" style="display: block;width: 100%;">{{"button.submit" | translate}}</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+.login-wrapper {
+  display: flex;
+  height: 100%;
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+
+.login {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: auto;
+  min-height: 80vh;
+}
+.login-wrapper .login {
+    background: #fafafa;
+    background: var(--clr-login-background-color, hsl(198, 0%, 98%));
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1.2rem 3rem;
+    height: auto;
+    min-height:70vh;
+    width: 100rem;
+}
+.app-divider {
+  border-color: hsl(198, 0%, 80%);
+  border-color: var(--clr-vertical-nav-trigger-divider-border-color, hsl(198, 0%, 80%));
+  border-style: solid;
+  border-width: 0.01rem;
+  border-width: var(--clr-vertical-nav-trigger-divider-border-width, 0.01rem);
+  margin: 0.1rem 0;
+}
+

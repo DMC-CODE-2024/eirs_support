@@ -1,0 +1,56 @@
+{
+    "api":"http://localhost:8080",
+    "redmineDownloaderApi": "http://142.93.212.242:9194/attachment",
+    "deviceImages": 5,
+    "tokenKey": "ceirpanel-",
+    "brandName": "EIRS",
+    "countryCode": "+265",
+    "logo":"assets/images/logo.png",
+    "captchaBg":"#ffffff",
+    "captchaColor": "#000000",
+    "feedback": {
+        "name": "Enter Your Name",
+        "phone": "Enter Phone Number",
+        "email": "Enter Email",
+        "comment": "Enter Your Comment",
+        "submit": "SUBMIT",
+        "welcome": "Welcome"
+    },
+    "message": {
+        "feedback": {
+            "success": "Your Feedback is submitted successfully"
+        }
+    },
+    "validation": {
+        "password": "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$"
+    },
+    "languages": [
+        {
+            "name": "English",
+            "image": "assets/images/english.png",
+            "code": "en"
+        },
+        {
+            "name": "ភាសាខ្មែរ",
+            "image": "assets/images/khmer.png",
+            "code": "km"
+        }
+    ],
+    "endUsers" : ["7"],
+    "ticketThread": {
+        "supportTitle": "CEIR Support Team:",
+        "postedOn": "Posted on:"
+    },
+    "allowStatusForComment": [
+        "Resolved", "Closed"
+    ],
+    "duplicate": "3",
+    "allowedFileUpload": ["image/png", "image/jpg", "image/jpeg", "application/pdf"],
+    "uploadMaxFile": 4,
+    "allowedFileUploadSize": "2000000",
+    "maxNameSubjectLength": 50,
+    "otpTimerTime": 60,
+    "mobileRegexWithBlank": "^[1-9][0-9]{6,7}$",
+    "maxReferenceIdLenght": "25",
+    "maxUserFirstNameLength": "50"
+}

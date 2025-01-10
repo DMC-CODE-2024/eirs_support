@@ -1,0 +1,92 @@
+{
+    "api":"http://localhost:8080",
+    "redmineDownloaderApi": "http://142.93.212.242:9194/attachment",
+    "profileImg": "",
+    "deviceImages": 5,
+    "tokenKey": "ceirpanel-",
+    "siteKey": "6LeLYSwmAAAAAFPrU8jvMZc1ziENdczQw9tZ4QYZ",
+    "brandName": "EIRS",
+    "countryCode": "+855",
+    "logo":"assets/images/logo.png",
+    "logoOld":"assets/images/logo.png",
+    "captchaBg":"#ffffff",
+    "captchaColor": "#000000",
+    "feedback": {
+        "name": "Enter Your Name",
+        "phone": "Enter Phone Number",
+        "email": "Enter Email",
+        "comment": "Enter Your Comment",
+        "submit": "SUBMIT",
+        "welcome": "Welcome"
+    },
+    "brand": {
+        "name": "Eirs",
+        "pContent": "We are excited to launch new version of Eirs solution. Eirs is a pre-integrated and modular platform for Service Providers and provides advanced feature set to easily manage the WiFi services.",
+        "sContent": "It is most powerful, fast and easy to use platform available in market.",
+        "copyRight": "© Copyright 2018. All Rights Reserved.",
+        "knowMore": "Know More"
+    },
+    "message": {
+        "feedback": {
+            "success": "Your Feedback is submitted successfully"
+        }
+    },
+    "validation": {
+        "password": "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$"
+    },
+    "languages": [
+        {
+            "name": "English",
+            "image": "assets/images/english.png",
+            "code": "us"
+        },
+        {
+            "name": "ភាសាខ្មែរ",
+            "image": "assets/images/khmer.png",
+            "code": "km"
+        }
+    ],
+    "endUsers" : [
+	    "7"
+    ],
+    "registeredUsers" : [
+        "CC Agent"
+    ],
+    "ticketThread": {
+        "supportTitle": "EIRS Support Team:",
+        "postedOn": "Posted on:"
+    },
+    "allowStatusForComment": [
+        "Resolved", "Closed"
+    ],
+    "duplicate": "9",
+    "allowedFileUpload": ["image/png", "image/jpg", "image/jpeg", "application/pdf"],
+    "uploadMaxFile": 4,
+    "allowedFileUploadSize": "2000000",
+    "maxNameSubjectLength": 50,
+    "otpTimerTime": 60,
+    "maxReferenceIdLenght": "20",
+    "allowedNidFileUpload": ["image/png", "image/jpg", "image/jpeg", "application/pdf"],
+    "allowedNidFileUploadSize": "2000000",
+    "allowedUserFileUpload": ["image/png", "image/jpg", "image/jpeg", "application/pdf"],
+    "allowedUserFileUploadSize": "2000000",
+     "allowedUserEmpIdCardFileUpload": ["image/png", "image/jpg", "image/jpeg", "application/pdf"],
+    "allowedUserEmpIdCardFileUploadSize": "2000000",
+    "userFirstNameRegex": "^[a-zA-Z0-9 ]{5,50}$",
+    "userLastNameRegex": "^[a-zA-Z0-9 ]{5,50}$",
+    "maxUserFirstNameLength": 50,
+	"maxUserLastNameLength": 50,
+    "otpMaxResendLimit": 3,
+	"postalCodeRegex":"^\\d{5}$",
+	"nationalIdRegex":"^[1-9][0-9]{9,9}$",
+	"maxUserAddressLength":100,
+	"maxVillageLength":50,
+	"streetRegexWithBlank":"^[0-9]{5,9}$",
+	"localityLength":50,
+	"companyLength":100,
+	"designationLength":100,
+	"employeeIdLength":32,
+	"natureOfEmploymentLength":32,
+	"authorityNameLength":50,
+	"authorityPhoneNoRegex":"^[1-9][0-9]{6,7}$"
+}

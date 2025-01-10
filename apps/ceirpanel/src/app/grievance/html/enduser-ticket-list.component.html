@@ -1,0 +1,58 @@
+<div class="clr-row m-0 p-0 clr-justify-content-center border border-0">
+  <div [ngClass]="authService.isLogin() && header==='yes' ? 'clr-col-12 m-0 p-0': 'clr-col-11'">
+    <div class="card border-0 shadow-none m-0 p-0" style="min-height: 85vh;" [ngClass]="authService.isLogin() && header==='yes' ? 'border border-1 shadow-none': 'border-0 shadow-none'">
+      <div class="card-header" [ngClass]="authService.isLogin() && header==='yes' ? '' : 'border border-0'">
+        <div class="clr-row clr-justify-content-between">
+          <div class="clr-col-4" style="margin-top: 5px;">
+              <h4 class="card-title text-black">Ticket Status</h4>
+          </div>
+        </div>
+      </div>
+      <div class="card-block border border-0">
+        <clr-datagrid class="datagrid-compact" [clrDgLoading]="loading" (clrDgRefresh)="refresh($event)" [(clrDgSelected)]="selecton">
+          <clr-dg-column [clrDgSortBy]="'ticketId'">{{ "datalist.ticketId" | translate }}</clr-dg-column>
+          <clr-dg-column [clrDgSortBy]="'phone'">{{ "datalist.phone" | translate }}</clr-dg-column>
+          <clr-dg-column [clrDgSortBy]="'subject'">{{ "datalist.subject" | translate }}</clr-dg-column>
+          <clr-dg-column [clrDgSortBy]="'createDate'">{{ "datalist.createDate" | translate }}</clr-dg-column>
+          <clr-dg-column [clrDgSortBy]="'modifiedDate'">{{ "datalist.modifiedDate" | translate }}</clr-dg-column>
+          <clr-dg-column [clrDgSortBy]="'raisedBy'">{{ "datalist.raisedBy" | translate }}</clr-dg-column>
+          <clr-dg-column [clrDgSortBy]="'status'">{{ "datalist.status" | translate }}</clr-dg-column>
+          <clr-dg-column>{{ "datalist.action" | translate }}</clr-dg-column>
+          <clr-dg-row *ngFor="let ticket of tickets; let i = index;" [clrDgItem]="ticket">
+            <clr-dg-cell class="text-break text-nowrap">{{ticket.ticketId}}</clr-dg-cell>
+            <clr-dg-cell class="text-break text-nowrap">{{ticket.mobileNumber}}</clr-dg-cell>
+            <clr-dg-cell>{{ticket.issue.subject}}</clr-dg-cell>
+            <clr-dg-cell class="text-break text-nowrap text-truncate">{{ticket.issue.createdOn |date:'yyyy-MM-dd'}}</clr-dg-cell>
+            <clr-dg-cell class="text-break text-nowrap text-truncate">{{ticket.issue.updatedOn |date:'yyyy-MM-dd'}}</clr-dg-cell>
+            <clr-dg-cell class="text-truncate">{{ticket.raisedBy}}</clr-dg-cell>
+            <clr-dg-cell class="text-truncate">{{ticket.issue.status.name}}</clr-dg-cell>
+            <clr-dg-cell *ngIf="!authService.isLogin()">
+              <button class="datagrid-action-toggle clr-anchor m-0 p-0" [routerLink]="['/ticket/ticket-thread',ticket.ticketId]"
+              [queryParams]="{header,lang}">
+                <cds-icon shape="eye"></cds-icon>
+              </button>
+            </clr-dg-cell>
+            <clr-dg-cell *ngIf="authService.isLogin()">
+              <ng-template [ngxPermissionsOnly]="['TICKET_VIEW']" [ngxPermissionsOnlyThen]="showView"></ng-template>
+              <ng-template #showView>
+                <button class="btn btn-link btn-sm m-0 p-0" [routerLink]="['/ticket/ticket-thread',ticket.ticketId]"
+                  [routerLink]="['/ticket/ticket-thread',ticket.ticketId]" [queryParams]="{header,lang}">
+                  <cds-icon shape="eye"></cds-icon>
+                </button>
+              </ng-template>
+            </clr-dg-cell>
+          </clr-dg-row>
+          <clr-dg-footer>
+            <clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems]="total">
+              <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]"><span
+                  class="text-capitalize">Tickets</span> {{ "footer.perPage"| translate }}
+              </clr-dg-page-size>
+              {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+              {{ "footer.of"| translate }} {{pagination.totalItems}} Tickets
+            </clr-dg-pagination>
+          </clr-dg-footer>
+        </clr-datagrid>
+      </div>
+    </div>
+  </div>
+</div>

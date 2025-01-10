@@ -1,0 +1,47 @@
+<div class="row justify-content-center m-0 p-0">
+  <div class="col-lg-5 col-xl-5 col-xxl-5 col-md-8 col-sm-10 col-xs-12">
+    <div class="card card shadow-none rounded">
+      <div class="card-block border border-1 shadow-none rounded">
+        <form clrStepper clrForm clrLayout="vertical" class="m-0 p-0 row" #f="ngForm" novalidate
+          (ngSubmit)="f.form.valid && onSubmit(f)" style="height: calc(100vh - 200px);" autocomplete="off">
+          <div class="row justify-content-center" *ngIf="header === 'yes'">
+            <div class="col-12 m-0 p-0">
+              <h3 class="text-center">
+                <small class="fs-5 fw-bold text-dark">{{"ticket.forgotTicket.title" | translate}}</small>
+              </h3>
+            </div>
+          </div>
+          <div class="row justify-content-center mt-4">
+            <div class="col-12 m-0 p-0 col-sm-12 col-xs-12 col-lg-9 col-xl-9">
+              <label class="form-label clr-required-mark">{{"ticket.forgotTicket.label" | translate}}</label>
+              <div class="input-group input-group-sm">
+                <span class="input-group-text">{{config.get('countryCode') || '+855'}}</span>
+                <input type="text" class="form-control form-control-sm rounded-end" [placeholder]="'ticket.forgotTicket.placeholder' | translate" [(ngModel)]="ticket.mobileNumber" name="mobileNumber"
+                required #mobileNumber="ngModel" [ngClass]="{ 'is-invalid': (f.submitted || f.touched) && mobileNumber.errors }" [pattern]="mobileRegex" aria-autocomplete="none">
+                <div class="invalid-feedback" *ngIf="(f.submitted || f.touched) && mobileNumber.errors">
+                  <div class="row justify-content-around">
+                    <div class="col-6 m-0 p-0 mt-1" *ngIf="mobileNumber.errors['required']">{{'ticket.forgotTicket.error' | translate}}</div>
+                    <div class="col-6 m-0 p-0 mt-1" *ngIf="mobileNumber.errors['pattern']">{{'ticket.forgotTicket.pattern' | translate}}</div>
+                    <div class="col-4 text-end m-0 p-0">
+                      <button type="button" style="color:#2F80ED" class="btn btn-link m-0 p-0 fw-bold" routerLink="/view-ticket" [queryParams]="{lang,header}">{{'ticket.forgotTicket.view' | translate}}</button>
+                    </div>
+                  </div>
+                 </div>
+              </div>
+            </div>
+          </div>
+          <div class="row justify-content-center" *ngIf="!(f.submitted || f.touched) && f.invalid || (f.valid)">
+            <div class="col-9 text-right m-0 p-0">
+              <button type="button" style="color:#2F80ED" class="btn btn-link m-0 p-0 fw-bold" routerLink="/view-ticket" [queryParams]="{lang,header}">{{'ticket.forgotTicket.view' | translate}}</button>
+            </div>
+          </div>
+          <div class="row mt-1 justify-content-center">
+            <div class="col-9 text-center m-0 p-0">
+              <button type="submit" class="btn btn-primary btn-block m-0 p-0">{{"button.submit" | translate}}</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,109 @@
+<div class="card m-0 p-0 border border-1 shadow-none" style="min-height: 85vh;">
+  <div class="card-header">
+    <div class="clr-row clr-justify-content-between">
+      <div class="clr-col-6" style="margin-top: 5px;">
+        <h4 class="card-title text-capitalize text-black">{{ "dashboard.title" | translate }}</h4>
+      </div>
+    </div>
+  </div>
+  <div class="card-block">
+    <h5 class="p-1 fw-bolder m-0 p-0 text-black">{{ "dashboard.mydashboard" | translate }}</h5>
+    <div class="clr-row clr-justify-content-around mb-3" style="color: #1E4076;">
+        <div class="clr-col-2 m-0 p-0">
+            <a [routerLink]="['/ticket' ]" [queryParams]="{dashboard: 'mine'}" class="card clickable shadow-none border border-primary border-3 rounded">
+                <div class="card-block">
+                    <p class="card-text" style="color: #1E4076;">
+                        <span class="float-start fw-bolder">{{ "dashboard.totaltickets" | translate }}</span> <span class="float-end fw-bold fs-5">{{dashboard?.myDashboard?.totalTickets}}</span>
+                    </p>
+                </div>
+            </a>
+        </div>
+        <div class="clr-col-2 m-0 p-0">
+            <a [routerLink]="['/ticket']" [queryParams]="{dashboard: 'mine',status:'New'}" class="card clickable shadow-none border border-primary border-3 rounded">
+                <div class="card-block">
+                    <p class="card-text" style="color: #1E4076;">
+                        <span class="float-start fw-bolder">{{ "dashboard.open" | translate }}</span> <span class="float-end fw-bold fs-5">
+                            {{dashboard?.myDashboard?.openTickets}}
+                        </span>
+                    </p>
+                </div>
+            </a>
+        </div>
+        <div class="clr-col-2 m-0 p-0">
+            <a [routerLink]="['/ticket']" [queryParams]="{dashboard: 'mine',status:'In Progress'}" class="card clickable shadow-none border border-primary border-3 rounded">
+                <div class="card-block">
+                    <p class="card-text" style="color: #1E4076;">
+                        <span class="float-start fw-bolder">{{ "dashboard.inprogress" | translate }}</span> <span class="float-end fw-bold fs-5">{{dashboard?.myDashboard?.inProgressTickets}}</span>
+                    </p>
+                </div>
+            </a>
+        </div>
+        <div class="clr-col-2 m-0 p-0">
+            <a [routerLink]="['/ticket']" [queryParams]="{dashboard: 'mine',status:'Resolved'}" class="card clickable shadow-none border border-primary border-3 rounded">
+                <div class="card-block">
+                    <p class="card-text" style="color: #1E4076;">
+                        <span class="float-start fw-bolder">{{ "dashboard.resolved" | translate }}</span> <span class="float-end fw-bold fs-5">{{dashboard?.myDashboard?.resolvedTickets}}</span>
+                    </p>
+                </div>
+            </a>
+        </div>
+        <div class="clr-col-2 m-0 p-0">
+            <a [routerLink]="['/ticket']" [queryParams]="{dashboard: 'mine',status:'Closed'}" class="card clickable shadow-none border border-primary border-3 rounded">
+                <div class="card-block">
+                    <p class="card-text" style="color: #1E4076;">
+                        <span class="float-start fw-bolder">{{ "dashboard.closed" | translate }}</span> <span class="float-end fw-bold fs-5">{{dashboard?.myDashboard?.closedTickets}}</span>
+                    </p>
+                </div>
+            </a>
+        </div>
+    </div>
+    <h5 class="p-1 fw-bolder m-0 p-0 text-black">{{ "dashboard.alldashboard" | translate }}</h5>
+    <div class="clr-row clr-justify-content-around" style="color: #1E4076;">
+        <div class="clr-col-2 m-0 p-0">
+            <a [routerLink]="['/ticket']" class="card clickable shadow-none border border-primary border-3 rounded">
+                <div class="card-block">
+                    <p class="card-text" style="color: #1E4076;">
+                        <span class="float-start fw-bolder">{{ "dashboard.totaltickets" | translate }}</span> <span class="float-end fw-bold fs-5">{{dashboard?.allDashboard?.totalTickets}}</span>
+                    </p>
+                </div>
+            </a>
+        </div>
+        <div class="clr-col-2 m-0 p-0">
+            <a [routerLink]="['/ticket']" [queryParams]="{status:'New'}" class="card clickable shadow-none border border-primary border-3 rounded">
+                <div class="card-block">
+                    <p class="card-text" style="color: #1E4076;">
+                        <span class="float-start fw-bolder">{{ "dashboard.open" | translate }}</span> <span class="float-end fw-bold fs-5">{{dashboard?.allDashboard?.openTickets}}</span>
+                    </p>
+                </div>
+            </a>
+        </div>
+        <div class="clr-col-2 m-0 p-0">
+            <a [routerLink]="['/ticket']" [queryParams]="{status:'In Progress'}" class="card clickable shadow-none border border-primary border-3 rounded">
+                <div class="card-block">
+                    <p class="card-text" style="color: #1E4076;">
+                        <span class="float-start fw-bolder">{{ "dashboard.inprogress" | translate }}</span> <span class="float-end fw-bold fs-5">{{dashboard?.allDashboard?.inProgressTickets}}</span>
+                    </p>
+                </div>
+            </a>
+        </div>
+        <div class="clr-col-2 m-0 p-0">
+            <a [routerLink]="['/ticket']" [queryParams]="{status:'Resolved'}" class="card clickable shadow-none border border-primary border-3 rounded">
+                <div class="card-block">
+                    <p class="card-text" style="color: #1E4076;">
+                        <span class="float-start fw-bolder">{{ "dashboard.resolved" | translate }}</span> <span class="float-end fw-bold fs-5">{{dashboard?.allDashboard?.resolvedTickets}}</span>
+                    </p>
+                </div>
+            </a>
+        </div>
+        <div class="clr-col-2 m-0 p-0">
+            <a [routerLink]="['/ticket']" [queryParams]="{status:'Closed'}" class="card clickable shadow-none border border-primary border-3 rounded">
+                <div class="card-block">
+                    <p class="card-text" style="color: #1E4076;">
+                        <span class="float-start fw-bolder">{{ "dashboard.closed" | translate }}</span> <span class="float-end fw-bold fs-5">{{dashboard?.allDashboard?.closedTickets}}</span>
+                    </p>
+                </div>
+            </a>
+        </div>
+    </div>
+  </div>
+</div>

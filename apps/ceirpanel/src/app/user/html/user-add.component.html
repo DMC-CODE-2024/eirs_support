@@ -1,0 +1,486 @@
+<div class="card">
+    <div class="card-header">
+      <div class="clr-row clr-justify-content-between">
+        <div class="clr-col-4" style="margin-top: 5px;">
+          <h4 class="card-title text-capitalize">{{ "user.pageTitle." + page | translate }}</h4>
+        </div>
+        <div class="clr-col-4 text-right" style="padding-right: 0.1rem">
+          <div class="btn-group btn-primary text-right">
+            <button class="btn" aria-label="Check" routerLink="/user">
+              <i class="bi bi-arrow-left-circle"></i> {{ "button.back" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-block m-1 p-1">
+    <form clrStepper clrForm clrLayout="vertical" [clrInitialStep]="initialStep" class="m-0 p-0" #f="ngForm" 
+      (ngSubmit)="onSubmit(f)">
+      <clr-alert *ngIf="error" [clrAlertType]="error.type" [clrAlertAppLevel]="true">
+        <clr-alert-item>
+          <span class="alert-text text-white">{{ "message." + error.message | translate }}</span>
+        </clr-alert-item>
+      </clr-alert>
+      <fieldset [disabled]="readonly" class="scheduler-border">
+        <legend class="scheduler-border">{{ "user.name.title" | translate }}</legend>
+        <div class="clr-row m-0 p-0">
+          <div class="clr-col-6">
+            <div class="form-group">
+              <label for="firstName" class="clr-required-mark">{{ "user.name.firstName.label" | translate }}</label>
+              <input type="text" name="firstName" class="form-control form-control-sm" id="firstName" [(ngModel)]="templateForm.name.firstName" required
+                [placeholder]="'user.name.firstName.placeholder' | translate" #firstName="ngModel" 
+                [ngClass]="{ 'is-invalid': (f.submitted && firstName.errors && firstName.errors['required']) || (f.touched && firstName.errors && !firstName.errors['required'])}"
+                 aria-autocomplete="none" [maxlength]="cnf.get('maxUserFirstNameLength') || 50" [pattern]="cnf.get('userFirstNameRegex') || '^[0-9]{2,9}$'">
+              <div *ngIf="f.submitted && firstName.errors" class="invalid-feedback">
+                <div *ngIf="firstName.errors['required']">{{'user.name.firstName.error' | translate}}</div>
+              </div>
+              <div *ngIf="f.touched && firstName.errors" class="invalid-feedback">
+                <div *ngIf="firstName.errors['pattern']">{{'user.name.firstName.pattern' | translate}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="clr-col-6">
+            <div class="form-group">
+              <label for="lastName" class="clr-required-mark">{{ "user.name.lastName.label" | translate }}</label>
+              <input type="text" name="lastName" class="form-control form-control-sm" id="lastName" [(ngModel)]="templateForm.name.lastName" required
+                [placeholder]="'user.name.lastName.placeholder' | translate" #lastName="ngModel" 
+                [ngClass]="{ 'is-invalid': (f.submitted && lastName.errors && lastName.errors['required']) || (f.touched && lastName.errors && !lastName.errors['required'])}"
+                 aria-autocomplete="none" [maxlength]="cnf.get('maxUserLastNameLength') || 50" [pattern]="cnf.get('userLastNameRegex') || '^[0-9]{2,9}$'">
+              <div *ngIf="f.submitted && lastName.errors" class="invalid-feedback">
+                <div *ngIf="lastName.errors['required']">{{'user.name.lastName.error' | translate}}</div>
+              </div>
+              <div *ngIf="f.touched && lastName.errors" class="invalid-feedback">
+                <div *ngIf="lastName.errors['pattern']">{{'user.name.lastName.pattern' | translate}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset [disabled]="readonly" class="scheduler-border mt-3">
+        <legend class="scheduler-border">{{ "user.address.title" | translate }}</legend>
+        <div class="clr-row m-0 p-0">
+            <div class="clr-col-12">
+              <div class="form-group">
+                <label class="clr-required-mark">{{ "user.address.address.label" | translate }}</label>
+                <textarea [(ngModel)]="templateForm.address.address" name="address" class="form-control"
+                 [placeholder]="'user.address.address.placeholder' | translate" required #address="ngModel" 
+                 [ngClass]="{ 'is-invalid': (f.submitted && address.errors && address.errors['required']) || (f.touched && address.errors && !address.errors['required'])}"
+                  aria-autocomplete="none" autocomplete="off" [maxlength]="cnf.get('maxUserAddressLength') || 100"></textarea>
+                 <div *ngIf="f.submitted && address.errors" class="invalid-feedback">
+                  <div *ngIf="address.errors['required']">{{'user.address.address.error' | translate}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="clr-col-4 mt-3">
+              <div class="form-group">
+                <label class="clr-required-mark">{{ "user.address.country.label" | translate }}</label>
+                <select class="form-select form-control form-control-sm" [(ngModel)]="templateForm.address.country" name="country" required
+                  #country="ngModel" [ngClass]="{ 'is-invalid': f.submitted && country.errors }" (change)="onCountryChange($event)">
+                  <option selected [value]="''">{{ "user.address.country.placeholder" | translate }}</option>
+                  <option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>
+                </select>
+                <div *ngIf="f.submitted && country.errors" class="invalid-feedback">
+                  <div *ngIf="country.errors['required']">{{'user.address.country.error' | translate}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="clr-col-4 mt-3">
+              <div class="form-group">
+                <label class="clr-required-mark">{{ "user.address.state.label" | translate }}</label>
+                <select class="form-select form-control form-control-sm" [(ngModel)]="templateForm.address.province" required name="province" 
+                  #province="ngModel" [ngClass]="{ 'is-invalid': f.submitted && province.errors }" (change)="onProvinceChange($event)">
+                  <option selected [value]="''">{{ "user.address.state.placeholder" | translate }}</option>
+                  <option *ngFor="let province of provinces" [value]="province.id">{{ translate.currentLang==='us' ? province.name : province.provinceKm}}</option>
+                </select>
+                <div *ngIf="f.submitted && province.errors" class="invalid-feedback">
+                  <div *ngIf="province.errors['required']">{{'user.address.state.error' | translate}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="clr-col-4 mt-3">
+              <div class="form-group">
+                <label class="clr-required-mark">{{ "user.address.district.label" | translate }}</label>
+                <select class="form-select form-control form-control-sm" [(ngModel)]="templateForm.address.district" required name="district" 
+                  #district="ngModel" [ngClass]="{ 'is-invalid': f.submitted && district.errors }" (change)="onDistrictChange($event)">
+                  <option selected [value]="''">{{ "user.address.district.placeholder" | translate }}</option>
+                  <option *ngFor="let district of districts" [value]="district.id">{{ translate.currentLang==='us' ? district.name : district.districtKm}}</option>
+                </select>
+                <div *ngIf="f.submitted && district.errors" class="invalid-feedback">
+                  <div *ngIf="district.errors['required']">{{'user.address.district.error' | translate}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="clr-col-4 mt-3">
+              <div class="form-group">
+                <label>{{ "user.address.commune.label" | translate }}</label>
+                <select class="form-select form-control form-control-sm" [(ngModel)]="templateForm.address.commune" name="commune" 
+                  (change)="onCommuneChange($event)">
+                  <option selected [value]="''">{{ "user.address.commune.placeholder" | translate }}</option>
+                  <option *ngFor="let commune of communes" [value]="commune.id">{{ translate.currentLang === 'us' ? commune.name : commune.communeKm}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="clr-col-4 mt-3">
+              <div class="form-group">
+                <label>{{ "user.address.village.label" | translate }}</label>
+                <input type="text" name="village" class="form-control form-control-sm" id="village" [(ngModel)]="templateForm.address.village"
+                  [placeholder]="'user.address.village.placeholder' | translate"  aria-autocomplete="none" [maxlength]="cnf.get('maxVillageLength') || 50">
+              </div>
+            </div>
+            <div class="clr-col-4 mt-3">
+              <div class="form-group">
+                <label>{{ "user.address.street.label" | translate }}</label>
+                <input type="text" [(ngModel)]="templateForm.address.street" name="street" 
+                 [placeholder]="'user.address.street.placeholder' | translate" class="form-control form-control-sm"
+                  #streetModel="ngModel" [ngClass]="{ 'is-invalid': (f.touched || f.submitted) && streetModel.errors }"
+                  [pattern]="cnf.get('streetRegexWithBlank') || '^[0-9]{5,9}$'"/>
+                  <div *ngIf="f.touched && streetModel.errors" class="invalid-feedback">
+                    <div *ngIf="streetModel.errors['pattern']">{{ "user.address.street.error" | translate }}</div>
+                  </div>
+              </div>
+            </div>
+            <div class="clr-col-4 mt-3">
+              <div class="form-group">
+                <label>{{ "user.address.locality.label" | translate }}</label>
+                <input type="text" [(ngModel)]="templateForm.address.locality" name="locality" [placeholder]="'user.address.locality.placeholder' | translate"
+                 class="form-control form-control-sm" [maxlength]="cnf.get('localityLength') || 50"/>
+              </div>
+            </div>
+            <div class="clr-col-4 mt-3">
+              <div class="form-group">
+                <label class="clr-required-mark">{{ "user.address.postal.label" | translate }}</label>
+                <input type="text" [(ngModel)]="templateForm.address.postalCode" name="postalCode" [placeholder]="'user.address.postal.placeholder' | translate"
+                 class="form-control form-control-sm" #postalCode="ngModel" 
+                 [ngClass]="{ 'is-invalid': (f.submitted && postalCode.errors && postalCode.errors['required']) || (f.touched && postalCode.errors && !postalCode.errors['required'])}"
+                  [pattern]="cnf.get('postalCodeRegex') || '^\\d{5}$'" required/>
+                <div *ngIf="f.submitted && postalCode.errors" class="invalid-feedback">
+                  <div *ngIf="postalCode.errors['required']">{{'user.address.postal.error' | translate}}</div>
+                </div>
+                <div *ngIf="f.touched && postalCode.errors" class="invalid-feedback">
+                  <div *ngIf="postalCode.errors['pattern']">{{ "user.address.postal.pattern" | translate }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </fieldset>
+      <fieldset [disabled]="readonly" class="scheduler-border mt-3">
+        <legend class="scheduler-border">{{ "user.id.title" | translate }}</legend>
+        <div class="clr-row m-0 p-0">
+            <div class="clr-col-5 mt-3">
+              <div class="form-group">
+                <label>{{ "user.id.organization.label" | translate }}</label>
+                <input type="text" [(ngModel)]="templateForm.id.companyName" name="companyName" class="form-control form-control-sm"
+                 [placeholder]="'user.id.organization.placeholder' | translate" aria-autocomplete="none" [maxlength]="cnf.get('companyLength') || 100"/>
+              </div>
+            </div>
+            <div class="clr-col-5 mt-3">
+              <div class="form-group">
+                <label>{{ "user.id.designation.label" | translate }}</label>
+                <input type="text" [(ngModel)]="templateForm.id.designation" name="designation" class="form-control form-control-sm"
+                 [placeholder]="'user.id.designation.placeholder' | translate" aria-autocomplete="none" [maxlength]="cnf.get('designationLength') || 100"/>
+              </div>
+            </div>
+            <div class="clr-col-4 mt-3">
+              <div class="form-group">
+                <label class="clr-required-mark">{{ "user.id.nationalId.label" | translate }}</label>
+                <input type="text" [(ngModel)]="templateForm.id.nationalId" name="nationalId" class="form-control form-control-sm" 
+                  [placeholder]="'user.id.nationalId.placeholder' | translate" required #nationalId="ngModel" 
+                  [ngClass]="{ 'is-invalid': (f.submitted && nationalId.errors && nationalId.errors['required']) || (f.touched && nationalId.errors && !nationalId.errors['required'])}"
+                   [pattern]="cnf.get('nationalIdRegex') || '^[1-9][0-9]{9,9}$'"/>
+                <div *ngIf="f.submitted && nationalId.errors" class="invalid-feedback">
+                  <div *ngIf="nationalId.errors['required']">{{'user.id.nationalId.error' | translate}}</div>
+                </div>
+                <div *ngIf="f.touched && nationalId.errors" class="invalid-feedback">
+                  <div *ngIf="nationalId.errors['pattern']">{{ "user.id.nationalId.pattern" | translate }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="clr-col-4" style="margin-top: 52px;">
+              <div class="clr-row clr-justify-content-start m-0 p-0">
+                <div class="clr-col-8 m-0 p-0">
+                  <input type="file" accept="image/jpeg,image/png" #nidFile style="display: none;" [(ngModel)]="templateForm.id.uploadNationalId" name="uploadNationalId" (change)="onNidSelect($event)">
+                  <button type="button" class="btn btn-primary-outline" (click)="nidFile.click()">
+                    <cds-icon shape="plus"></cds-icon>{{ "user.id.uploadNationalId.placeholder" | translate }}
+                  </button>
+                </div>
+                <div class="clr-col-4 text-left" *ngIf="nidCardObject && nidCardObject.length > 0">
+                  <ng-image-slider
+                  [images]="nidCardObject"
+                  [autoSlide]="{interval: 2, stopOnHover: false}"
+                  [imageSize]="{width: 40, height: 36, space: 1}"
+                  [manageImageRatio]="false"
+                  [videoAutoPlay]="true"
+                  [showVideoControls]="true"
+                  [paginationShow]="false">
+                  </ng-image-slider>
+                </div>
+              </div>
+            </div>
+            <div class="clr-col-4" style="margin-top: 53px;">
+              <div class="clr-row clr-justify-content-start m-0 p-0">
+                <div class="clr-col-8 m-0 p-0">
+                  <input type="file" accept="image/jpeg,image/png" #userPhoto style="display: none;" [(ngModel)]="templateForm.id.uploadUserPhoto" name="uploadUserPhoto" (change)="onUserPhotoSelect($event)">
+                  <button type="button" class="btn" (click)="userPhoto.click()">
+                  <cds-icon shape="plus"></cds-icon>{{ "user.id.uploadUserPhoto.placeholder" | translate }}
+                  </button>
+                </div>
+                <div class="clr-col-4 m-0 p-0">
+                  <ng-image-slider *ngIf="photoObject && photoObject.length > 0"
+                  [images]="photoObject"
+                  [autoSlide]="{interval: 2, stopOnHover: false}"
+                  [imageSize]="{width: 40, height: 36, space: 1}"
+                  [manageImageRatio]="false"
+                  [videoAutoPlay]="true"
+                  [showVideoControls]="true"
+                  [paginationShow]="false">
+                  </ng-image-slider>
+                </div>
+              </div>
+            </div>
+            <div class="clr-col-4 mt-3">
+              <div class="form-group">
+                <label>{{ "user.id.employeeId.label" | translate }}</label>
+                <input type="text" [(ngModel)]="templateForm.id.employeeId" name="employeeId" class="form-control form-control-sm" 
+                [placeholder]="'user.id.employeeId.placeholder' | translate" aria-autocomplete="none" [maxlength]="cnf.get('employeeIdLength') || 32"/>
+              </div>
+            </div>
+            <div class="clr-col-4" style="margin-top: 53px;">
+              <div class="clr-row clr-justify-content-start m-0 p-0">
+                <div class="clr-col-9 m-0 p-0">
+                  <input type="file" accept="image/jpeg,image/png" #idFile style="display: none;" [(ngModel)]="templateForm.id.idCardFileName" name="idCardFileName" (change)="onIdSelect($event)">
+                  <button type="button" class="btn" (click)="idFile.click()">
+                    <cds-icon shape="plus"></cds-icon>{{ "user.id.employeeIdCard.label" | translate }}
+                  </button>
+                </div>
+                <div class="clr-col-3 m-0 p-0">
+                  <ng-image-slider *ngIf="idCardObject && idCardObject.length > 0"
+                  [images]="idCardObject"
+                  [autoSlide]="{interval: 2, stopOnHover: false}"
+                  [imageSize]="{width: 40, height: 36, space: 1}"
+                  [manageImageRatio]="false"
+                  [videoAutoPlay]="true"
+                  [showVideoControls]="true"
+                  [paginationShow]="false">
+                  </ng-image-slider>
+                </div>
+              </div>
+            </div>
+            <div class="clr-col-4 mt-3">
+              <div class="form-group">
+                <label>{{ "user.id.natureOfEmployment.label" | translate }}</label>
+                <input type="text" [(ngModel)]="templateForm.id.natureOfEmployment" name="natureOfEmployment" class="form-control form-control-sm" 
+                [placeholder]="'user.id.natureOfEmployment.placeholder' | translate" aria-autocomplete="none" [maxlength]="cnf.get('natureOfEmploymentLength') || 32"/>
+              </div>
+            </div>
+          </div>
+      </fieldset>
+      <fieldset [disabled]="readonly" class="scheduler-border mt-3">
+        <legend class="scheduler-border">{{ "user.reporting.title" | translate }}</legend>
+        <div class="clr-row mt-3">
+          <div class="clr-col-4">
+            <div class="form-group">
+              <label>{{ "user.reporting.reportingAuthorityName.label" | translate }}</label>
+              <input type="text"  [(ngModel)]="templateForm.reporting.authorityName" name="authorityName" class="form-control form-control-sm"
+               [placeholder]="'user.reporting.reportingAuthorityName.placeholder' | translate" aria-autocomplete="none" [maxlength]="cnf.get('authorityNameLength') || 50"/>
+            </div>
+          </div>
+          <div class="clr-col-4">
+            <div class="form-group">
+              <label>{{ "user.reporting.reportingAuthorityEmailId.label" | translate }}</label>
+              <input type="text" [(ngModel)]="templateForm.reporting.authorityEmail" name="authorityEmail" class="form-control form-control-sm"
+               [placeholder]="'user.reporting.reportingAuthorityEmailId.placeholder' | translate" aria-autocomplete="none" [maxlength]="cnf.get('authorityEmailLength') || 100"
+               #authorityEmailModel="ngModel" pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$" [ngClass]="{ 'is-invalid': (f.touched || f.submitted) && authorityEmailModel.errors }"/>
+               <div *ngIf="f.touched && authorityEmailModel.errors" class="invalid-feedback">
+                <div *ngIf="authorityEmailModel.errors['pattern']">{{ "user.reporting.email.pattern" | translate }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="clr-col-4">
+            <div class="form-group">
+              <label>{{ "user.reporting.reportingAuthorityContactNumber.label" | translate }}</label>
+              <input type="text" [(ngModel)]="templateForm.reporting.authorityPhoneNo" name="authorityPhoneNo" class="form-control form-control-sm"
+               [placeholder]="'user.reporting.reportingAuthorityContactNumber.placeholder' | translate" aria-autocomplete="none" #authorityPhoneNo="ngModel"
+                [ngClass]="{ 'is-invalid': (f.touched || f.submitted) && authorityPhoneNo.errors }"
+               [pattern]="cnf.get('authorityPhoneNoRegex') || '^[1-9][0-9]{6,7}$'" />
+               <div *ngIf="f.touched && authorityPhoneNo.errors" class="invalid-feedback">
+                <div *ngIf="authorityPhoneNo.errors['pattern']">{{ "user.reporting.reportingAuthorityContactNumber.error" | translate }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset [disabled]="page==='edit' || page==='view' || readonly" class="scheduler-border mt-3">
+        <legend class="scheduler-border">{{ "user.password.title" | translate }}</legend>
+        <div class="clr-row m-0 p-0">
+          <div class="clr-col-6">
+            <div class="form-group">
+              <label class="clr-required-mark">{{ "user.password.password.label" | translate }}</label>
+              <input type="password" [(ngModel)]="templateForm.password.password" #modelPassword="ngModel" 
+                class="form-control form-control-sm" [placeholder]="'user.password.password.placeholder' | translate" id="pass"
+                  pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#@$!%*?&])[A-Za-z\d#@$!%*?&]{8,}$" name="password" [required]="page==='add'"
+                  #password="ngModel" [ngClass]="{ 'is-invalid': (f.submitted && password.errors && password.errors['required']) || (f.touched && password.errors && !password.errors['required'])}"
+                   aria-autocomplete="none" autocomplete="pass-off"/>
+              <div *ngIf="f.submitted && password.errors" class="invalid-feedback">
+                <div *ngIf="password.errors['required']">{{ "user.password.password.error" | translate }}</div>
+              </div>
+              <div *ngIf="f.touched && password.errors" class="invalid-feedback">
+                <div *ngIf="password.errors['pattern']">{{ "user.password.password.error" | translate }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="clr-col-6">
+            <div class="form-group">
+              <label class="clr-required-mark">{{ "user.password.confirm.label" | translate }}</label>
+              <input type="password" [(ngModel)]="templateForm.password.confirm" name="confirm" ngValidateEqual="password" #modelConfirmPassword="ngModel"
+                class="form-control form-control-sm" [placeholder]="'user.password.confirm.placeholder' | translate" id="confirm" [required]="page==='add'"
+                [ngClass]="{ 'is-invalid': (f.touched || f.submitted) && modelConfirmPassword.errors }"
+                 aria-autocomplete="none"/>
+              <div *ngIf="f.submitted && modelConfirmPassword.errors" class="invalid-feedback">
+                <div *ngIf="modelConfirmPassword.errors['required']">{{ "user.password.confirm.equal" | translate }}</div>
+              </div>
+              <div *ngIf="(modelConfirmPassword.dirty || modelConfirmPassword.touched) && modelConfirmPassword.invalid" class="invalid-feedback">
+                <span *ngIf="modelConfirmPassword.hasError('notEqual') && modelPassword.valid">
+                  {{ "user.password.confirm.equal" | translate }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset class="scheduler-border mt-3">
+        <legend class="scheduler-border">{{ "user.contact.title" | translate }}</legend>
+        <div class="clr-row m-0 p-0">
+          <div class="clr-col-6">
+            <div class="form-group">
+              <label class="clr-required-mark">{{ "user.contact.email.label" | translate }}</label>
+              <input type="text" [(ngModel)]="templateForm.contact.email" name="email" class="form-control form-control-sm" 
+              [placeholder]="'user.contact.email.placeholder' | translate" #email="ngModel"
+              pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$" [required]="page==='add'" 
+              [ngClass]="{ 'is-invalid': (f.submitted && email.errors && email.errors['required']) || (f.touched && email.errors && !email.errors['required'])}"
+              [disabled]="page==='view'" aria-autocomplete="none"/>
+              <div *ngIf="f.submitted && email.errors" class="invalid-feedback">
+                <div *ngIf="email.errors['required']">{{ "user.contact.email.error" | translate }}</div>
+              </div>
+              <div *ngIf="f.touched && email.errors" class="invalid-feedback">
+                <div *ngIf="email.errors['pattern']">{{ "user.contact.email.pattern" | translate }}</div>
+              </div>
+              <div *ngIf="f.touched && email.errors" class="invalid-feedback">
+                <div *ngIf="email.errors['emailAlreadyTaken']">{{ "user.contact.email.emailAlreadyTaken" | translate }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="clr-col-6 m-0 p-0">
+            <div class="form-group">
+              <label class="clr-required-mark">{{ "user.contact.mobile.label" | translate }}</label>
+              <input type="text" [(ngModel)]="templateForm.contact.phoneNo" name="phoneNo" class="form-control form-control-sm" 
+                [placeholder]="'user.contact.mobile.placeholder' | translate" [required]="page==='add'" #phoneNo="ngModel"
+                [disabled]="page==='view'" aria-autocomplete="none" [pattern]="cnf.get('authorityPhoneNoRegex') || '^[1-9][0-9]{6,7}$'"
+                [ngClass]="{ 'is-invalid': (f.submitted && phoneNo.errors && phoneNo.errors['required']) || (f.touched && phoneNo.errors && !phoneNo.errors['required'])}"/>
+              <div *ngIf="f.submitted && phoneNo.errors" class="invalid-feedback">
+                <div *ngIf="phoneNo.errors['required']">{{ "user.contact.mobile.error" | translate }}</div>
+              </div>
+              <div *ngIf="f.touched && phoneNo.errors" class="invalid-feedback">
+                <div *ngIf="phoneNo.errors['pattern']">{{ "user.contact.mobile.pattern" | translate }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="clr-row clr-justify-content-end mt-3">
+          <div class="clr-col-2">
+            <button type="submit" class="btn btn-primary btn-block">{{ "button.save" | translate }}</button>
+          </div>
+          <div class="clr-col-2">
+            <button type="button" class="btn btn-outline btn-block" (click)="cancel=true">{{ "button.cancel" | translate }}</button>
+          </div>
+        </div>
+      </fieldset>
+      <!--fieldset [disabled]="readonly" class="scheduler-border mt-3">
+        <legend class="scheduler-border">{{ "user.security.title" | translate }}</legend>
+        <div class="clr-row m-0 p-0">
+            <div class="clr-col-6">
+              <div class="form-group">
+                <label class="clr-required-mark">{{ "user.security.question1.label" | translate }}</label>
+                <select name="question1" [(ngModel)]="templateForm.security.question1" class="form-select form-control form-control-sm"
+                 #question1="ngModel" [ngClass]="{ 'is-invalid': f.submitted && question1.errors }" pattern="^[1-9][0-9]*$" (change)="onQuestionSelect($event)">
+                  <option [disabled]="true" [value]="0"> {{ "user.security.question1.placeholder" | translate }}</option>
+                  <option *ngFor="let q of questions" [value]="q.id" [disabled]="q.disabled">{{q?.question}}</option>
+                </select>
+                <div *ngIf="f.submitted && question1.errors" class="invalid-feedback">
+                  <div *ngIf="question1.errors['pattern']">{{ "user.security.question1.error" | translate }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="clr-col-6">
+              <div class="form-group">
+                <label class="clr-required-mark">{{ "user.security.answer1.label" | translate }}</label>
+                <input type="text" [(ngModel)]="templateForm.security.answer1" name="answer1" class="form-control form-control-sm" 
+                  [placeholder]="'user.security.answer1.placeholder' | translate" required #answer1="ngModel" 
+                   [ngClass]="{ 'is-invalid': f.submitted && answer1.errors }"/>
+                <div *ngIf="f.submitted && answer1.errors" class="invalid-feedback">
+                  <div *ngIf="answer1.errors['required']">{{ "user.security.answer1.error" | translate }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="clr-col-6 mt-3">
+              <div class="form-group">
+                <label class="clr-required-mark">{{ "user.security.question2.label" | translate }}</label>
+                <select name="question2" [(ngModel)]="templateForm.security.question2" class="form-select form-control form-control-sm"
+                 #question2="ngModel" [ngClass]="{ 'is-invalid': f.submitted && question2.errors }" pattern="^[1-9][0-9]*$" (change)="onQuestionSelect($event)">
+                  <option [disabled]="true" [value]="0"> {{ "user.security.question2.placeholder" | translate }}</option>
+                  <option *ngFor="let q of questions" [value]="q.id" [disabled]="q.disabled">{{q?.question}}</option>
+                </select>
+                <div *ngIf="f.submitted && question2.errors" class="invalid-feedback">
+                  <div *ngIf="question2.errors['pattern']">{{ "user.security.question2.error" | translate }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="clr-col-6 mt-3">
+              <div class="form-group">
+                <label class="clr-required-mark">{{ "user.security.answer2.label" | translate }}</label>
+                <input type="text" [(ngModel)]="templateForm.security.answer2" name="answer2" class="form-control form-control-sm" 
+                  [placeholder]="'user.security.answer2.placeholder' | translate" required #answer2="ngModel" 
+                   [ngClass]="{ 'is-invalid': f.submitted && answer2.errors }"/>
+                <div *ngIf="f.submitted && answer2.errors" class="invalid-feedback">
+                  <div *ngIf="answer2.errors['required']">{{ "user.security.answer2.error" | translate }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="clr-col-6 mt-3">
+              <div class="form-group">
+                <label class="clr-required-mark">{{ "user.security.question3.label" | translate }}</label>
+                <select name="question3" [(ngModel)]="templateForm.security.question3" class="form-select form-control form-control-sm"
+                 #question3="ngModel" [ngClass]="{ 'is-invalid': f.submitted && question3.errors }" pattern="^[1-9][0-9]*$" (change)="onQuestionSelect($event)">
+                  <option [disabled]="true" [value]="0"> {{ "user.security.question3.placeholder" | translate }}</option>
+                  <option *ngFor="let q of questions" [value]="q.id" [disabled]="q.disabled">{{q?.question}}</option>
+                </select>
+                <div *ngIf="f.submitted && question3.errors" class="invalid-feedback">
+                  <div *ngIf="question3.errors['pattern']">{{ "user.security.question3.error" | translate }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="clr-col-6 mt-3">
+              <div class="form-group">
+                <label class="clr-required-mark">{{ "user.security.answer3.label" | translate }}</label>
+                <input type="text" [(ngModel)]="templateForm.security.answer3" name="answer3" class="form-control form-control-sm" 
+                  [placeholder]="'user.security.answer3.placeholder' | translate" required #answer3="ngModel" 
+                   [ngClass]="{ 'is-invalid': f.submitted && answer3.errors }"/>
+                <div *ngIf="f.submitted && answer3.errors" class="invalid-feedback">
+                  <div *ngIf="answer3.errors['required']">{{ "user.security.answer3.error" | translate }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="clr-row clr-justify-content-end mt-3">
+            <div class="clr-col-2">
+              <button type="submit" class="btn btn-primary btn-block">{{ "button.save" | translate }}</button>
+            </div>
+            <div class="clr-col-2">
+              <button type="button" class="btn btn-outline btn-block" (click)="cancel=true">{{ "button.cancel" | translate }}</button>
+            </div>
+          </div>
+        </fieldset-->
+      </form>
+    </div>
+  </div>
+  <ceirpanel-ceir-cancel [open]="cancel" (confirmation)="cancelOpenClose($event)"></ceirpanel-ceir-cancel>
+  <ceirpanel-ceir-alert></ceirpanel-ceir-alert>

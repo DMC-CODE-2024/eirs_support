@@ -1,0 +1,120 @@
+<div class="card" style="min-height: 85vh;">
+    <div class="card-header">
+      <div class="clr-row clr-justify-content-between">
+        <div class="clr-col-5" style="margin-top: 5px;">
+          <h4 class="card-title">{{ "userGroup.pageTitle.list" | translate }}</h4>
+        </div>
+        <div class="clr-col-7 m-0 p-0">
+          <div class="btn-group btn-primary float-end">
+            <ng-template [ngxPermissionsOnly]="['USER-GROUP_DELETE']" [ngxPermissionsOnlyThen]="showDelete"></ng-template>
+            <ng-template #showDelete>
+              <clr-toggle-container class="clr-toggle-right m-0 p-0 mt-1">
+                <clr-toggle-wrapper>
+                  <label>{{ "button.multiSelect" | translate }}</label>
+                  <input type="checkbox" clrToggle (change)="changeView($event)"/>
+                </clr-toggle-wrapper>
+              </clr-toggle-container>
+              <button class="btn btn-outline" aria-label="Check" [disabled]="!multiselect" (click)="openDeleteModel(selecton)">
+                {{ "userGroup.pageTitle.delete" | translate }}
+              </button>
+            </ng-template>
+            <span>
+              <ng-template [ngxPermissionsOnly]="['USER-GROUP_ADD']" [ngxPermissionsOnlyThen]="showAdd"></ng-template>
+              <ng-template #showAdd>
+                <button class="btn" aria-label="Check" [routerLink]="['/user-group/add','']">
+                  <cds-icon shape="plus" solid="true" inverse="true"></cds-icon> {{ "userGroup.pageTitle.add" | translate }}
+                </button>
+              </ng-template>
+            </span>
+          </div>  
+        </div>
+      </div>
+    </div>
+    <div class="card-block">
+      <ng-template [ngxPermissionsOnly]="['USER-GROUP_FILTER']" [ngxPermissionsOnlyThen]="showFilter"></ng-template>
+      <ng-template #showFilter>
+        <ceirpanel-filter (filter)="applyFilter($event);refresh(state)" [startDate]="true" [endDate]="true" [userName]="true" [groupName]="true"></ceirpanel-filter>
+      </ng-template>
+      <clr-datagrid class="datagrid-compact" (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading" [(clrDgSelected)]="selecton">
+          <clr-dg-action-bar>
+            <ceirpanel-list-action [state]="state" (download)="export($event)" (refresh)="refresh($event)"
+            (filter)="callFilter()" (resetFilter)="resetFilter()" [feature]="'USER-GROUP'"></ceirpanel-list-action>
+          </clr-dg-action-bar>
+          <clr-dg-column [clrDgSortBy]="'createdOn'">{{ "datalist.createDate" | translate }}</clr-dg-column>
+          <clr-dg-column [clrDgSortBy]="'userName'">{{ "datalist.userName" | translate }}</clr-dg-column>
+          <clr-dg-column [clrDgSortBy]="'groupName'">{{ "datalist.groupName" | translate }}</clr-dg-column>
+          <clr-dg-column [clrDgSortBy]="'status'">{{ "datalist.status" | translate }}</clr-dg-column>
+          <clr-dg-column>{{ "datalist.action" | translate }}</clr-dg-column>
+          <clr-dg-row *ngFor="let gf of list?.content; let i = index;" [clrDgItem]="gf">
+            <clr-dg-cell>{{gf?.createdOn|date:'yyyy-MM-dd'}}</clr-dg-cell>
+            <clr-dg-cell>{{gf?.user?.userName}}</clr-dg-cell>
+            <clr-dg-cell>{{gf?.group?.groupName}}</clr-dg-cell>
+            <clr-dg-cell>
+              <span *ngIf="!gf?.status ||gf?.status==='0'" class="badge badge-info">{{ "status.inactive"| translate }}</span>
+              <span *ngIf="gf?.status==='3'" class="badge badge-success">{{ "status.active"| translate }}</span>
+              <span *ngIf="gf?.status==='4'" class="badge badge-warning">{{ "status.suspended"| translate }}</span>
+              <span *ngIf="gf?.status==='5'" class="badge">{{ "status.locked"| translate }}</span>
+              <span *ngIf="gf?.status==='21'" class="badge badge-danger">{{ "status.deleted"| translate }}</span>
+            </clr-dg-cell>
+            <clr-dg-cell>
+              <clr-dropdown [clrCloseMenuOnItemClick]="false">
+                <button clrDropdownTrigger aria-label="Dropdown demo button" class="m-0 p-0">
+                  <cds-icon shape="ellipsis-vertical"></cds-icon>
+                </button>
+                <clr-dropdown-menu *clrIfOpen [clrPosition]="'bottom-right'">
+                  <ng-template [ngxPermissionsOnly]="['USER-GROUP_VIEW']" [ngxPermissionsOnlyThen]="showView" [ngxPermissionsOnlyElse]="hideView"></ng-template>
+                  <ng-template #showView>
+                    <button class="action-item" [routerLink]="['/user-group/view',gf?.user?.id]" clrDropdownItem>
+                      <cds-icon shape="view-list"></cds-icon> {{ "button.view"| translate }}
+                    </button>
+                  </ng-template>
+                  <ng-template #hideView>
+                    <button class="action-item" [routerLink]="['/user-group/view',gf?.user?.id]" disabled clrDropdownItem>
+                      <cds-icon shape="view-list"></cds-icon> {{ "button.view"| translate }}
+                    </button>
+                  </ng-template>
+                  <ng-template [ngxPermissionsOnly]="['USER-GROUP_EDIT']" [ngxPermissionsOnlyThen]="showEdit" [ngxPermissionsOnlyElse]="hideEdit"></ng-template>
+                  <ng-template #showEdit>
+                    <button class="action-item" [routerLink]="['/user-group/edit',gf?.user?.id]" clrDropdownItem>
+                      <cds-icon shape="pencil"></cds-icon> {{ "button.edit"| translate }}
+                    </button>
+                  </ng-template>
+                  <ng-template #hideEdit>
+                    <button class="action-item" [routerLink]="['/user-group/edit',gf?.user?.id]" disabled clrDropdownItem>
+                      <cds-icon shape="pencil"></cds-icon> {{ "button.edit"| translate }}
+                    </button>
+                  </ng-template>
+                  <ng-template [ngxPermissionsOnly]="['USER-GROUP_DELETE']" [ngxPermissionsOnlyThen]="showDelete" [ngxPermissionsOnlyElse]="hideDelete"></ng-template>
+                  <ng-template #showDelete>
+                    <div *ngIf="gf?.status!=='21' && gf?.status !== '0'; then delete else active"></div>
+                    <ng-template #delete>
+                      <button class="action-item" (click)="openDeleteModel(gf)" clrDropdownItem>
+                        <cds-icon shape="trash"></cds-icon> {{ "button.delete"| translate }}
+                      </button>
+                    </ng-template>
+                    <ng-template #active>
+                      <button class="action-item" (click)="openDeleteModel(gf)" clrDropdownItem>
+                        <cds-icon shape="plus"></cds-icon> {{ "button.active"| translate }}
+                      </button>
+                    </ng-template>
+                  </ng-template>
+                  <ng-template #hideDelete>
+                    <button class="action-item" (click)="openDeleteModel(gf)" disabled clrDropdownItem>
+                      <cds-icon shape="trash"></cds-icon> {{ "button.delete"| translate }}
+                    </button>
+                  </ng-template>
+                </clr-dropdown-menu>
+              </clr-dropdown>
+            </clr-dg-cell>
+          </clr-dg-row>
+          <clr-dg-footer>
+            <clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems]="list.totalElements || 0">
+              <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]"><span class="text-capitalize">{{ "footer.userGroups"| translate }}</span> {{ "footer.perPage"| translate }}</clr-dg-page-size>
+              {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+              {{ "footer.of"| translate }} {{pagination.totalItems}} {{ "footer.userGroups"| translate }}
+            </clr-dg-pagination>
+          </clr-dg-footer>
+        </clr-datagrid>
+    </div>
+  </div>
+  <ceirpanel-user-group-delete (confirmation)="deleteRecord($event)" (aconfirmation)="activateRecord($event)"></ceirpanel-user-group-delete>

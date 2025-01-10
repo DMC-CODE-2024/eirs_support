@@ -1,0 +1,40 @@
+<div class="card" style="min-height: 85vh;">
+  <div class="card-header">
+    <div class="clr-row clr-justify-content-between">
+      <div class="clr-col-4" style="margin-top: 5px;">
+        <h4 class="card-title text-capitalize">{{ "imei.pageTitle.view" | translate }}</h4>
+      </div>
+    </div>
+  </div>
+  <div class="card-block m-1 p-1" style="min-height: 430px;">
+    <form clrForm clrLayout="vertical" class="m-0 p-0" #f="ngForm" (ngSubmit)="f.form.valid && onSubmit(f)" novalidate>
+      <div class="clr-row">
+        <div class="clr-col-4">
+          <label class="col-form-label clr-required-mark">{{ "imei.imei.label" | translate }}</label>
+          <input type="text" class="form-control form-control-sm" [(ngModel)]="imei.imei" name="imei" required
+            #imeiModel="ngModel" [ngClass]="{ 'is-invalid': f.submitted && imeiModel.errors }"
+            [placeholder]="'imei.imei.placeholder' | translate">
+          <div class="invalid-feedback">
+            <div>IMEI is required</div>
+          </div>
+        </div>
+        <div class="clr-col-4">
+          <label class="col-form-label">{{ "imei.msisdn.label" | translate }}</label>
+          <input type="text" class="form-control form-control-sm" [(ngModel)]="imei.msisdn" name="msisdn"
+            #msisdnModel="ngModel" [ngClass]="{ 'is-invalid': f.submitted && msisdnModel.errors }"
+            [placeholder]="'imei.msisdn.placeholder' | translate">
+          <div class="invalid-feedback">
+            <div>{{'imei.msisdn.error.required' | translate}}</div>
+          </div>
+        </div>
+        <div class="clr-col-2" style="margin-top: 35px;">
+          <button type="submit" class="btn btn-primary btn-block">{{ "button.search" | translate }}</button>
+        </div>
+        <div class="clr-col-2" style="margin-top: 35px;">
+          <button type="button" class="btn btn-outline btn-block"
+            (click)="cancel=true">{{ "button.clear" | translate }}</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

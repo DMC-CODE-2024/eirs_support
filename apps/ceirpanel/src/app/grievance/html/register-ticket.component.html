@@ -1,0 +1,300 @@
+<div class="row justify-content-center m-0 p-0">
+  <div class="col col-12 m-0 p-0" [ngClass]="authService.isLogin() && header==='yes' ? 'col-12':'col-12 col-sm-11 col-md-11 col-lg-11 col-xl-11'">
+    <div class="card m-0 p-0" style="min-height: 500px;" [ngClass]="authService.isLogin() && header==='yes'?'border border-1 shadow-none':'shadow-none'">
+      <div *ngIf="header==='yes' || header === 'no'; then head"></div>
+      <ng-template #head>
+        <div class="card-header" [ngClass]="authService.isLogin() && header==='yes' ? '':'border border-0'">
+          <div class="clr-row clr-justify-content-between">
+            <div class="clr-col-12 clr-col-md-6 clr-col-lg-6" style="margin-top: 5px;">
+              <h4 class="card-title text-capitalize text-black">{{ "ticket.pageTitle.add" | translate }}</h4>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      <div class="card-block">
+        <form class="needs-validation mt-3" novalidate #f="ngForm" name="form" (ngSubmit)="f.form.valid && onSubmit(f)">
+          <clr-alert *ngIf="error" [clrAlertType]="error.type" [clrAlertAppLevel]="true">
+            <clr-alert-item>
+              <span class="alert-text text-white">{{ "message." + error.message | translate }}</span>
+            </clr-alert-item>
+          </clr-alert>
+          <div class="row">
+            <ng-template [ngxPermissionsOnly]="['SSYSADMIN']" [ngxPermissionsOnlyElse]="hideInput"></ng-template>
+            <ng-template #hideInput>
+              <div class="mb-2" [ngClass]="authService.isLogin() && header==='yes' ? 'col-5' : 'col-lg-6 col-md-6 col-sm-12 col-xs-12'">
+                <div class="form-group">
+                  <label for="firstName" class="form-label clr-required-mark fw-semibold">{{'ticket.firstName.label' | translate}}</label>
+                  <input type="text" name="firstName" class="form-control form-control-sm" id="firstName" [(ngModel)]="ticket.firstName" required
+                  [placeholder]="'ticket.firstName.placeholder' | translate" #firstName="ngModel" [ngClass]="{ 'is-invalid': f.submitted && firstName.errors }"
+                  [maxlength]="config.get('maxNameSubjectLength') || 50" aria-autocomplete="none">
+                  <div *ngIf="f.submitted && firstName.errors" class="invalid-feedback">
+                    <div *ngIf="firstName.errors['required']">{{'ticket.firstName.error.required' | translate}}</div>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-2" [ngClass]="authService.isLogin() && header==='yes' ? 'col-5' : 'col-lg-6 col-md-6 col-sm-12 col-xs-12'">
+                <label for="lastName" class="form-label fw-semibold">{{'ticket.lastName.label' | translate}}</label>
+                <input type="text" name="lastName" class="form-control form-control-sm" id="lastName" [(ngModel)]="ticket.lastName"
+                  [placeholder]="'ticket.lastName.placeholder' | translate" autocomplete="ticketoff" [maxlength]="config.get('maxNameSubjectLength') || 50" aria-autocomplete="none">
+              </div>
+              <div class="mb-2" [ngClass]="authService.isLogin() && header==='yes' ? 'col-5' : 'col-lg-6 col-md-6 col-sm-12 col-xs-12'">
+                <label for="mobileNumber" class="form-label clr-required-mark fw-semibold">{{'ticket.phone.label' | translate}}</label>
+                <div class="input-group input-group-sm">
+                  <span class="input-group-text">{{config.get('countryCode') || '+855'}}</span>
+                  <input type="text" name="mobileNumber" class="form-control form-control-sm" id="mobileNumber" [(ngModel)]="ticket.mobileNumber" required
+                   [pattern]="mobileRegex" [placeholder]="'ticket.phone.placeholder' | translate" #mobileNumber="ngModel"
+                    [ngClass]="{ 'is-invalid': (f.submitted || f.touched) && mobileNumber.errors }" autocomplete="ticketoff">
+                  <div *ngIf="(f.submitted || f.touched) && mobileNumber.errors" class="invalid-feedback">
+                    <div *ngIf="mobileNumber.errors['required']">{{'ticket.phone.error.required' | translate}}</div>
+                    <div *ngIf="mobileNumber.errors['pattern']">Enter a valid contact number</div>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-2" [ngClass]="authService.isLogin() && header==='yes' ? 'col-5' : 'col-lg-6 col-md-6 col-sm-12 col-xs-12'">
+                <label for="alternateMobileNumber" class="form-label fw-semibold">{{'ticket.alternateMobileNumber.label' | translate}}</label>
+                <div class="input-group input-group-sm">
+                  <span class="input-group-text">{{config.get('countryCode') || '+855'}}</span>
+                  <input type="text" name="alternateMobileNumber" class="form-control form-control-sm" id="alternateMobileNumber"
+                  [(ngModel)]="ticket.alternateMobileNumber" #alternateMobileNumber="ngModel" ceirpanelBlankMobileValidator [ngClass]="{ 'is-invalid': (f.touched || f.submitted) && alternateMobileNumber.errors }"
+                    [placeholder]="'ticket.alternateMobileNumber.placeholder' | translate" autocomplete="ticketoff">
+                    <div *ngIf="f.touched && alternateMobileNumber.errors" class="invalid-feedback">
+                      <div *ngIf="alternateMobileNumber.errors['invalid']===false">{{ "user.contact.mobile.invalidMobile" | translate }}</div>
+                    </div>
+                </div>
+              </div>
+              <ng-template [ngxPermissionsOnly]="['SSYSADMIN']" [ngxPermissionsOnlyElse]="showRefId"></ng-template>
+              <ng-template #showRefId>
+                <div class="mb-2" [ngClass]="authService.isLogin() && header==='yes' ? 'col-5' : 'col-lg-6 col-md-6 col-sm-12 col-xs-12'">
+                  <div class="form-group">
+                    <label for="transactionId" class="form-label fw-semibold" [ngClass]="ticket.category===duplicate ? 'clr-required-mark' : '' ">{{'ticket.tid.label' | translate}}</label>
+                    <input type="text" name="transactionId" class="form-control form-control-sm" id="transactionId" [(ngModel)]="ticket.transactionId" #transactionId="ngModel"
+                    [placeholder]="'ticket.tid.placeholder' | translate" [required]="ticket.category===duplicate "
+                     [ngClass]="{ 'is-invalid': (f.submitted || f.touched) && transactionId.errors }" [maxlength]="config.get('maxTidLength') || 40" aria-autocomplete="none">
+                    <div *ngIf="(f.submitted || f.touched) && transactionId.errors" class="invalid-feedback">
+                      <div *ngIf="transactionId.errors['required']">{{'ticket.tid.error.required' | translate}}</div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+              <div class="mb-2" [ngClass]="authService.isLogin() && header==='yes' ? 'col-5' : 'col-lg-6 col-md-6 col-sm-12 col-xs-12'">
+                <div class="form-group">
+                  <label for="email" class="form-label fw-semibold">{{'ticket.email.label' | translate}}</label>
+                  <input type="text" name="emailAddress" class="form-control form-control-sm" id="emailAddress" [(ngModel)]="ticket.emailAddress"
+                    [placeholder]="'ticket.email.placeholder' | translate" #emailAddress="ngModel" ceirpanelBlankEmailValidator
+                     [ngClass]="{ 'is-invalid': (f.touched || f.submitted) && emailAddress.errors }" autocomplete="ticketoff">
+                  <div *ngIf="f.touched && emailAddress.errors" class="invalid-feedback">
+                    <div *ngIf="emailAddress.errors['invalid']===false">{{ "user.contact.email.invaildEmail" | translate }}</div>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-2" [ngClass]="authService.isLogin() && header==='yes' ? 'col-5' : 'col-lg-6 col-md-6 col-sm-12 col-xs-12'">
+                <label for="email" class="form-label fw-semibold">{{'ticket.category.label' | translate}}</label>
+                <select class="form-select form-control form-control-sm" name="category" [(ngModel)]="ticket.category"
+                  #category="ngModel" [ngClass]="{ 'is-invalid': f.submitted && category.errors }" (change)="onCategoryChange($event)">
+                  <option selected [value]="''">{{ "ticket.category.placeholder" | translate }}</option>
+                  <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
+                </select>
+                <div *ngIf="f.submitted && category.errors" class="invalid-feedback">
+                  <div *ngIf="category.errors['required']">{{ "ticket.category.error.required" | translate }}</div>
+                </div>
+              </div>
+              <div *ngIf="ticket.category===duplicate; then address"></div>
+              <ng-template #address>
+                <div class="mb-2" [ngClass]="authService.isLogin() && header==='yes' ? 'col-5' : 'col-lg-6 col-md-6 col-sm-12 col-xs-12'">
+                  <div class="form-group">
+                    <label class="clr-required-mark">{{ "ticket.address.addressLine.label" | translate }}</label>
+                    <input type="text" name="address" class="form-control form-control-sm" id="address" [(ngModel)]="ticket.address"
+                    [placeholder]="'ticket.address.addressLine.placeholder' | translate" #address="ngModel"
+                     [ngClass]="{ 'is-invalid': (f.touched || f.submitted) && address.errors }" autocomplete="addressoff">
+                    <div *ngIf="f.touched && address.errors" class="invalid-feedback">
+                      <div *ngIf="address.errors['required']">{{'ticket.address.addressLine.required' | translate}}</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-2" [ngClass]="authService.isLogin() && header==='yes' ? 'col-5' : 'col-lg-6 col-md-6 col-sm-12 col-xs-12'">
+                  <label class="clr-required-mark">{{ "user.address.state.label" | translate }}</label>
+                  <select class="form-select form-control form-control-sm" [(ngModel)]="ticket.province" required name="province" 
+                    #province="ngModel" [ngClass]="{ 'is-invalid': f.submitted && province.errors }" (change)="onProvinceChange($event)">
+                    <option selected [value]="''">{{ "user.address.state.placeholder" | translate }}</option>
+                    <option *ngFor="let province of provinces" [value]="province.name">{{province.name}}</option>
+                  </select>
+                  <div *ngIf="f.submitted && province.errors" class="invalid-feedback">
+                    <div *ngIf="province.errors['required']">{{'user.address.state.error' | translate}}</div>
+                  </div>
+                </div>
+                <div class="mb-2" [ngClass]="authService.isLogin() && header==='yes' ? 'col-5' : 'col-lg-6 col-md-6 col-sm-12 col-xs-12'">
+                  <label class="clr-required-mark">{{ "user.address.district.label" | translate }}</label>
+                  <select class="form-select form-control form-control-sm" [(ngModel)]="ticket.district" required name="district" 
+                    #district="ngModel" [ngClass]="{ 'is-invalid': f.submitted && district.errors }"  (change)="onDistrictChange($event)">
+                    <option selected [value]="''">{{ "user.address.district.placeholder" | translate }}</option>
+                    <option *ngFor="let district of districts" [value]="district.name">{{district.name}}</option>
+                  </select>
+                  <div *ngIf="f.submitted && district.errors" class="invalid-feedback">
+                    <div *ngIf="district.errors['required']">{{'user.address.district.error' | translate}}</div>
+                  </div>
+                </div>
+                <div class="mb-2" [ngClass]="authService.isLogin() && header==='yes' ? 'col-5' : 'col-lg-6 col-md-6 col-sm-12 col-xs-12'">
+                  <label class="clr-required-mark">{{ "user.address.commune.label" | translate }}</label>
+                  <select class="form-select form-control form-control-sm" [(ngModel)]="ticket.commune" name="commune"
+                  required #commune="ngModel" [ngClass]="{ 'is-invalid': f.submitted && commune.errors }">
+                    <option selected [value]="''">{{ "user.address.commune.placeholder" | translate }}</option>
+                    <option *ngFor="let commune of communes" [value]="commune.name">{{commune.name}}</option>
+                  </select>
+                  <div *ngIf="f.submitted && commune.errors" class="invalid-feedback">
+                    <div *ngIf="commune.errors['required']">{{'user.address.commune.error' | translate}}</div>
+                  </div>
+                </div>
+              </ng-template>
+            </ng-template>
+            <div class="mb-2" [ngClass]="authService.isLogin() && header==='yes' ? 'col-10': 'col-12'">
+              <div class="form-group">
+                <label for="subject" class="form-label clr-required-mark fw-semibold">{{'ticket.subject.label' | translate}}</label>
+                <input type="text" name="subject" class="form-control form-control-sm" id="subject" [(ngModel)]="ticket.subject"
+                 [placeholder]="'ticket.subject.placeholder' | translate" required #subject="ngModel"
+                  [ngClass]="{ 'is-invalid': f.submitted && subject.errors }" [maxlength]="config.get('maxNameSubjectLength') || 50" aria-autocomplete="none">
+                <div *ngIf="f.submitted && subject.errors" class="invalid-feedback">
+                  <div *ngIf="subject.errors['required']">{{'ticket.subject.error.required' | translate}}</div>
+                </div>
+              </div>
+            </div>
+            <ng-template [ngxPermissionsOnly]="['SSYSADMIN']" [ngxPermissionsOnlyThen]="showInput"></ng-template>
+            <ng-template #showInput>
+              <div class="mb-2 col-10">
+                <div class="form-group">
+                  <label for="referenceId" class="form-label fw-semibold">{{'ticket.referenceId.label' | translate}}</label>
+                  <input type="text" name="referenceId" class="form-control form-control-sm" id="referenceId" [(ngModel)]="ticket.referenceId"
+                  [placeholder]="'ticket.referenceId.placeholder' | translate" [maxlength]="config.get('maxReferenceIdLenght') || 25" aria-autocomplete="none">
+                </div>
+              </div>
+            </ng-template>
+            <div [ngClass]="authService.isLogin() && header==='yes'? 'col-10':'col-12'">
+              <div class="form-group">
+                <label for="subject" class="form-label clr-required-mark fw-semibold">{{'ticket.description.label' | translate}}</label>
+                <textarea name="description" class="form-control form-control-sm" id="description" [(ngModel)]="ticket.description"
+                  [placeholder]="'ticket.description.placeholder' | translate" required #description="ngModel" [ngClass]="{ 'is-invalid': f.submitted && description.errors }"></textarea>
+                  <div *ngIf="f.submitted && description.errors" class="invalid-feedback">
+                    <div *ngIf="description.errors['required']">{{'ticket.description.error.required' | translate}}</div>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="clr-row m-0 p-0">
+            <div class="m-0 p-0 mt-1" [ngClass]="authService.isLogin() && header==='yes'? 'clr-col-10':'clr-col-12'">
+              <span class="text-danger">{{ 'button.note' | translate }}! * </span>
+              <span class="fw-semibold">
+                {{"ticket.pageTitle.info" | translate}}
+              </span>
+            </div>
+          </div>
+          <ng-template [ngxPermissionsOnly]="['TICKET_ATTACHMENT']" [ngxPermissionsOnlyThen]="showUpload" [ngxPermissionsOnlyElse]="hideUpload"></ng-template>
+          <ng-template #showUpload>
+            <div class="row">
+              <div class="col-4" style="margin-top: 7px;">
+                <div class="mb-2">
+                  <label for="email" class="form-label fw-semibold">{{'ticket.document.documentLabel' | translate}}</label>
+                  <select class="form-select form-control form-control-sm" name="category" [(ngModel)]="ticket.documentType"
+                    #documentType="ngModel" [ngClass]="{ 'is-invalid': f.submitted && documentType.errors }">
+                    <option selected [value]="''">{{ "ticket.document.placeholder" | translate }}</option>
+                    <option *ngFor="let document of documents" [value]="document">{{document}}</option>
+                  </select>
+                  <div *ngIf="f.submitted && documentType.errors" class="invalid-feedback">
+                    <div *ngIf="documentType.errors['required']">{{ "ticket.document.error.required" | translate }}</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-8">
+                <div class="row m-0 p-0 mt-1">
+                  <div class="m-0 p-0" [ngClass]="authService.isLogin() && header==='yes' ? 'col-10':'col-12'">
+                    <label>{{ "ticket.document.label" | translate }}</label>
+                  </div>
+                </div>
+                <div class="row m-0 p-0 mt-2 row-cols-auto">
+                  <div class="m-0 p-0 col">
+                    <input type="file" accept="image/png, image/jpg, image/jpeg, application/pdf" #document style="display: none;" (change)="documentSelect($event)" multiple>
+                    <button type="button" class="btn btn-primary-outline text-black" (click)="document.click()" style="border-style: dotted;">
+                      {{ "ticket.document.placeholder" | translate }}<cds-icon shape="paperclip"></cds-icon>
+                    </button>
+                  </div>
+                  <div class="m-0 p-0 col">
+                    <p class="m-0 p-0 lh-sm">{{'ticket.image.accept1' | translate}}</p>
+                    <p class="m-0 p-0 lh-sm">{{'ticket.image.accept2' | translate}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="clr-row m-0 p-0" *ngIf="documentObject && documentObject.length > 0">
+              <div class="m-0 p-0 clr-col-12">
+                <h5 class="text-black">
+                  {{'ticket.image.list' | translate}}
+                </h5>
+              </div>
+            </div>
+            <div class="clr-row m-0 p-0 mt-2" *ngFor="let img of documentObject;let i = index">
+              <div class="m-0 p-0 clr-col-12'">
+                <a href="javascript://" class="label label-blue clickable border border-0" (click)="documentObject.splice(i, 1)">
+                  <span class="text">{{img?.name}}({{img?.size?.size+img?.size.type}})</span>
+                  <cds-icon shape="close"></cds-icon>
+                </a>
+                <p class="m-0 p-0" *ngIf="img.documentType">{{'ticket.document.documentLabel' | translate}} - {{img.documentType}}</p>
+              </div>
+            </div>
+            <div class="clr-row m-0 p-0">
+              <div class="m-0 p-0 clr-col-12">
+                <h5 class="clr-required-mark text-black">
+                  {{ "ticket.mandatory.label" | translate }}
+                </h5>
+              </div>
+            </div>
+            <div class="clr-row mt-2" *ngIf="siteKey && !isLocalhost">
+              <div [ngClass]="authService.isLogin() && header==='yes' ? 'clr-col-10': 'clr-col-12'">
+                <div class="form-group">
+                  <re-captcha [siteKey]="siteKey" [(ngModel)]="ticket.captcha" name="captcha"
+                   required #captcha="ngModel" [ngClass]="{ 'is-invalid': f.submitted && captcha.errors }" (resolved)="resolved($event)"></re-captcha>
+                  <div *ngIf="f.submitted && captcha.errors" class="invalid-feedback">
+                    <div *ngIf="captcha.errors['required']">{{'ticket.viewTicket.captcha' | translate}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template #hideUpload>
+            <div class="form-check mt-1">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="ticket.resolved" id="resolved" name="resolved" value="true">
+              <label class="form-check-label" for="flexCheckDefault">
+                {{'ticket.resolved.label' | translate}}
+              </label>
+            </div>
+          </ng-template>
+          <div class="clr-row mt-2">
+            <ng-template [ngxPermissionsOnly]="['TICKET_ATTACHMENT']" [ngxPermissionsOnlyThen]="left" [ngxPermissionsOnlyElse]="right"></ng-template>
+            <ng-template #left>
+              <div [ngClass]="authService.isLogin() && header==='yes' ? 'clr-col-10':'clr-col-12'">
+                <div class="clr-row clr-justify-content-start">
+                  <div class="clr-col-5 clr-col-lg-2" *ngIf="authService.isLogin()">
+                    <button type="button" class="btn btn-outline btn-block" routerLink="/ticket">{{ 'button.back' | translate }}</button>
+                  </div>
+                  <div class="clr-col-5 clr-col-lg-2">
+                    <button type="submit" class="btn btn-primary btn-block">{{ 'button.register' | translate }}</button>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+            <ng-template #right>
+              <div [ngClass]="authService.isLogin() && header==='yes' ? 'clr-col-10':'clr-col-12'">
+                <div class="clr-row" [ngClass]="authService.isLogin() && header==='yes' ? 'clr-justify-content-end': 'clr-justify-content-start'">
+                  <div class="clr-col-5 clr-col-lg-2">
+                    <button type="submit" class="btn btn-primary btn-block">{{ 'button.register' | translate }}</button>
+                  </div>
+                  <div class="clr-col-5 clr-col-lg-2" *ngIf="authService.isLogin()">
+                    <button type="button" class="btn btn-outline btn-block" (click)="f.reset()">{{ "button.reset" | translate }}</button>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>  
+</div>
+<ceirpanel-ceir-alert></ceirpanel-ceir-alert>
