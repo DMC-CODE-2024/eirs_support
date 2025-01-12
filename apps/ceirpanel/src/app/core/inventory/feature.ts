@@ -15,7 +15,7 @@ export class FeatureInventory {
   public reset() {
     this._all = [];
     for (let i = 0; i < this.size; i++) {
-      this._all.push({
+      const f: FeatureModel = {
         id: i + 1000,
         name: this.getItem(i, NAMES),
         category: this.getItem(i, CATEGORY),
@@ -24,9 +24,9 @@ export class FeatureInventory {
         logo: '',
         module: '',
         createDate: new Date('June 23, 1912')
-      });
+      } as unknown as FeatureModel;
+      this._all.push(f);
     }
-    console.log('reset call: ', this._all);
   }
   private getItem<T>(num: number, array: T[]): T {
     return array[num % array.length];
@@ -44,7 +44,6 @@ export class FeatureInventory {
   }
 
   filter(filters: { [key: string]: string[] }): FeatureInventory {
-    console.log('all: ', this._all);
     this._checkCurrentQuery();
     if (filters) {
       for (const key in filters) {
@@ -54,7 +53,7 @@ export class FeatureInventory {
 
         let getFilterProperty = (user: FeatureModel) => '' + user[key];
         if (key === 'name') {
-          getFilterProperty = (user: FeatureModel) => user.name;
+          getFilterProperty = (user: FeatureModel) => user['name'];
         }
 
         const lowerCase = filters[key].map(value => value.toLowerCase());
@@ -76,7 +75,7 @@ export class FeatureInventory {
     if (sort && sort.by) {
       let getSortProperty = (user: FeatureModel) => user[sort.by];
       if (sort.by === 'name') {
-        getSortProperty = (user: FeatureModel) => user.name;
+        getSortProperty = (user: FeatureModel) => user['name'];
       }
 
       this._currentQuery.sort((a, b) => {

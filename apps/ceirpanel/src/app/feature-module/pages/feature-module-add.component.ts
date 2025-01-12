@@ -131,19 +131,16 @@ export class FeatureModuleAddComponent implements OnInit {
     this.findModules();
     if (this.id > 0) {
       this.featureModuleService.findByFeatureId(this.id).pipe(take(1)).subscribe((data: Array<FeatureModuleDto>) => {
-        console.log('data: ', data);
         this.groupFeature = {featureId: this.id, modules: data.map(r => r.module.id), feature: {id: this.id} as FeatureModel};
         this.confirmed = data.map(r => r.module);
       });
     }
   }
   onSubmit(userForm: NgForm) {
-    console.log('inside submit......');
     if (userForm.invalid) { this.clrForm.markAsTouched(); return; }
     this.save();
   }
   save() {
-    console.log('inside save......');
     this.transport.progress = true;
     this.groupFeature.modules = this.confirmed.map(s => s.id);
     this.groupFeature.featureId = this.groupFeature.feature.id;
@@ -153,11 +150,7 @@ export class FeatureModuleAddComponent implements OnInit {
 
     observable.subscribe({
       next: (_data) => {
-        console.log('role save: ', (_data as RoleModel).id);
         return this.router.navigate(['/feature-module']);
-      },
-      error: (e) => {
-        console.log(e);
       },
       complete: () => {
         setTimeout(() => this.transport.progress = false, 3000);
@@ -168,13 +161,6 @@ export class FeatureModuleAddComponent implements OnInit {
     this.apicall.get('/feature/list').subscribe({
       next: (result) => {
         this.features = (result as FeatureModel[]);
-        console.log('features: ', this.features);
-      },
-      error: (e) => {
-        console.log('error', e);
-      },
-      complete: () => {
-        console.log('completed');
       }
     });
   }
@@ -182,12 +168,6 @@ export class FeatureModuleAddComponent implements OnInit {
     this.apicall.get('/module/list').subscribe({
       next: (result) => {
         this.modules = (result as ModuleMangeModel[]);
-      },
-      error: (e) => {
-        console.log('error', e);
-      },
-      complete: () => {
-        console.log('error');
       }
     });
   }

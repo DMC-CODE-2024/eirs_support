@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { GroupFilterModel } from '../../core/models/group.filter.model';
@@ -56,7 +58,7 @@ export class GroupFilterComponent implements OnInit {
     @ViewChild('f') private filterForm! : NgForm;
 
     ngOnInit(): void {
-        console.log('users: ');
+        
     }
     onSubmit() {
         this.userFilter.emit(this.groupFilterModel);

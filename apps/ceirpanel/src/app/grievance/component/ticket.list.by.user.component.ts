@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChangeDetectorRef, Component, Input } from '@angular/core';
@@ -80,7 +81,6 @@ export class TicketListByUserComponent extends ExtendableListComponent {
       next: (result) => {
         this.tickets = (result as TicketList).content;
         this.total = (result as TicketList).totalElements;
-        console.log('total: ', this.total, ' size: ', this.tickets.length);
         this.loading = false;
         if(this.total === 1 ){
           this.router.navigate(['/check-ticket-status/ticket-thread', this.tickets[0].ticketId]);
@@ -99,11 +99,10 @@ export class TicketListByUserComponent extends ExtendableListComponent {
   deleteRecord(data: any) {
     this.apicall.delete(`/group/${data.id}`).subscribe({
       next: (result) => {
-        console.log('result:', result);
+       
       },
       error: (e) => this.loading = false,
       complete: () => {
-        console.log('completed');
         this.refresh(this.state);
       }
     });

@@ -52,7 +52,7 @@ export class UserFeatureFilterComponent implements OnInit {
     groupFeatureFilterModel: GroupFeatureFilterModel = {} as GroupFeatureFilterModel;
 
     ngOnInit(): void {
-        console.log('users: ');
+        
     }
     onSubmit() {
         this.groupFeatureFilter.emit(this.groupFeatureFilterModel);

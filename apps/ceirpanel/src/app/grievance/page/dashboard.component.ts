@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit } from '@angular/core';
 import { ApiUtilService } from '../../core/services/common/api.util.service';
@@ -35,6 +36,6 @@ export class DashboardComponent implements OnInit {
     });
   }
   onOtpChange(event: unknown) {
-    console.log(event);
+   
   }
 }

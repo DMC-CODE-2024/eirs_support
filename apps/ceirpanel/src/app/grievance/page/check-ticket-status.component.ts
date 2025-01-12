@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
@@ -73,10 +74,9 @@ export class CheckTicketStatusComponent implements OnInit {
       this.verifyOtp.sendOtp();
       setTimeout(() => this.verifyOtp.openTimer(), 10);
     }
-    console.log(userForm);
   }
   onOtpChange(event: unknown) {
-    console.log(event);
+    
   }
   
 }

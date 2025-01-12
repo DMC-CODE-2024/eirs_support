@@ -117,19 +117,15 @@ export class VerifyOtpForTicketComponent extends ExtendableListComponent {
     countrycode = _.startsWith(countrycode, '+') ? countrycode.substring(1, countrycode.length) : countrycode;
     this.apicall.get(`/ticket/send-otp/${countrycode}${this.mobileNumber}`).subscribe({
       next: (result) => {
-        console.log('result: ', result);
         this.startTimer();
       },
     });
   }
   onSubmit(userForm: NgForm) {
-    console.log(userForm.value);
-    console.log(this.otpModel);
     this.otpModel.mobileNumber = this.mobileNumber;
     this.verifyOtp();
   }
   onOtpChange(event: unknown) {
-    console.log(event);
     this.otpModel.otp = event as string;
   }
   verifyOtp() {
@@ -139,11 +135,9 @@ export class VerifyOtpForTicketComponent extends ExtendableListComponent {
       .get(`/ticket/verify-otp/${countrycode}${this.mobileNumber}/${this.otpModel.otp}`)
       .subscribe({
         next: (result) => {
-          console.log('result: ', result);
           if (_.isEqual(_.get(result, 'message'), 'verifyOtpSuccess')) {
             this.verifyEvent.emit(true);
           } else {
-            console.log('otp verification failed');
             this.alert = {type: 'danger', message: _.get(result,'message')};
             setTimeout(() => this.alert = null, 10000);
           }

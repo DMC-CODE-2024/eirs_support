@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { UserFilterModel } from '../../core/models/user.filter.model';
@@ -67,7 +69,7 @@ export class UserFilterComponent implements OnInit {
     userFilterModel: UserFilterModel = {} as UserFilterModel;
 
     ngOnInit(): void {
-        console.log('users: ');
+        
     }
     onSubmit() {
         this.userFilter.emit(this.userFilterModel);

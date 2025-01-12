@@ -165,7 +165,6 @@ export class FeatureModuleListComponent extends ExtendableListComponent {
   refresh(state: ClrDatagridStateInterface) {
     this.loading = true;
     this.state = state;
-    console.log('state: ', this.state);
     this.cdRef.detectChanges();
     this.applyExisterFilter();
     this.featureModuleService.pagination(state).subscribe({

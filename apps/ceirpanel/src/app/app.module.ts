@@ -45,7 +45,6 @@ export function appInit(apiutil: ApiUtilService) {
 }
 export function initPermission(permission: NgxPermissionsService) {
   const obj = localStorage.getItem('permissions');
-  console.log('permission: ', permission);
   if (obj) {
     const permissions: string[] = JSON.parse(obj);
     permissions.forEach((p) => permission.addPermission(p));

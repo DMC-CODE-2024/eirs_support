@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChangeDetectorRef, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -70,17 +73,15 @@ export class ViewTicketComponent implements OnInit {
     this.scale = 1.1; 
   }
   ngOnInit(): void {
-    console.log();
+    
   }
   onSubmit(userForm: NgForm) {
-    console.log(userForm);
     if (userForm.invalid) {
       this.clrForm.markAsTouched();
       return;
     }
     this.apicall.get(`/ticket/${this.ticket.ticketId}`).subscribe({
       next: (_data) => {
-        console.log('message:', _data as any);
         if (_.isEqual(_.get(_data, 'message'), 'notValidTicketId')) {
           this.transport.alert = {
             message: 'notValidTicketId',
@@ -93,6 +94,6 @@ export class ViewTicketComponent implements OnInit {
     });
   }
   onOtpChange(event: unknown) {
-    console.log(event);
+    
   }
 }

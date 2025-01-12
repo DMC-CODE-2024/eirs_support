@@ -79,7 +79,6 @@ export class GroupFeatureAddComponent implements OnInit {
      });
   }
   onSubmit(userForm: NgForm) {
-    console.log('submit: ', userForm.invalid);
     if (userForm.invalid) { this.clrForm.markAsTouched(); return; }
     this.save();
   }
@@ -89,7 +88,6 @@ export class GroupFeatureAddComponent implements OnInit {
     this.groupFeature.featuremap = this.confirmed.map((s, index) => {
       return {featureId: s.id, displayOrder: index};
     });
-    this.confirmed.forEach(l => console.log(l));
     this.groupFeature.groupId = this.groupFeature.group.id;
     
     const observable: Observable<unknown> = this.page == PageType.edit ?
@@ -97,11 +95,7 @@ export class GroupFeatureAddComponent implements OnInit {
 
     observable.subscribe({
       next: (_data) => {
-        console.log('role save: ', (_data as RoleModel).id);
         return this.router.navigate(['/group-feature']);
-      },
-      error: (e) => {
-        console.log(e);
       },
       complete: () => {
         setTimeout(() => this.transport.progress = false, 3000);
@@ -113,13 +107,6 @@ export class GroupFeatureAddComponent implements OnInit {
       next: (result) => {
         this.features = (result as FeatureModel[]);
         this.features = this.features.map(r => Object.assign(r, {index: 0}));
-        console.log('feature length: ', this.features.length);
-      },
-      error: (e) => {
-        console.log('error', e);
-      },
-      complete: () => {
-        console.log('error');
       }
     });
   }
@@ -127,12 +114,6 @@ export class GroupFeatureAddComponent implements OnInit {
     this.apicall.get('/group/list').subscribe({
       next: (result) => {
         this.groups = (result as GroupModel[]);
-      },
-      error: (e) => {
-        console.log('error', e);
-      },
-      complete: () => {
-        console.log('error');
       }
     });
   }

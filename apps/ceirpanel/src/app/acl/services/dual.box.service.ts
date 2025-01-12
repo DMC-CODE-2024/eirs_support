@@ -31,7 +31,6 @@ export class DualBoxService {
       obj.selected = mlist.filter(m => m.selected).length == mlist.length;
       dualList.push(Object.assign(obj, { childs: mlist }));
     });
-    console.log('max: ', max);
     dualList.forEach(d => {
       for (let i = d.childs.length; i < max; i++) {
         d.childs.push({id: -1, name: '--',selected: false, disabled: true});  

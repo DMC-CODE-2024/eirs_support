@@ -44,15 +44,12 @@ import { AclFilterModel } from '../../core/models/acl.model';
   `],
     providers: []
 })
-export class AclFilterComponent implements OnInit {
+export class AclFilterComponent  {
     @ViewChild(ClrForm, { static: true }) private clrForm!: ClrForm;
     @Input() openFilter = false;
     @Output() public aclFilter: EventEmitter<any> = new EventEmitter();
     aclFilterModel: AclFilterModel = {} as AclFilterModel;
 
-    ngOnInit(): void {
-        console.log('users: ');
-    }
     onSubmit() {
         this.aclFilter.emit(this.aclFilterModel);
     }

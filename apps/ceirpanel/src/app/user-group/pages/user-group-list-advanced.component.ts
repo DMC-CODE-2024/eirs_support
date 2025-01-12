@@ -156,7 +156,6 @@ export class UserGroupListAdvancedComponent extends ExtendableListComponent {
   openClose(open: boolean) {
     this.open = open;
     if (open && this.selectedData.length > 0){
-      console.log(this.selectedData);
       this.selectedData.forEach(d => {
         const groups = d.groups.map((g: { id: number; }) => g.id).filter((g: number) => g != this.groupId);
         this.deleteRecord({userId: d.id, groups});

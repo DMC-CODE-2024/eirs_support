@@ -215,7 +215,6 @@ export class LoginComponent {
             },
           });
         } else {
-          console.log('message: ', _.get(data, 'message'));
           this.menuTransport.alert = {
             type: 'danger',
             message: _.get(data, 'message'),

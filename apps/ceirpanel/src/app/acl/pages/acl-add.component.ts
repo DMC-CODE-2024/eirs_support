@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
@@ -71,13 +72,11 @@ export class AclAddComponent implements OnInit {
     this.apicall.get(`/acl/findTreeByRoleId/${this.id}`).subscribe({
       next: (data) => {
         this.trees = data;
-      },
-      error: (e) => console.log(e),
-      complete: () => console.info('complete')
+      }
     });
   }
   onChangeInput(event: any){
-    console.log('event: ', event);
+    
   }
   onSubmit(userForm: NgForm) {
     if (userForm.invalid) { this.clrForm.markAsTouched(); return; }
@@ -88,11 +87,7 @@ export class AclAddComponent implements OnInit {
     const observable: Observable<unknown> = this.apicall.post(`/acl/save`, this.trees);
     observable.subscribe({
       next: (_data) => {
-        console.log('role save: ', (_data as RoleModel).id);
         return this.router.navigate(['/acl']);
-      },
-      error: (e) => {
-        console.log(e);
       },
       complete: () => {
         setTimeout(() => this.transport.progress = false, 3000);
@@ -103,12 +98,6 @@ export class AclAddComponent implements OnInit {
     this.apicall.get('/role/list').subscribe({
       next: (result) => {
         this.roles = (result as RoleModel[]);
-      },
-      error: (e) => {
-        console.log('error', e);
-      },
-      complete: () => {
-        console.log('error');
       }
     });
   }
@@ -118,18 +107,11 @@ export class AclAddComponent implements OnInit {
       next: (result) => {
         this.modules = result as FeatureModuleModel[];
         this.trees = this.dualbox.getDualList(result as FeatureModuleModel[], aclModel);
-        console.log('trees: ', this.trees);
-      },
-      error: (e) => {
-        console.log('error', e);
-      },
-      complete: () => {
-        console.log('error');
       }
     });
   }
   displayStr(item: any = null) {
-    console.log('item: {}', item);
+    
   }
   cancelOpenClose(cancel: boolean) {
     this.cancel = false;
@@ -139,7 +121,6 @@ export class AclAddComponent implements OnInit {
     this.trees.forEach((tree: { selected: any; }) => tree.selected = data);
   }
   public changeSelectedAsset(asset: any, data: any): void {
-    console.log('data: ', data);
     //asset.selected = data;
   }
   public onParent(event: any) {
@@ -158,9 +139,7 @@ export class AclAddComponent implements OnInit {
       this.apicall.get(`/acl/findTreeByRoleId/${this.id}`).subscribe({
         next: (data) => {
           this.trees = data;
-        },
-        error: (e) => console.log(e),
-        complete: () => console.info('complete')
+        }
       });
     }
   }

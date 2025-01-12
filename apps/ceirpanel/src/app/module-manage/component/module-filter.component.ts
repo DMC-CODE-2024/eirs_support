@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ClrForm } from '@clr/angular';
@@ -52,8 +53,9 @@ export class ModuleFilterComponent implements OnInit {
     date2!: any;
     moduleFilterModel: ModuleMangeFilterModel = {} as ModuleMangeFilterModel;
 
+    // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
     ngOnInit(): void {
-        console.log('users: ');
+        
     }
     onSubmit() {
         this.moduleFilter.emit(this.moduleFilterModel);

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -29,10 +30,9 @@ export class SearchImeiComponent implements OnInit {
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.url);
   }
   onSubmit(userForm: NgForm) {
-    console.log(userForm);
     this.router.navigate(['/search-imei/result']);
   }
   onOtpChange(event: unknown) {
-    console.log(event);
+    
   }
 }

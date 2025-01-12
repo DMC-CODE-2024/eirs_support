@@ -106,7 +106,7 @@ export class GroupAddComponent implements OnInit {
     private transport: MenuTransportService,
     public permissionService: NgxPermissionsService,
     private permission: PermissionService) {
-      console.log('permissions: ', this.permissionService.getPermissions());
+      
   }
 
   ngOnInit(): void {
@@ -121,15 +121,12 @@ export class GroupAddComponent implements OnInit {
       this.apicall.get(`/group/${this.id}`).subscribe({
         next: (data) => {
           this.group = data as GroupModel;
-        },
-        error: (e) => console.log(e),
-        complete: () => console.info('complete')
+        }
       });
     }
   }
   onSubmit(userForm: NgForm) {
     if (userForm.invalid) { this.clrForm.markAsTouched(); return; }
-    console.log('group: ', this.group);
     this.save();
   }
   save() {
@@ -140,11 +137,7 @@ export class GroupAddComponent implements OnInit {
 
       observable.subscribe({
       next: (_data) => {
-        console.log('group save: ', (_data as GroupModel).id);
         return this.router.navigate(['/group']);
-      },
-      error: (e) => {
-        console.log(e);
       },
       complete: () => {
         setTimeout(() => this.transport.progress = false, 3000);
@@ -155,12 +148,6 @@ export class GroupAddComponent implements OnInit {
     this.apicall.get('/group/list').subscribe({
       next: (result) => {
         this.groups = (result as GroupModel[]);
-      },
-      error: (e) => {
-        console.log('error', e);
-      },
-      complete: () => {
-        console.log('error');
       }
     });
   }

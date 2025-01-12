@@ -115,9 +115,7 @@ export class RoleAddComponent implements OnInit {
       this.apicall.get(`/role/${this.id}`).subscribe({
         next: (data) => {
           this.role = data as RoleModel;
-        },
-        error: (e) => console.log(e),
-        complete: () => console.info('complete')
+        }
       });
     }
   }
@@ -132,11 +130,7 @@ export class RoleAddComponent implements OnInit {
 
     observable.subscribe({
       next: (_data) => {
-        console.log('role save: ', (_data as RoleModel).id);
         return this.router.navigate(['/role']);
-      },
-      error: (e) => {
-        console.log(e);
       },
       complete: () => {
         setTimeout(() => this.transport.progress = false, 3000);
@@ -147,12 +141,6 @@ export class RoleAddComponent implements OnInit {
     this.apicall.get('/acl/list').subscribe({
       next: (result) => {
         this.accesses = (result as AccessModel[]);
-      },
-      error: (e) => {
-        console.log('error', e);
-      },
-      complete: () => {
-        console.log('error');
       }
     });
   }

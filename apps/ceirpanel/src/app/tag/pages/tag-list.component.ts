@@ -158,8 +158,7 @@ export class TagListComponent extends ExtendableListComponent{
   refresh(state: ClrDatagridStateInterface) {
     this.loading = true;
     this.state = state;
-    console.log('state: ', this.state);
-
+    
     this.cdRef.detectChanges();
     this.applyExisterFilter();
     this.apicall.post('/tag/pagination', state).subscribe({

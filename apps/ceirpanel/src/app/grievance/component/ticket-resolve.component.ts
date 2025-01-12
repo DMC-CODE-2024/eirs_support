@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ApiUtilService } from '../../core/services/common/api.util.service';
@@ -66,7 +68,7 @@ export class TicketResolveComponent implements OnInit{
     constructor(private apicall: ApiUtilService, public config: ConfigService){}
     
     ngOnInit(): void {
-        console.log('ticket: ', this.ticketId);
+        
     }
     resolve(){
       this.confirmation.emit({open: false, notes: this.notes.notes, resolve: 'yes'});

@@ -29,19 +29,14 @@ export class XcallyCheckTicketStatusComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.countrycode = this.config.get('countryCode') || '+265';
-    console.log('start with',_.startsWith(this.countrycode, '+'));
     this.countrycode = _.startsWith(this.countrycode, '+') ? this.countrycode.substring(1, this.countrycode.length) : this.countrycode;
-    console.log('country code: ', this.countrycode);
     this.route.queryParams.subscribe(queryParams => {
         this.msisdn = queryParams['msisdn'] || '';
-        console.log('country code: ', this.countrycode, ' msisdn: ', this.msisdn);
-        console.log('start with: ', _.startsWith(this.msisdn, this.countrycode));
         this.apiutil.get('/api/auth/isLogin').subscribe({
             next: (data) => {
               if (_.isEqual(_.get(data, 'login'), false)) {
                 this.router.navigate(['/'],{queryParams:{msisdn: this.msisdn,redirect:'register'}});
               } else {
-                console.log('going to check status');
                 this.router.navigate(['/check-ticket-status'],{queryParams:{msisdn: this.msisdn,redirect:'register'}});
               }
             }

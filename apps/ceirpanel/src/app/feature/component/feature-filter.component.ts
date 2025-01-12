@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ClrForm } from '@clr/angular';
@@ -53,7 +55,7 @@ export class FeatureFilterComponent implements OnInit {
     featureFilterModel: FeatureFilterModel = {} as FeatureFilterModel;
 
     ngOnInit(): void {
-        console.log('users: ');
+        
     }
     onSubmit() {
         this.featureFilter.emit(this.featureFilterModel);

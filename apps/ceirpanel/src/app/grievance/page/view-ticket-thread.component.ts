@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Location } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
@@ -126,7 +127,6 @@ export class ViewTicketThreadComponent implements OnInit {
           if(_.isEmpty(this.ticket.documentType)) {
             this.ticket.documentType = '';
           }
-          console.log('journals: {}', this.ticket.issue.journals);
         },
       });
     }
@@ -152,8 +152,6 @@ export class ViewTicketThreadComponent implements OnInit {
   private makeContentUrl(contentUrl: string) {
     const array = _.split(contentUrl, '/');
     const url = `${this.cnf.get('redmineDownloaderApi')  || ''}/${array[array.length - 2]}` ;
-    console.log('image split:', _.split(contentUrl, '/'));
-    console.log('id: ', array[array.length - 2], url);
     return url;
   }
   private objForFile(file: File) {
@@ -172,7 +170,6 @@ export class ViewTicketThreadComponent implements OnInit {
     }
   }
   documentSelect(event: any) {
-    console.log('document select: ', event);
     const messages:Array<string> = [];
     for (let i = 0; i < event.target.files.length; i++) {
       const fileobj = this.objForFile(event.target.files[i]);
@@ -183,7 +180,6 @@ export class ViewTicketThreadComponent implements OnInit {
       } else if(this.documentObject.length >= this.uploadMaxFile) {
         messages.push(this.ticketFileLimit);
       } else {
-        console.log('Object: ', this.documentObject, _.find(this.documentObject, {name: fileobj.name, lastModified: fileobj.lastModified, size: fileobj.size}));
         if(!_.find(this.documentObject, {name: fileobj.name, lastModified: fileobj.lastModified, size: fileobj.size})) {
           this.documentObject.push(fileobj);
         }
@@ -226,13 +222,11 @@ export class ViewTicketThreadComponent implements OnInit {
     formData.append('fileWithDocuments', JSON.stringify(objmap));
     this.apicall.post(`/ticket/save/note`, formData).subscribe({
       next: (_data) => {
-        console.log(_data);
         this.transport.alert = {
           message: 'registerTicketSuccess',
           type: 'info',
         } as unknown;
         this.ticket = _data as TicketModel;
-        console.log('journals: {}', this.ticket.issue.journals);
         this.ticket.issue.journals = _.sortBy(this.ticket.issue.journals, ['createdOn'], 'asc');
         this.ticket.documentType = '';
         this.documentObject = [];
@@ -270,11 +264,10 @@ export class ViewTicketThreadComponent implements OnInit {
   }
   endUserFeedback(event: any) {
     this.feedback = event.open;
-    console.log('event', event);
     if (_.isEqual(event.resolve, 'yes')) {
       this.apicall.post(`/ticket/save/rate`, {feedback: event.feedback, ratings: event.ratings, ticketId: this.ticketId}).subscribe({
         next: () => {
-          console.log();
+          
         },
       });
     }
@@ -293,7 +286,6 @@ export class ViewTicketThreadComponent implements OnInit {
   }
   getIds(details: Array<TicketAttachment>){
     const ids: Array<string> = [];
-    console.log('details: ', details);
     details.forEach(d => ids.push(d.name));
     return details;
   }

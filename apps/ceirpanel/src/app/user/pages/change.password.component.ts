@@ -37,17 +37,13 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
       
   }
   ngOnInit(): void {
-    console.log();
+    
   }
   onSubmit(userForm: NgForm) {
-    console.log('user: ', userForm);
     if (userForm.invalid) { this.clrForm.markAsTouched(); return; }
 
-    console.log('user: ', userForm);
     this.apicall.post(`/api/auth/change-password`, this.userPassword).subscribe({
         next: (_data) => {
-          console.log('data: ', _data);
-          console.log('message: ', _.get(_data,'body.message'));
           if (_.isEqual(_.get(_data, 'body.status'), 'failed')) {
             this.menuTransport.alert = {type: 'danger', message: _.get(_data,'body.message')};
           } else {
@@ -57,12 +53,6 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
               this.router.navigate(['/']);
             }, 5000);
           }
-        },
-        error: (e) => {
-          console.log(e);
-        },
-        complete: () => {
-          console.log('completed');
         }
     });
 
@@ -77,7 +67,7 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
     });
   }
   onOtpChange(event: unknown){
-    console.log(event);
+    
   }
   ngAfterViewInit(): void {
     this.el.nativeElement.querySelector('input[type="password"]').setAttribute('autocomplete', 'newPassword');

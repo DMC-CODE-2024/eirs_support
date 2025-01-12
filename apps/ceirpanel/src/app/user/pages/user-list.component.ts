@@ -171,7 +171,6 @@ export class UserListComponent extends ExtendableListComponent {
       .resetpassword(this.userService.getDeleteDto(data))
       .pipe(take(1))
       .subscribe((res) => {
-        console.log('message: ', _.get(res,'message'));
         this.menuTransport.alert = {type: 'success', message: _.get(res,'message')};
         this.selecton = null;
         this.multiselect = false;

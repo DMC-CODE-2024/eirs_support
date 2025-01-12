@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @angular-eslint/no-empty-lifecycle-method */
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,12 +25,12 @@ export class SearchImeiResultComponent implements OnInit {
     private router: Router
   ) {}
   ngOnInit(): void {
-    console.log();
+    
   }
   onSubmit(userForm: NgForm) {
-    console.log(userForm);
+    
   }
   onOtpChange(event: unknown) {
-    console.log(event);
+    
   }
 }

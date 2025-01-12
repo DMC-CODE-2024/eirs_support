@@ -243,7 +243,6 @@ export class UserGroupAddComponent implements OnInit {
     });
   }
   onUserSelect(user: any){
-    console.log('user: ', user);
     this.getUsers(this.selectedUsers.map((r:any) => r.id));
   }
   onUserSelectAll(users: any){
@@ -251,7 +250,6 @@ export class UserGroupAddComponent implements OnInit {
     this.getUsers(this.selectedUsers.map((r:any) => r.id));
   }
   onUserDeSelect(user: any){
-    console.log('de select user: ', user);
     this.getUsers(this.selectedUsers.map((r:any) => r.id));
   }
   getUserName(id: string) {

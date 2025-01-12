@@ -135,11 +135,7 @@ export class UserFeatureAddComponent implements OnInit {
 
     observable.subscribe({
       next: (_data) => {
-        console.log('role save: ', (_data as RoleModel).id);
         return this.router.navigate(['/user-feature']);
-      },
-      error: (e) => {
-        console.log(e);
       },
       complete: () => {
         setTimeout(() => this.transport.progress = false, 3000);
@@ -150,12 +146,6 @@ export class UserFeatureAddComponent implements OnInit {
     this.apicall.get('/feature/list').subscribe({
       next: (result) => {
         this.features = (result as FeatureModel[]);
-      },
-      error: (e) => {
-        console.log('error', e);
-      },
-      complete: () => {
-        console.log('error');
       }
     });
   }
@@ -163,12 +153,6 @@ export class UserFeatureAddComponent implements OnInit {
     this.apicall.get('/user/list').subscribe({
       next: (result) => {
         this.users = (result as UserModel[]);
-      },
-      error: (e) => {
-        console.log('error', e);
-      },
-      complete: () => {
-        console.log('error');
       }
     });
   }

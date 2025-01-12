@@ -131,7 +131,6 @@ export class GroupRoleListAdvancedComponent extends ExtendableListComponent {
     super();
     route.params.subscribe(param => {
         this.groupId = param['groupId'] || 0;
-        console.log('child group id: ', this.groupId);
         if(this.state){
           this.refresh(this.state);
         }
@@ -168,7 +167,6 @@ export class GroupRoleListAdvancedComponent extends ExtendableListComponent {
   openClose(open: boolean) {
     this.open = open;
     if (open && this.selectedData.length > 0){
-      console.log(this.selectedData);
       const roles = _.difference(_.map(this.roles,'id'), _.map(this.selectedData,'id')); 
       this.deleteRecord({groupId: this.groupId, roles});
     }

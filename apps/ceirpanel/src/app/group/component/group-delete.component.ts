@@ -105,8 +105,6 @@ export class GroupDeleteComponent implements OnInit{
     readonly = true;
     parentGroupName = 'Not Available';
     ngOnInit(): void {
-        console.log('groups: ', this.groups);
         this.group = this.groups.length == 1 ? this.groups[0]: null;
-        console.log('group: ', this.group);
     }
 }

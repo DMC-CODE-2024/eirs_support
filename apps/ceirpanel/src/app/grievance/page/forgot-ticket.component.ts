@@ -1,3 +1,5 @@
+/* eslint-disable @angular-eslint/no-empty-lifecycle-method */
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
@@ -48,7 +50,7 @@ export class ForgotTicketComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log();
+    
   }
   onSubmit(userForm: NgForm) {
     if (userForm.invalid) {
@@ -60,7 +62,6 @@ export class ForgotTicketComponent implements OnInit {
   sendotp(){
     this.apicall.get(`/ticket/send-otp/${this.countryCode}${this.ticket.mobileNumber}`).subscribe({
       next: (_data) => {
-        console.log('message:', _data as any);
         if(_.isEqual((_data as any).message, 'sendOtpSuccess')) {
           this.router.navigate(['/verify-ticket-otp',this.ticket.mobileNumber], {queryParams:{lang: this.lang,header: this.header}});
         }

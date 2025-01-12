@@ -161,8 +161,6 @@ export class ModuleListComponent extends ExtendableListComponent {
   refresh(state: ClrDatagridStateInterface) {
     this.loading = true;
     this.state = state;
-    console.log('state: ', this.state);
-    console.log('multiselect: ', this.multiselect);
     this.cdRef.detectChanges();
     this.applyExisterFilter();
     this.apicall.post('/module/pagination', state).subscribe({

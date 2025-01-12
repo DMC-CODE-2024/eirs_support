@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { TranslateService } from '@ngx-translate/core';
@@ -135,7 +136,6 @@ export class NotificationComponent  extends ExtendableListComponent  {
     refresh(state: ClrDatagridStateInterface) {
       this.loading = true;
       this.state = state;
-      console.log('state: ', this.state);
   
       this.cdRef.detectChanges();
       this.apicall.post('/ticket/pagination', state).subscribe({
@@ -155,11 +155,10 @@ export class NotificationComponent  extends ExtendableListComponent  {
     deleteRecord(data: any) {
       this.apicall.delete(`/group/${data.id}`).subscribe({
         next: (result) => {
-          console.log('result:', result);
+          
         },
         error: (e) => this.loading = false,
         complete: () => {
-          console.log('completed');
           this.refresh(this.state);
         }
       });
@@ -173,7 +172,6 @@ export class NotificationComponent  extends ExtendableListComponent  {
     export(state: ClrDatagridStateInterface) {
       const st = _.cloneDeep(state);
       if(st && st.page) st.page.size = 1000;
-      console.log('inside export..');
       this.apicall.post('/group/pagination', st).subscribe({
         next: (result) => {
           const groups = (result as GroupList).content;

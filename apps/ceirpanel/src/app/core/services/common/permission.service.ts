@@ -41,12 +41,10 @@ export class PermissionService {
             //console.log('permission: ', JSON.stringify(permissions));
             resolve(permissions);
           } catch (error) {
-            console.log('Error: while call api');
             reject(null);
           }
         },
         error: (e) => {
-          console.log('error: ', e);
           reject(null);
         },
         complete: () => {
@@ -73,13 +71,7 @@ export class PermissionService {
     this.apiutil.get('/feature/permissions').subscribe({
       next: (data) => {
         //console.log(data);
-      },
-      error: (e) => {
-        console.log('error: ', e);
-      },
-      complete: () => {
-        console.log('log..');
-      },
+      }
     });
   }
 }

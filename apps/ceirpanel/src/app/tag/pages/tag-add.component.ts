@@ -115,9 +115,7 @@ export class TagAddComponent implements OnInit {
       this.apicall.get(`/tag/${this.id}`).subscribe({
         next: (data) => {
           this.tag = data as TagModel;
-        },
-        error: (e) => console.log(e),
-        complete: () => console.info('complete')
+        }
       });
     }
   }
@@ -135,16 +133,12 @@ export class TagAddComponent implements OnInit {
       
     observable.subscribe({
       next: (_data) => {
-        console.log('tag save: ', (_data as GroupModel).id);
         if (_.isEqual(_.get(_data, 'status'), 'failed')) {
           this.error = {type: 'danger', message: _.get(_data,'message')};
           setTimeout(() => this.error = null, 10000);
         } else {
           this.router.navigate(['/tag']);
         }
-      },
-      error: (e) => {
-        console.log(e);
       },
       complete: () => {
         setTimeout(() => this.transport.progress = false, 3000);

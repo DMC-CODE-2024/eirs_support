@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
@@ -44,7 +45,6 @@ export class RegisterTicketSuccessComponent implements OnInit, OnDestroy {
     public cnf: ConfigService
   ) {
     this.ticketId = this.route.snapshot.paramMap.get('ticketId') || '';
-    console.log('ticket id: ', this.ticketId);
     if(!this.authService.isLogin()) {
       this.apicall.get('/config/frontend').subscribe({
         next: (data:any) => {
@@ -58,7 +58,6 @@ export class RegisterTicketSuccessComponent implements OnInit, OnDestroy {
       if(!this.authService.isLogin()) {
         this.permissionService.addPermission('TICKET_SSYSADMIN');
       }
-      console.log('permissions: ', permissionService.getPermission('TICKET_SSYSADMIN')?.name);
     });
   }
   ngOnDestroy(): void {
@@ -78,15 +77,14 @@ export class RegisterTicketSuccessComponent implements OnInit, OnDestroy {
     this.config = this.qrcodeService.get(this.ticketId);    
   }
   onSubmit(userForm: NgForm) {
-    console.log(userForm);
+    
   }
   onOtpChange(event: unknown) {
-    console.log(event);
+    
   }
   onDownload(qrcode: any): void {
     qrcode.download(`${this.ticketId}.png`).subscribe((res: any) => {
-      // TO DO something!
-      console.log('download:', res);
+      
     });
   }
 }

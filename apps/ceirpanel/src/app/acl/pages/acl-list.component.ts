@@ -171,7 +171,6 @@ export class AclListComponent extends ExtendableListComponent {
   refresh(state: ClrDatagridStateInterface) {
     this.loading = true;
     this.state = state;
-    console.log('state: ', this.state);
     this.cdRef.detectChanges();
     this.applyExisterFilter();
     this.apicall.post('/acl/pagination', state).subscribe({
@@ -180,12 +179,6 @@ export class AclListComponent extends ExtendableListComponent {
         this.total = (result as AclList).totalElements;
         this.loading = false;
         this.cdRef.detectChanges();
-      },
-      error: (e) => {
-        console.log('error', e);
-      },
-      complete: () => {
-        console.log('error');
       }
     });
   }
@@ -196,8 +189,7 @@ export class AclListComponent extends ExtendableListComponent {
       next: (result) => {
         const modules = (result as AclList).content;
         this.exportService.acl(modules, `${_.now()}-acl`,{showLabels: true,headers: ["Created On", "Role Name","Feature", "Module"]});
-      },
-      complete: () => console.log('completed')
+      }
     });
   }
   deleteRecord(data: AclModel | Array<AclModel>) {

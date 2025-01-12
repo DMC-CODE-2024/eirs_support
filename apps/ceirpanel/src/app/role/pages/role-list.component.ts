@@ -153,7 +153,6 @@ export class RoleListComponent extends ExtendableListComponent{
   refresh(state: ClrDatagridStateInterface) {
     this.loading = true;
     this.state = state;
-    console.log('state: ', this.state);
     this.cdRef.detectChanges();
     this.apicall.post('/role/pagination', state).subscribe({
       next: (result) => {
@@ -161,12 +160,6 @@ export class RoleListComponent extends ExtendableListComponent{
         this.total = (result as RoleList).totalElements;
         this.loading = false;
         this.cdRef.detectChanges();
-      },
-      error: (e) => {
-        console.log('error', e);
-      },
-      complete: () => {
-        console.log('error');
       }
     });
   }

@@ -87,7 +87,6 @@ export class ApiUtilService {
     }
     
     private formatErrors(error: unknown) {
-        console.log('error:', error);
         return throwError(error);
     }
 }

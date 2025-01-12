@@ -210,7 +210,6 @@ export class UserAddComponent implements OnInit, AfterViewInit {
     this.cdref.detectChanges();
   }
   onSubmit(userForm: NgForm) {
-    console.log('invalid: ',userForm.invalid);
     if (userForm.invalid) { this.clrForm.markAsTouched(); return; }
     this.save();
   }
@@ -237,8 +236,6 @@ export class UserAddComponent implements OnInit, AfterViewInit {
     const observable: Observable<unknown> = this.page == PageType.edit ? this.userService.update(this.id, form) : this.userService.save(form);
 
     observable.subscribe((_data) => {
-      console.log('response: ', _data);
-      console.log('Matched: ', _.isEqual(_.get(_data, 'status'), 'failed'));
       if (_.isEqual(_.get(_data, 'status'), 'failed')) {
         this.error = {type: 'danger', message: _.get(_data,'message')};
         this.scrollToTop();
@@ -284,21 +281,18 @@ export class UserAddComponent implements OnInit, AfterViewInit {
   }
   onCountryChange($event: any){
     this.provinces = _.get(_.find(this.countries,{name: $event.target.value}),'provinces',[]);
-    console.log('country change proviences: ', $event.target.value);
   }
   onProvinceChange($event: any){
     this.districts = _.get(_.find(this.provinces,{id: Number($event.target.value)}),'districts',[]);
-    console.log('provience change districts: ', $event.target.value);
   }
   onDistrictChange($event: any){
     this.communes = _.get(_.find(this.districts,{id: Number($event.target.value)}),'communes',[]);
-    console.log('district change communes: ', $event.target.value);
   }
   onCommuneChange($event: any) {
     this.villages = _.get(_.find(this.communes,{id:Number($event.target.value)}),'villages',[]);
   }
   onVillageChange($event: any){
-    console.log('village: ', $event);
+    
   }
   onQuestionSelect($event: any) {
     const question = _.find(this.questions, {id: Number($event.target.value)});

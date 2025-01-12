@@ -68,7 +68,6 @@ export class VerifyTicketOtpComponent implements OnInit {
     countrycode = _.startsWith(countrycode, '+') ? countrycode.substring(1, countrycode.length) : countrycode;
     this.apicall.get(`/ticket/verify-otp/${countrycode}${this.ticket.mobileNumber}/${this.otp}`).subscribe({
       next: (_data) => {
-        console.log('message:', _data as any);
         if(_.isEqual((_data as any).message, 'verifyOtpSuccess')) {
           if(_.eq((_data as any).size, 1)) {
             this.router.navigate(['/ticket/ticket-thread',(_data as any).id], {queryParams:{lang: this.lang,header: this.header}});
@@ -114,7 +113,6 @@ export class VerifyTicketOtpComponent implements OnInit {
       this.otpCurrentLimit = this.otpCurrentLimit + 1;
       this.apicall.get(`/ticket/send-otp/${countrycode}${this.ticket.mobileNumber}`).subscribe({
         next: (_data) => {
-          console.log('message:', _data as any);
           if(_.isEqual((_data as any).message, 'sendOtpSuccess')) {
             this.transport.alert = {message: 'sendOtpSuccess',type: 'info'} as unknown;
             this.alert = {type: 'success', message: _.get(_data,'message')};

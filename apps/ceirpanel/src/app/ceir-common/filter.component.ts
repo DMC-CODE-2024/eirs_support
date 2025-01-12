@@ -201,7 +201,7 @@ import { ConfigService } from 'ng-config-service';
         //{ provide: NgbDateParserFormatter, useClass: NgbDateISOParserFormatter }
     ]
 })
-export class FilterComponent implements OnInit, AfterViewInit {
+export class FilterComponent implements AfterViewInit {
     
     @ViewChild(ClrForm, { static: true }) public clrForm!: ClrForm;
     @Input() openFilter = false;
@@ -255,9 +255,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
     max = `${this.current.getFullYear()}-${this.month}-${this.current.getDate()}`;
     min = this.max;
     
-    ngOnInit(): void {
-        console.log();
-    }
     ngAfterViewInit(): void {
         this.clrlabel.nativeElement.querySelectorAll('.clr-control-label').forEach(
             (question: any) => {
@@ -282,7 +279,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
         this.filter.emit(this.filterModel);
     }
     toSystemDate(date: NgbDateStruct) {
-        console.log('date:',date);
         return `${date}`;
     }
     onStart(startDate: Date) {

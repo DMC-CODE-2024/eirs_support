@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
@@ -52,7 +53,6 @@ export class TicketListComponent extends ExtendableListComponent implements OnIn
     this.filterModel.raisedBy = this.raisedBy;
     this.filterModel.mobileNumber = this.msisdn;
     this.filterModel.dashboard = this.dashboard;
-    console.log('permission: ', this.permission.getPermissions());
   }
   
   refresh(state: ClrDatagridStateInterface) {
@@ -79,11 +79,10 @@ export class TicketListComponent extends ExtendableListComponent implements OnIn
   deleteRecord(data: any) {
     this.apicall.delete(`/group/${data.id}`).subscribe({
       next: (result) => {
-        console.log('result:', result);
+        
       },
       error: (e) => this.loading = false,
       complete: () => {
-        console.log('completed');
         this.refresh(this.state);
       }
     });

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { NgImageSliderComponent } from 'ng-image-slider';
@@ -124,7 +126,7 @@ export class CeirImageViewerComponent implements OnInit {
     }, 10);
   }
   doubleTap() {
-    console.log('double tap');
+    
   }
   imageOnClick(index: any) {
     this.clickedImgIndex = index;
@@ -132,15 +134,15 @@ export class CeirImageViewerComponent implements OnInit {
   }
 
   lightboxClose() {
-    console.log('lightbox close')
+    
   }
 
   arrowOnClick(event: any) {
-    console.log('arrow click event', event);
+    
   }
 
   lightboxArrowClick(event: any) {
-    console.log('popup arrow click', event);
+    
   }
 
   prevImageClick() {

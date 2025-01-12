@@ -29,7 +29,6 @@ export class TicketService {
     this.transport.progress = true;
     this.apicall.post(`/ticket/save/note`, formData).subscribe({
       next: (_data) => {
-        console.log(_data);
         this.transport.alert = {
           message: 'registerTicketSuccess',
           type: 'info',

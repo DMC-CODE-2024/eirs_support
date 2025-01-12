@@ -59,10 +59,8 @@ export class SystemConfigListComponent implements OnInit {
     '$event.target.innerHeight',
   ])
   onResize(width: number, height: number): void {
-    console.log('width: ', width, ' height: ', height);
     const top = this.frameElement?.nativeElement?.offsetTop;
     const left = this.frameElement?.nativeElement?.offsetLeft;
-    console.log('top: ', top, ' left: ', left);
     this.containerWidth = Math.max(width - left, this.containerMinWidth);
     this.containerHeight = Math.max(height - top, this.containerMinHeight);
   }

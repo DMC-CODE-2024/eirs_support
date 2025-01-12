@@ -18,7 +18,9 @@
               }
             ]
           }
-        ]
+        ],
+        "@angular-eslint/no-empty-lifecycle-method": "off",
+        "@angular-eslint/no-empt-fuction": "off"
       }
     },
     {

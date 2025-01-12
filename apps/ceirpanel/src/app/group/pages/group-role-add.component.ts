@@ -87,11 +87,7 @@ export class GroupRoleAddComponent implements OnInit {
   
       observable.subscribe({
         next: (_data) => {
-          console.log('role save: ', (_data as RoleModel).id);
           return this.router.navigate(['/group-role']);
-        },
-        error: (e) => {
-          console.log(e);
         },
         complete: () => {
           setTimeout(() => this.transport.progress = false, 3000);
@@ -102,12 +98,6 @@ export class GroupRoleAddComponent implements OnInit {
       this.apicall.get('/role/list').subscribe({
         next: (result) => {
           this.roles = (result as RoleModel[]);
-        },
-        error: (e) => {
-          console.log('error', e);
-        },
-        complete: () => {
-          console.log('error');
         }
       });
     }
@@ -115,12 +105,6 @@ export class GroupRoleAddComponent implements OnInit {
       this.apicall.get('/group/list').subscribe({
         next: (result) => {
           this.groups = (result as GroupModel[]);
-        },
-        error: (e) => {
-          console.log('error', e);
-        },
-        complete: () => {
-          console.log('error');
         }
       });
     }

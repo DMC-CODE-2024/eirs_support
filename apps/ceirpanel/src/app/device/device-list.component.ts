@@ -42,7 +42,6 @@ export class DeviceListComponent {
       this.apicall.get('/link/findByUrl/device').subscribe({  
         next: (data:any) => {
           this.url = data.iframeUrl;
-          console.log('iframe url: ', this.url);
           this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.url);
         }
       });
@@ -50,7 +49,6 @@ export class DeviceListComponent {
   refresh(state: ClrDatagridStateInterface) {
     this.loading = true;
     this.state = state;
-    console.log('state: ', this.state);
     this.cdRef.detectChanges();
     this.deviceService.pageView(state).subscribe({
       next: (result) => {
@@ -58,12 +56,6 @@ export class DeviceListComponent {
         this.total = (result as DeviceList).totalElements;
         this.loading = false;
         this.cdRef.detectChanges();
-      },
-      error: (e) => {
-        console.log('error', e);
-      },
-      complete: () => {
-        console.log('error');
       }
     });
   }

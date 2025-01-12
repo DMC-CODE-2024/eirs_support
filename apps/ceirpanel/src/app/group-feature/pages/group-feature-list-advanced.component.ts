@@ -130,7 +130,6 @@ export class GroupFeatureListAdvancedComponent extends ExtendableListComponent {
     super();
     route.params.subscribe(param => {
         this.groupId = param['groupId'] || 0;
-        console.log('child group id: ', this.groupId);
         if(this.state){
           this.refresh(this.state);
         }
@@ -151,7 +150,6 @@ export class GroupFeatureListAdvancedComponent extends ExtendableListComponent {
     this.apicall.post('/group/pagination', {page:{from:0,to:9,size:10,current:1},filters: this.state.filters}).subscribe({
       next: (result) => {
         this.features = (result as UserList).content[0].features;
-        console.log('features: ', this.features);
         this.inventory.reset();
         this.inventory.all =  (result as UserList).content[0].features;
         this.inventory.sort(state.sort as { by: string; reverse: boolean })
@@ -168,7 +166,6 @@ export class GroupFeatureListAdvancedComponent extends ExtendableListComponent {
   openClose(open: boolean) {
     this.open = open;
     if (open && this.selectedData.length > 0){
-      console.log(this.selectedData);
       const features = _.difference(_.map(this.features,'id'), _.map(this.selectedData,'id')); 
       this.deleteRecord({groupId: this.groupId, features});
     }

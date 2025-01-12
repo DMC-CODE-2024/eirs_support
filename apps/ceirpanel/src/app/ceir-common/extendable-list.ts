@@ -39,7 +39,6 @@ export class ExtendableListComponent {
   }
 
   applyExisterFilter(){
-    console.log('existing filter: ', this.orgFilter)
     if(!_.isEmpty(this.orgFilter))this.applyFilter(this.orgFilter);
   }
 

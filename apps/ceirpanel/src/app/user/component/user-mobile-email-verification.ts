@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
@@ -56,11 +58,10 @@ export class UserMobileEmailVerificationComponent implements OnInit, AfterViewIn
     this.msisdn = this.route.snapshot.paramMap.get('msisdn') || '';
     this.route.queryParams.subscribe((queryParams) => {
         this.url = queryParams['url'] || '/user';
-        console.log('complete url: ', this.url);
     });
   }
   ngAfterViewInit(): void {
-    console.log('Method not implemented.');
+    
   }
 
   ngOnInit(): void {
@@ -145,7 +146,6 @@ export class UserMobileEmailVerificationComponent implements OnInit, AfterViewIn
                 this.transport.alert = {type: 'success', message: _.get(_data,'body.message')};
                 setTimeout(() => this.transport.progress = false, 3000);
                 setTimeout(() => this.alert = null, 10000);
-                console.log('url: ', this.url);
                 setTimeout(() => this.router.navigate([this.url]), 2000);
             }
         }
@@ -212,7 +212,6 @@ export class UserMobileEmailVerificationComponent implements OnInit, AfterViewIn
   
   public navigaterUrl() {
     const menu = JSON.parse(localStorage.getItem('menu') || '/user');
-    console.log('cache menu: ', menu, _.sample(menu as any[]).link);
     return _.sample(menu as any[]).link;
   }
 }

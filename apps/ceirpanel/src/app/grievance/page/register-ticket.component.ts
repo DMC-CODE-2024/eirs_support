@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DOCUMENT } from '@angular/common';
@@ -97,7 +98,6 @@ export class RegisterTicketComponent implements OnInit {
     translate.get('message.ticketFileLimit').subscribe((res: string) => this.ticketFileLimit = res);
     this.apicall.get('/config/frontend').subscribe({  
       next: (data:any) => {
-        console.log('config: ', data);
         this.siteKey = data.siteKey;
         this.mobileRegex = data.mobileRegex;
       }
@@ -106,7 +106,6 @@ export class RegisterTicketComponent implements OnInit {
       this.apicall.get('/acl/isAllowInYourRegion').subscribe({
         next: (data:any) => {
           if (_.isEqual(_.get(data, 'allow'), false)) {
-            console.log('access not allowed');
             this.router.navigate(['/region-denied']);
           }
         }
@@ -140,15 +139,12 @@ export class RegisterTicketComponent implements OnInit {
     if (this.page === PageType.view) {
       this.readonly = true;
     }
-    console.log('page: ', this.path);
     this.findCategories();
     if (this.id > 0) {  
       this.apicall.get(`/ticket/${this.id}`).subscribe({
         next: (data) => {
           this.ticket = data as TicketModel;
-        },
-        error: (e) => console.log(e),
-        complete: () => console.info('complete'),
+        }
       });
     }
     this.findAddressLine();
@@ -158,7 +154,6 @@ export class RegisterTicketComponent implements OnInit {
     this.document.getElementsByClassName('content-area')[0].scrollTo(0,0);
   }
   onSubmit(userForm: NgForm) {
-    console.log('submit form: ', userForm.invalid);
     if (userForm.invalid) {
       this.clrForm.markAsTouched();
       return;
@@ -271,7 +266,7 @@ export class RegisterTicketComponent implements OnInit {
     };
   }
   resolved(captchaResponse: string) {
-    console.log(`Resolved captcha with response: ${captchaResponse}`);
+   
   }
   findAddressLine() {
     this.apicall.get('/country/list').subscribe({
@@ -298,6 +293,5 @@ export class RegisterTicketComponent implements OnInit {
     const category = _.find(this.categories, {id: $event.target.value});
     this.ticket.categoryId = _.get(category,'id',0);
     this.ticket.categoryName = _.get(category,'name','');
-    console.log('categoryId:', this.ticket.categoryId, ' name: ', this.ticket.categoryName);
   }
 }

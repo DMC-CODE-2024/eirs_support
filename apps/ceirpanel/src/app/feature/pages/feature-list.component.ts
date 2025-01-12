@@ -160,8 +160,7 @@ export class FeatureListComponent extends ExtendableListComponent {
   refresh(state: ClrDatagridStateInterface) {
     this.loading = true;
     this.state = state;
-    console.log('state: ', this.state);
-
+    
     this.cdRef.detectChanges();
     this.apicall.post('/feature/pagination', state).subscribe({
       next: (result) => {

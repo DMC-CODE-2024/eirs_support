@@ -118,9 +118,7 @@ export class ModuleAddComponent implements OnInit {
       this.apicall.get(`/module/${this.id}`).subscribe({
         next: (data) => {
           this.module = data as ModuleMangeModel;
-        },
-        error: (e) => console.log(e),
-        complete: () => console.info('complete')
+        }
       });
     }
   }
@@ -136,11 +134,7 @@ export class ModuleAddComponent implements OnInit {
       
     observable.subscribe({
       next: (_data) => {
-        console.log('group save: ', (_data as GroupModel).id);
         return this.router.navigate(['/module']);
-      },
-      error: (e) => {
-        console.log(e);
       },
       complete: () => {
         setTimeout(() => this.transport.progress = false, 3000);
@@ -151,12 +145,6 @@ export class ModuleAddComponent implements OnInit {
     this.apicall.get('/tag/list').subscribe({
       next: (result) => {
         this.tags = (result as TagModel[]);
-      },
-      error: (e) => {
-        console.log('error', e);
-      },
-      complete: () => {
-        console.log('error');
       }
     });
   }

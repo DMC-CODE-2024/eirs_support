@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
@@ -224,9 +225,7 @@ export class FeatureAddComponent implements OnInit {
           }
           this.feature.link = _.get(_.find(this.links,{url: this.feature.link}),'linkName',this.feature.link);
           this.feature.logo = _.get(_.find(this.links,{icon: this.feature.link}),'icon',"");
-        },
-        error: (e) => console.log(e),
-        complete: () => console.info('complete')
+        }
       });
     }
   }
@@ -246,11 +245,7 @@ export class FeatureAddComponent implements OnInit {
 
     observable.subscribe({
       next: (_data) => {
-        console.log('role save: ', (_data as FeatureModel).id);
         return this.router.navigate(['/feature']);
-      },
-      error: (e) => {
-        console.log(e);
       },
       complete: () => {
         setTimeout(() => this.transport.progress = false, 3000);
@@ -269,12 +264,6 @@ export class FeatureAddComponent implements OnInit {
     this.apicall.get('/category/list').subscribe({
       next: (result) => {
         this.categories = (result as []);
-      },
-      error: (e) => {
-        console.log('error', e);
-      },
-      complete: () => {
-        console.log('error');
       }
     });
   }
@@ -282,12 +271,6 @@ export class FeatureAddComponent implements OnInit {
     this.apicall.get('/module/list').subscribe({
       next: (result) => {
         this.modules = (result as ModuleMangeModel[]);
-      },
-      error: (e) => {
-        console.log('error', e);
-      },
-      complete: () => {
-        console.log('error');
       }
     });
   }
