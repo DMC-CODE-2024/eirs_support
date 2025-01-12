@@ -67,7 +67,6 @@ export class JwtService {
   }
 
   saveToken(user: UserModel, token: string) {
-    console.log('user: ', user);
     localStorage.setItem(`${_token}userId`,user.id+"");
     localStorage.setItem(`${_token}jwtToken`, token);
     localStorage.setItem(`${_token}username`, user.userName);
@@ -76,7 +75,6 @@ export class JwtService {
   }
 
   destroyToken() {
-    console.log('remove token');
     localStorage.removeItem(`${_token}jwtToken`);
     localStorage.removeItem(`${_token}username`);
     localStorage.removeItem(`${_token}userId`);

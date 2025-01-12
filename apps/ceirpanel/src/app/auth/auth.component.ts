@@ -60,7 +60,6 @@ export class AuthComponent {
         this.siteKey = data.siteKey;
       }
     });
-    console.log('localhost: ', this.document.location.host);
     this.isLocalhost = this.document.location.host.includes('localhost');
     this.route.queryParams.subscribe(queryParams => {
       this.msisdn = queryParams['msisdn'] || '';
@@ -94,7 +93,6 @@ export class AuthComponent {
                     this.transport.loader = true;
                     this.permissionService.load().then(() => {
                       if(_.isEmpty(this.msisdn)) {
-                        console.log('url to redirect: ', this.navigaterUrl(menu as any[]));
                         setTimeout(() => {
                           this.router.navigate([this.navigaterUrl(menu as any[])]);
                         }, 2000);

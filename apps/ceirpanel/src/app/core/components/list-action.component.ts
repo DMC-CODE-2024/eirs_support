@@ -35,7 +35,7 @@ export enum ModalSize {
   `,
   styles: [``],
 })
-export class ListActionComponent implements OnInit {
+export class ListActionComponent {
   @Input() open = false;
   @Input() feature!:string;
   @Input() public state!: ClrDatagridStateInterface;
@@ -47,10 +47,6 @@ export class ListActionComponent implements OnInit {
 
   constructor(private route: ActivatedRoute) {
     this.isTicket = this.route.snapshot.url[0].path.includes('ticket');
-  }
-
-  ngOnInit(): void {
-    console.log('error');
   }
 
 }

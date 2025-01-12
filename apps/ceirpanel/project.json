@@ -10,6 +10,9 @@
       "executor": "@angular-devkit/build-angular:browser",
       "outputs": ["{options.outputPath}"],
       "options": {
+        "allowedCommonJsDependencies": [
+          "lodash","ngx-csv/ngx-csv","qr-code-styling"
+        ],
         "outputPath": "dist/apps/ceirpanel",
         "index": "apps/ceirpanel/src/index.html",
         "main": "apps/ceirpanel/src/main.ts",

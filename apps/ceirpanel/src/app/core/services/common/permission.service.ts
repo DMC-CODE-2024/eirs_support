@@ -50,7 +50,6 @@ export class PermissionService {
           reject(null);
         },
         complete: () => {
-          console.log('log..');
           reject(null);
         },
       });  

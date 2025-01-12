@@ -2,12 +2,11 @@
   "name": "@ceirpanel/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {
-    "postinstall": "ngcc"
-  },
+  "scripts": {},
   "private": true,
   "dependencies": {
     "@angular/animations": "~16.1.0",
+    "@angular/cdk": "^16.1.6",
     "@angular/common": "~16.1.0",
     "@angular/compiler": "~16.1.0",
     "@angular/core": "~16.1.0",
@@ -25,9 +24,11 @@
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
     "@nx/angular": "16.5.0",
+    "@popperjs/core": "^2.11.8",
     "@sebgroup/ng-magic-iframe": "^1.0.2",
     "angular-dual-listbox": "^7.0.0",
     "angular-resize-event": "^3.2.0",
+    "angular2-uuid": "^1.1.1",
     "bootstrap": "^5.3.2",
     "bootstrap-icons": "^1.10.5",
     "bulma": "^0.9.4",

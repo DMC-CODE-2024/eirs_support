@@ -205,7 +205,6 @@ export class TreeSidebarComponent implements OnInit {
   ) {
     this.route.queryParams.subscribe((queryParams) => {
       this.hidesidebar = queryParams['hidesidebar'] || 'no';
-      console.log('Hide sidebar: ', queryParams['hidesidebar'] || 'no');
     });
   }
   ngOnInit(): void {
@@ -220,13 +219,10 @@ export class TreeSidebarComponent implements OnInit {
     this.sidebarWidth = event.newRect.width;
   }
   permissionAuth(role: string) {
-    console.log('role: ', role);
     return false;
   }
   getSVGImageUrl(image:string) {
     const base64string = window.btoa(image);
-    console.log('image: ', image);
-    console.log('base64: ', base64string);
     return this.domSanitizer.bypassSecurityTrustResourceUrl(
       `data:image/svg+xml;base64,${base64string}`
     );

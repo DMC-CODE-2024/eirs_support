@@ -115,7 +115,6 @@ export class CeirHeaderComponent implements OnInit{
         });
         this.url = val.url;
         this.currenturl = this.router.url.split('?')[0];
-        console.log('url changed: ', this.url);
       }
     });
     this.logo = this.config.get('logo') || 'assets/images/logo.png';
@@ -174,12 +173,10 @@ export class CeirHeaderComponent implements OnInit{
       //console.log('key: ',key);
       this.translate.get(key).subscribe((t) => {
         this.headertitle = t;
-        console.log('title:- ', t);
       });
     }
   }
   changeSiteLanguage(localeCode: string): void {
-    console.log('locale: ', localeCode);
     this.localeCode = localeCode;
     const selectedLanguage = this.languageList
       .find((language) => language.code === localeCode)
@@ -188,8 +185,6 @@ export class CeirHeaderComponent implements OnInit{
       this.siteLanguage = selectedLanguage;
       this.translate.use(localeCode);
     }
-    const currentLanguage = this.translate.currentLang;
-    console.log('currentLanguage', currentLanguage);
     this.updateLanguage();
     
   }
