@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 import { NgxPermissionsService, NgxRolesService } from 'ngx-permissions';
 import { ApiUtilService } from './api.util.service';
 import { MenuTransportService } from './menu.transport.service';
+import { JwtService } from './jwt.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,8 @@ export class PermissionService {
     public permission: NgxPermissionsService,
     private roleService: NgxRolesService,
     private apiutil: ApiUtilService,
-    public menuTransport: MenuTransportService
+    public menuTransport: MenuTransportService,
+    private jwtService: JwtService
   ) {}
   public load() {
     return new Promise((resolve, reject) => {
@@ -37,8 +39,7 @@ export class PermissionService {
               });
               permissions.push(acl?.tag?.toUpperCase());
             });
-            localStorage.setItem('permissions', JSON.stringify(permissions));
-            //console.log('permission: ', JSON.stringify(permissions));
+            localStorage.setItem(`${this.jwtService.getWindow()}permissions`, JSON.stringify(permissions));
             resolve(permissions);
           } catch (error) {
             reject(null);
@@ -55,9 +56,8 @@ export class PermissionService {
   }
   
   public loadPermissions() {
-    const obj = localStorage.getItem('permissions') || `[]`;
-    const menu = localStorage.getItem('menu') || '';
-    //console.log('permissions from cache:- ', obj);
+    const obj = localStorage.getItem(`${this.jwtService.getWindow()}permissions`) || `[]`;
+    const menu = localStorage.getItem(`${this.jwtService.getWindow()}menu`) || '';
     if(!_.isEmpty(obj)) {
       const permissions: string[] = JSON.parse(obj);
       permissions.forEach((p) => this.permission.addPermission(p));

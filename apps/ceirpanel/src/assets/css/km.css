@@ -1,50 +1,32 @@
-@import url('https://fonts.googleapis.com/css2?family=Dangrek&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Dangrek:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic|Nunito:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic|DM+Sans:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic|Noto+Sans+Khmer:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic|Kantumruy+Pro:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic&display=swap&ver=6.3.2');
-
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,300&display=swap');
 span.logo-lg {
-    /* font-family: 'Dangrek', sans-serif !important; */
-     font-family: 'Noto Sans Khmer', sans-serif !important;
+   font-family: "Nunito Sans",sans-serif !important;
 }
 
 * {
-	 font-family: 'Noto Sans Khmer', sans-serif !important;
-    /* font-family: 'Dangrek', sans-serif !important; */
+   font-family: "Nunito Sans",sans-serif !important;
 }
 
 .mb-4 h1 {
-    /*font-family: 'Dangrek', sans-serif !important;*/
-    color: var(--e-global-color-text);
-    font-family: "Noto Sans Khmer", Sans-serif !important;;
-    font-size: 24px;
-    font-weight: 600;
-    line-height: 30px;
+   font-family: "Nunito Sans",sans-serif !important;
 }
 
 .mb-4 h2 {
-    /*font-family: 'Dangrek', sans-serif !important;*/
-    font-family: "Noto Sans Khmer", Sans-serif !important;
+   font-family: "Nunito Sans",sans-serif !important;
 }
 
 .mb-4 h3 {
-    font-family: 'Noto Sans Khmer', sans-serif !important;
+   font-family: "Nunito Sans",sans-serif !important;
 }
 
 .p-4 label {
-   /*  font-family: 'Dangrek', sans-serif !important; */
-   font-family: 'Noto Sans Khmer', sans-serif !important;
-    
+   font-family: "Nunito Sans",sans-serif !important;
 }
 
 .btn-block {
-    /* font-family: 'Noto Sans Khmer',sans-serif !important; */
-    font-family: 'Noto Sans Khmer', sans-serif !important;
+   font-family: "Nunito Sans",sans-serif !important;
 }
 
 .footer {
-    font-family: 'Noto Sans Khmer',sans-serif !important;
-}
-.Validation-addon {
-    font-weight: 500;
-    font-family: 'Noto Sans Khmer', sans-serif !important;
+   font-family: "Nunito Sans",sans-serif !important;
 }

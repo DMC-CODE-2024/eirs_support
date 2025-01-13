@@ -13,6 +13,7 @@ import { SimpleTimer } from 'ng2-simple-timer';
 import { UserModel } from '../../core/models/user.model';
 import { ApiUtilService } from '../../core/services/common/api.util.service';
 import { MenuTransportService } from '../../core/services/common/menu.transport.service';
+import { JwtService } from '../../core/services/common/jwt.service';
 
 @Component({
   selector: 'ceirpanel-email-verification',
@@ -50,7 +51,9 @@ export class UserMobileEmailVerificationComponent implements OnInit, AfterViewIn
     private router: Router,
     private transport: MenuTransportService,
     public config: ConfigService,
-    public st: SimpleTimer) {
+    public st: SimpleTimer,
+    private jwtService: JwtService
+  ) {
     this.allowedOtpLength = this.config.get('allowedOtpLength') || 6;
     this.otpMaxResendLimit = this.config.get('otpMaxResendLimit') || 3;
     this.userId = this.route.snapshot.paramMap.get('id') || '';
@@ -211,7 +214,7 @@ export class UserMobileEmailVerificationComponent implements OnInit, AfterViewIn
   }
   
   public navigaterUrl() {
-    const menu = JSON.parse(localStorage.getItem('menu') || '/user');
+    const menu = JSON.parse(localStorage.getItem(`${this.jwtService.getWindow()}menu`) || '/user');
     return _.sample(menu as any[]).link;
   }
 }

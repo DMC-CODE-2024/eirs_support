@@ -46,7 +46,7 @@ import { ActivatedRoute, Router } from '@angular/router';
                 <!--ng-template [ngxPermissionsOnly]="[p.tag]"-->
                   <div *ngIf="p.link; then link else icon"></div>
                   <ng-template #link>
-                    <a [routerLink]="[p.link]" class="clr-treenode-link text-truncate" style="text-decoration: none;width: 95%;">
+                    <a [routerLink]="[p.link]" [queryParams]="{w: windowname}" class="clr-treenode-link text-truncate" style="text-decoration: none;width: 95%;">
                       <div *ngIf="p.url; then img else nimg"></div>
                       <ng-template #img>
                         <img [src]="p.url" alt="" class="img-fluid" style="height:30px;width:30px;">
@@ -57,7 +57,7 @@ import { ActivatedRoute, Router } from '@angular/router';
                   </ng-template>
                   <ng-template #icon><cds-icon [attr.shape]="p?.icon" size="18"></cds-icon>{{ p?.name }}</ng-template>
                   <clr-tree-node *ngFor="let c of p.child">
-                      <a [routerLink]="[c.link]" class="clr-treenode-link btn text-capitalize text-truncate" style="width: 95%;">
+                      <a [routerLink]="[c.link]" [queryParams]="{w: windowname}" class="clr-treenode-link btn text-capitalize text-truncate" style="width: 95%;">
                         <cds-icon [attr.shape]="c?.icon" class="is-solid text-white" size="18" style="height:30px;width:30px;"></cds-icon>{{ c?.name }}
                       </a>
                   </clr-tree-node>
@@ -192,6 +192,7 @@ export class TreeSidebarComponent implements OnInit {
   subscription!: Subscription;
   copyright = {currentYear:'', company:''};
   hidesidebar = 'no';
+  windowname = window.name;
   constructor(
     private apiutil: ApiUtilService, private config: ConfigService,
     public menuTransport: MenuTransportService,
@@ -206,6 +207,7 @@ export class TreeSidebarComponent implements OnInit {
     this.route.queryParams.subscribe((queryParams) => {
       this.hidesidebar = queryParams['hidesidebar'] || 'no';
     });
+    
   }
   ngOnInit(): void {
     this.profileImg = this.config.get('profileImg');

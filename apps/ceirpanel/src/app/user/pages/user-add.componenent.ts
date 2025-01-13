@@ -292,7 +292,7 @@ export class UserAddComponent implements OnInit, AfterViewInit {
     this.villages = _.get(_.find(this.communes,{id:Number($event.target.value)}),'villages',[]);
   }
   onVillageChange($event: any){
-    
+    console.log('village: ', $event);
   }
   onQuestionSelect($event: any) {
     const question = _.find(this.questions, {id: Number($event.target.value)});

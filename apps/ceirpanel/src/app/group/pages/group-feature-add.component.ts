@@ -47,8 +47,7 @@ export class GroupFeatureAddComponent implements OnInit {
   groups: Array<GroupModel> = [];
   public open = false;
   public cancel = false;
-  public format = { add: 'Add', remove: 'Remove', all: 'All', none: 'None',
-  direction: DualListComponent.LTR, draggable: true, locale: 'us' };
+  public format = { add: 'add', remove: 'Remove', all: 'All', none: 'None', direction: DualListComponent.LTR, draggable: true };
 
   constructor(
     private cdref: ChangeDetectorRef,

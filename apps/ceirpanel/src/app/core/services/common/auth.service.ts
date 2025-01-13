@@ -39,20 +39,20 @@ export class AuthService {
     }
   }
   public isLogin(){
-    return JSON.parse(localStorage.getItem(this._loginKey) || 'false');
+    return JSON.parse(localStorage.getItem(`${this.jwtService.getWindow()}${this._loginKey}`) || 'false');
   }
   public setAuth(user: UserModel, token: string): UserModel {
     this.jwtService.saveToken(user, token);
     this.currentUserSubject.next(user);
     this.isAuthenticatedSubject.next(true);
-    localStorage.setItem(this._loginKey, 'true');
+    localStorage.setItem(`${this.jwtService.getWindow()}${this._loginKey}`, 'true');
     return user;
   }
   purgeAuth(error: unknown) {
     this.jwtService.destroyToken();
     this.currentUserSubject.next({} as UserModel);
     this.isAuthenticatedSubject.next(false);
-    localStorage.setItem(this._loginKey, 'false');
+    localStorage.setItem(`${this.jwtService.getWindow()}${this._loginKey}`, 'false');
     return error;
   }
   login(user: UserModel){

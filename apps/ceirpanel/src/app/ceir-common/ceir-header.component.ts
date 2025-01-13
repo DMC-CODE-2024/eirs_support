@@ -134,7 +134,7 @@ export class CeirHeaderComponent implements OnInit{
     });
     const iframelogin =  this.jwtService.getIframeLogin();
     this.route.queryParams.subscribe((queryParams) => {
-      this.lang = queryParams['lang'] || _.isEmpty(iframelogin) || _.isUndefined(iframelogin.lang) ? queryParams['lang'] || 'us': iframelogin.lang;
+      this.lang = queryParams['lang'] || _.isEmpty(iframelogin) || _.isUndefined(iframelogin.lang) ? queryParams['lang'] || localStorage.getItem('lang') || 'us': iframelogin.lang;
       this.type = queryParams['type'] || _.isEmpty(iframelogin) || _.isUndefined(iframelogin.type) ? queryParams['type'] || 0: iframelogin.type;
       this.header = queryParams['header'] || _.isEmpty(iframelogin) || _.isUndefined(iframelogin.header) ? queryParams['header'] || 'yes': iframelogin.header;
       this.changeSiteLanguage(this.lang);
@@ -185,6 +185,7 @@ export class CeirHeaderComponent implements OnInit{
       this.siteLanguage = selectedLanguage;
       this.translate.use(localeCode);
     }
+    localStorage.setItem('lang', this.localeCode);
     this.updateLanguage();
     
   }
@@ -199,7 +200,7 @@ export class CeirHeaderComponent implements OnInit{
     this.apiutil.get('/api/auth/logout').subscribe({
       complete: () => {
         this.authService.purgeAuth('logout');
-        localStorage.removeItem('permissions');
+        localStorage.removeItem(`${this.jwtService.getWindow()}permissions`);
         this.router.navigate(['/']);
       },
     });

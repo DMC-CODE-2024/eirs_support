@@ -14,13 +14,13 @@ export enum ModalSize {
   template: `
   <clr-modal [(clrModalOpen)]="open" [clrModalStaticBackdrop]="false" [clrModalSize]="modalSize.large" [clrModalClosable]="false">
     <h3 class="modal-title">
-        Reset Password
+        {{ "user.pageTitle.reset" | translate }}
     </h3>
     <div class="modal-body">
         <clr-alert [clrAlertClosable]="false" [clrAlertSizeSmall]="true" [clrAlertType]="'warning'" class="mb-2">
             <clr-alert-item class="">
                 <span class="alert-text">
-                    Are you sure you want to reset the password for these users?
+                    {{ "prompt.resetpass" | translate }}
                 </span>
             </clr-alert-item>
         </clr-alert>
@@ -28,7 +28,7 @@ export enum ModalSize {
         <ng-template #singleselect>
             <form clrStepper clrForm clrLayout="vertical" class="m-0 p-0" #f="ngForm" #singleselect>
                 <fieldset [disabled]="true" class="scheduler-border">
-                    <legend class="scheduler-border">User Information</legend>
+                    <legend class="scheduler-border">{{ "user.pageTitle.title" | translate }}</legend>
                     <div class="clr-row m-0 p-0">
                         <div class="clr-col-4">
                             <div class="form-group">
@@ -64,9 +64,9 @@ export enum ModalSize {
             <table class="table table-compact m-0 p-0 mt-1">
                 <thead>
                     <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>User Name</th>
+                        <th>{{ "datalist.firstName" | translate }}</th>
+                        <th>{{ "datalist.lastName" | translate }}</th>
+                        <th>{{ "datalist.userName" | translate }}</th>
                     </tr>
                 </thead>
                 <tbody>

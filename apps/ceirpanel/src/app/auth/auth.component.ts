@@ -44,7 +44,7 @@ export class AuthComponent {
       const iframelogin: any = this.jwtService.getIframeLogin();
       if (!_.isEmpty(iframelogin) && !_.isEmpty(iframelogin.token)) {
         this.authService.purgeAuth('logout');
-        localStorage.removeItem('permissions');
+        localStorage.removeItem(`${this.jwtService.getWindow()}permissions`);
         this.jwtService.removeIFrameLogin();
       }
     this.apiutil.get('/api/auth/isLogin').subscribe({
@@ -75,7 +75,7 @@ export class AuthComponent {
       next: (data) => {
         this.jwtService.removeIFrameLogin();
         if (_.isEqual(_.get(data, 'apiResult'), 'success')) {
-          localStorage.removeItem('permissions');
+          localStorage.removeItem(`${this.jwtService.getWindow()}permissions`);
           const user: UserModel = data as UserModel;
           this.authService.setAuth(user, user.token);
           this.transport.loader = false;
@@ -89,7 +89,7 @@ export class AuthComponent {
                 this.apiutil.loadMenu('vivesha').subscribe({
                   next: (menu) => {
                     this.transport.menu = menu;
-                    localStorage.setItem('menu', JSON.stringify(menu));
+                    localStorage.setItem(`${this.jwtService.getWindow()}menu`, JSON.stringify(menu));
                     this.transport.loader = true;
                     this.permissionService.load().then(() => {
                       if(_.isEmpty(this.msisdn)) {

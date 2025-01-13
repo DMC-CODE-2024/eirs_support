@@ -39,7 +39,6 @@ export class LoginGuard {
             next: (data) => {
               if (_.isEqual(_.get(data, 'login'), false)) {
                 this.authService.purgeAuth('logout');
-                localStorage.removeItem('permissions');
                 this.router.navigate(['/']);
                 observer.next(true);
               } else {

@@ -37,14 +37,15 @@ import { TagModule } from './tag/tag.module';
 import { UserFeatureModule } from './user-feature/group-feature.module';
 import { UserGroupModule } from './user-group/user-group.module';
 import { UserRoleModule } from './user-role/user-role.module';
-
-
+import { JwtService } from './core/services/common/jwt.service';
+import { UUID } from 'angular2-uuid';
 
 export function appInit(apiutil: ApiUtilService) {
   return () => apiutil.loadMenu('vivesha');
 }
-export function initPermission(permission: NgxPermissionsService) {
-  const obj = localStorage.getItem('permissions');
+export function initPermission(permission: NgxPermissionsService, jwtService: JwtService) {
+  console.log('jwt window: ', jwtService.getWindow());
+  const obj = localStorage.getItem(`${jwtService.getWindow()}permissions`);
   if (obj) {
     const permissions: string[] = JSON.parse(obj);
     permissions.forEach((p) => permission.addPermission(p));
@@ -111,7 +112,10 @@ export function HttpLoaderFactory(
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(permission: PermissionService) {
+  constructor(permission: PermissionService, jwtService: JwtService) {
+    window.name = _.isEmpty(window.name) ? UUID.UUID() : window.name;
+    const urlParams = new URLSearchParams(window.location.search);
+    jwtService.updateWmap(_.isEmpty(urlParams.get('w')) ? window.name : urlParams.get('w') || window.name);
     permission.loadPermissions();
   }
 }

@@ -39,14 +39,14 @@
                 <a href="javascript://" class="nav-link nav-icon-text mb-2 me-4" clrDropdownTrigger
                     aria-label="toggle settings menu" style="opacity: none !important;">
                     <span class="nav-text text-white">
-                        <img [src]="language.image" class="rounded-circle img-fluid" style="width24px;height:24px;" />
+                        <img [src]="language.image" class="rounded-circle img-fluid" style="width:24px; height:24px;" />
                         {{language.name}}
                     </span>
                 </a>
                 <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right" class="text-white m-0 p-0">
                     <a href="javascript://" clrDropdownItem *ngFor="let lang of languages"
                         (click)="changeSiteLanguage(lang.code);language=lang;">
-                        <img [src]="lang.image" class="rounded-circle img-fluid" style="width24px;height:24px;" />
+                        <img [src]="lang.image" class="rounded-circle img-fluid" style="width:24px;height:24px;" />
                         {{lang.name}}
                     </a>
                 </clr-dropdown-menu>
@@ -76,39 +76,6 @@
         <div class="header-actions">
             <span class="text-center text-white fw-bold mt-4">{{headertitle}}</span>
         </div>
-        <div class="header-actions mx-2">
-            <!--clr-dropdown *ngIf="!authService.isLogin()">
-                <a href="javascript://" class="nav-link nav-icon-text mb-2 me-4" clrDropdownTrigger
-                    aria-label="toggle settings menu" style="opacity: none !important;">
-                    <span class="nav-text text-white">
-                        <img [src]="language.image" class="rounded-circle img-fluid" style="width24px;height:24px;" />
-                        {{language.name}}
-                    </span>
-                </a>
-                <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right" class="text-white m-0 p-0">
-                    <a [routerLink]="[currenturl]" [queryParams]="{lang:lang.code,type:this.type,header:this.header}"
-                        clrDropdownItem *ngFor="let lang of languages">
-                        <img [src]="lang.image" class="rounded-circle img-fluid" style="width24px;height:24px;" />
-                        {{lang.name}}
-                    </a>
-                </clr-dropdown-menu>
-            </clr-dropdown-->
-            <!--clr-dropdown *ngIf="authService.isLogin()">
-                <a href="javascript://" class="nav-link nav-icon-text mb-2 me-4" clrDropdownTrigger
-                    aria-label="toggle settings menu" style="opacity: none !important;">
-                    <span class="nav-text text-white">
-                        <img [src]="language.image" class="rounded-circle img-fluid" style="width24px;height:24px;" />
-                        {{language.name}}
-                    </span>
-                </a>
-                <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right" class="text-white m-0 p-0">
-                    <a href="javascript://" clrDropdownItem *ngFor="let lang of languages"
-                        (click)="changeSiteLanguage(lang.code);language=lang;">
-                        <img [src]="lang.image" class="rounded-circle img-fluid" style="width24px;height:24px;" />
-                        {{lang.name}}
-                    </a>
-                </clr-dropdown-menu>
-            </clr-dropdown-->
-        </div>
+        <div class="header-actions mx-2"></div>
     </header>
 </ng-template>

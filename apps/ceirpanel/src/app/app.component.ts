@@ -64,6 +64,7 @@ import { PermissionService } from './core/services/common/permission.service';
 import { DOCUMENT } from '@angular/common';
 import { JwtService } from './core/services/common/jwt.service';
 import { UserModel } from './core/models/user.model';
+import { UUID } from 'angular2-uuid';
 
 ClarityIcons.addIcons(
   userIcon,
@@ -211,7 +212,7 @@ export class AppComponent implements OnInit, OnDestroy {
           });
         } else {
           this.authService.purgeAuth('logout');
-          localStorage.removeItem('permissions');
+          localStorage.removeItem(`${this.jwtService.getWindow()}permissions`);
         }
       }
     });
@@ -226,6 +227,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.token = urlParams.get('token') || '';
     this.hidesidebar = urlParams.get('hidesidebar') || 'no';
     this.header = urlParams.get('header') || 'yes';
+    
     if(_.isEmpty(this.token)) {
       const iframelogin: any = this.jwtService.getIframeLogin();
       if (!_.isEmpty(iframelogin) && !_.isEmpty(iframelogin.token)) {
@@ -236,7 +238,7 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     } else {
       this.authService.purgeAuth('logout');
-      localStorage.removeItem('permissions');
+      localStorage.removeItem(`${this.jwtService.getWindow()}permissions`);
       this.jwtService.removeIFrameLogin();
       this.inIframe = true;
       this.header = 'no';

@@ -201,7 +201,7 @@ export class LoginComponent {
     this.apiutil.post('/api/auth/signin', this.user).subscribe({
       next: (data) => {
         if (_.isEqual(_.get(data, 'apiResult'), 'success')) {
-          localStorage.removeItem('permissions');
+          localStorage.removeItem(`${this.jwtService.getWindow()}permissions`);
           const user: UserModel = data as UserModel;
           this.authService.setAuth(user, user.token);
           this.transport.loader = false;
@@ -210,7 +210,7 @@ export class LoginComponent {
             next: (menu) => {
               this.router.navigate([_.sample(menu as any[]).link]);
               this.transport.menu = menu;
-              localStorage.setItem('menu', JSON.stringify(menu));
+              localStorage.setItem(`${this.jwtService.getWindow()}menu`, JSON.stringify(menu));
               this.transport.loader = true;
             },
           });
