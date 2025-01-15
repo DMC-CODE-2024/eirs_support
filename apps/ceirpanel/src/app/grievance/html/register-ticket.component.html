@@ -104,7 +104,7 @@
                   <div class="form-group">
                     <label class="clr-required-mark">{{ "ticket.address.addressLine.label" | translate }}</label>
                     <input type="text" name="address" class="form-control form-control-sm" id="address" [(ngModel)]="ticket.address"
-                    [placeholder]="'ticket.address.addressLine.placeholder' | translate" #address="ngModel"
+                    [placeholder]="'ticket.address.addressLine.placeholder' | translate" #address="ngModel" required
                      [ngClass]="{ 'is-invalid': (f.touched || f.submitted) && address.errors }" autocomplete="addressoff">
                     <div *ngIf="f.touched && address.errors" class="invalid-feedback">
                       <div *ngIf="address.errors['required']">{{'ticket.address.addressLine.required' | translate}}</div>

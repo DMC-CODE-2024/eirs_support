@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DOCUMENT } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { AfterContentChecked, AfterViewInit, ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClrForm, ClrStepButton, ClrStepper } from '@clr/angular';
@@ -27,7 +27,7 @@ import { UserService } from '../service/user.service';
   `],
   providers: []
 })
-export class UserAddComponent implements OnInit, AfterViewInit {
+export class UserAddComponent implements OnInit, AfterViewInit, AfterContentChecked  {
   initialStep = 'name';
   steps = ['name', 'address', 'id', 'reporting', 'password', 'contact', 'security'];
   @ViewChild(ClrStepButton, { static: false }) stepButton!: ClrStepButton;
@@ -232,32 +232,34 @@ export class UserAddComponent implements OnInit, AfterViewInit {
     this.putData(formData, obj);
     const form: FormData = new FormData();
     formData.forEach((v,k) => {if(!_.isNull(v) && !_.isEqual(v,'null'))form.append(k,v);});
-    
-    const observable: Observable<unknown> = this.page == PageType.edit ? this.userService.update(this.id, form) : this.userService.save(form);
-
-    observable.subscribe((_data) => {
-      if (_.isEqual(_.get(_data, 'status'), 'failed')) {
-        this.error = {type: 'danger', message: _.get(_data,'message')};
-        this.scrollToTop();
-        setTimeout(() => this.error = null, 10000);
-      } else {
-        this.transport.alert = {type: 'success', message: _.get(_data,'body.message')};
-        setTimeout(() => this.transport.progress = false, 3000);
-        if (this.id > 0) {
-          if(!_.isEqual(this.orgmsisdn, this.templateForm?.contact?.phoneNo) && !_.isEqual(this.orgemail, this.templateForm?.contact?.email)){
-            this.router.navigate(['/email-mobile-verification',this.id,this.templateForm.contact.email,this.templateForm.contact.phoneNo],{queryParams: {url:this.url}});
-          } else if(!_.isEqual(this.orgmsisdn, this.templateForm?.contact?.phoneNo)){
-            this.router.navigate(['/email-mobile-verification',this.id,this.orgemail,this.templateForm.contact.phoneNo],{queryParams: {url:this.url}});
-          } else if(!_.isEqual(this.orgemail, this.templateForm?.contact?.email)){
-            this.router.navigate(['/email-mobile-verification',this.id,this.templateForm.contact.email,this.orgmsisdn],{queryParams: {url:this.url}});
+    setTimeout(() => {
+      const observable: Observable<unknown> = this.page == PageType.edit ? this.userService.update(this.id, form) : this.userService.save(form);
+      observable.subscribe({
+        next: (_data: any) => {
+          if (_.isEqual(_.get(_data, 'status'), 'failed')) {
+            this.error = {type: 'danger', message: _.get(_data,'message')};
+            this.scrollToTop();
+            setTimeout(() => this.error = null, 10000);
           } else {
-            this.router.navigate(['/user']);
+            this.transport.alert = {type: 'success', message: _.get(_data,'body.message')};
+            setTimeout(() => this.transport.progress = false, 3000);
+            if (this.id > 0) {
+              if(!_.isEqual(this.orgmsisdn, this.templateForm?.contact?.phoneNo) && !_.isEqual(this.orgemail, this.templateForm?.contact?.email)){
+                this.router.navigate(['/email-mobile-verification',this.id,this.templateForm.contact.email,this.templateForm.contact.phoneNo],{queryParams: {url:this.url}});
+              } else if(!_.isEqual(this.orgmsisdn, this.templateForm?.contact?.phoneNo)){
+                this.router.navigate(['/email-mobile-verification',this.id,this.orgemail,this.templateForm.contact.phoneNo],{queryParams: {url:this.url}});
+              } else if(!_.isEqual(this.orgemail, this.templateForm?.contact?.email)){
+                this.router.navigate(['/email-mobile-verification',this.id,this.templateForm.contact.email,this.orgmsisdn],{queryParams: {url:this.url}});
+              } else {
+                this.router.navigate(['/user']);
+              }
+            } else {
+              this.router.navigate(['/user']);
+            }
           }
-        } else {
-          this.router.navigate(['/user']);
         }
-      }
-    });
+      });  
+    }, 0);
     this.cdref.detectChanges();
   }
   scrollToTop(): void {
@@ -315,5 +317,8 @@ export class UserAddComponent implements OnInit, AfterViewInit {
       const index = _.findIndex(this.questions, {id: questionId});
       this.questions[index] = Object.assign(question, {disabled: true});
     }
+  }
+  ngAfterContentChecked(): void {
+    this.cdref.detectChanges();
   }
 }

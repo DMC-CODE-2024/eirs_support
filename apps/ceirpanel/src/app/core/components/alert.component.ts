@@ -16,14 +16,10 @@ export enum ModalSize {
       <p class="m-0 p-0 lh-1" *ngFor="let m of messages">{{m}}</p>
       <div class="clr-row clr-justify-content-center">
         <div class="clr-col-12 text-end mt-2">
-          <button type="button" class="btn btn-outline" (click)="open = false">Close</button>
+          <button type="button" class="btn btn-outline" (click)="open = false">{{ "button.close" | translate }}</button>
         </div>
       </div>
     </div>
-    <!--div class="modal-footer">
-        <button type="button" class="btn btn-outline" (click)="open = false;confirmation.emit(true)">Yes</button>
-        <button type="button" class="btn btn-primary" (click)="open = false;confirmation.emit(false)">No</button>
-    </div-->
 </clr-modal>
   `,
   styles: [``],
