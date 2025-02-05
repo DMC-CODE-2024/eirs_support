@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild, inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ClrForm } from '@clr/angular';
 import { NgbCalendar, NgbDate, NgbDateAdapter, NgbDateNativeAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from "lodash";
-import { FilterModel } from '../core/models/filter.model';
 import { ConfigService } from 'ng-config-service';
+import { FilterModel } from '../core/models/filter.model';
 
 
 

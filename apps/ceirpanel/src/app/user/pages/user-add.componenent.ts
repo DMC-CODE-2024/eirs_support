@@ -245,11 +245,11 @@ export class UserAddComponent implements OnInit, AfterViewInit, AfterContentChec
             setTimeout(() => this.transport.progress = false, 3000);
             if (this.id > 0) {
               if(!_.isEqual(this.orgmsisdn, this.templateForm?.contact?.phoneNo) && !_.isEqual(this.orgemail, this.templateForm?.contact?.email)){
-                this.router.navigate(['/email-mobile-verification',this.id,this.templateForm.contact.email,this.templateForm.contact.phoneNo],{queryParams: {url:this.url}});
+                this.router.navigate(['/email-mobile-verification',this.id,this.templateForm.contact.email,this.templateForm.contact.phoneNo],{queryParams: {url:this.url, id: this.id}});
               } else if(!_.isEqual(this.orgmsisdn, this.templateForm?.contact?.phoneNo)){
-                this.router.navigate(['/email-mobile-verification',this.id,this.orgemail,this.templateForm.contact.phoneNo],{queryParams: {url:this.url}});
+                this.router.navigate(['/email-mobile-verification',this.id,this.orgemail,this.templateForm.contact.phoneNo],{queryParams: {url:this.url, id: this.id}});
               } else if(!_.isEqual(this.orgemail, this.templateForm?.contact?.email)){
-                this.router.navigate(['/email-mobile-verification',this.id,this.templateForm.contact.email,this.orgmsisdn],{queryParams: {url:this.url}});
+                this.router.navigate(['/email-mobile-verification',this.id,this.templateForm.contact.email,this.orgmsisdn],{queryParams: {url:this.url, id: this.id}});
               } else {
                 this.router.navigate(['/user']);
               }
@@ -274,6 +274,7 @@ export class UserAddComponent implements OnInit, AfterViewInit, AfterContentChec
     this.apicall.get('/country/list').subscribe({
       next: (result) => { 
         this.countries = (result as Array<any>);
+        this.templateForm.address.country = this.countries[0].name;
         this.provinces = _.get(_.find(this.countries,{name: this.templateForm.address.country}),'provinces',[]);
         this.districts = _.get(_.find(this.provinces,{id: Number(this.templateForm.address.province)}),'districts',[]);
         this.communes = _.get(_.find(this.districts,{id: Number(this.templateForm.address.district)}),'communes',[]);

@@ -8,8 +8,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash';
 import { ConfigService, bootConfigServiceProvider } from 'ng-config-service';
 import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
@@ -24,6 +25,7 @@ import { CeirCoreModule } from './core/core.module';
 import { interceptorProviders } from './core/interceptors/interceptors';
 import { DEFAULT_TIMEOUT } from './core/interceptors/request-time.interceptor';
 import { ApiUtilService } from './core/services/common/api.util.service';
+import { JwtService } from './core/services/common/jwt.service';
 import { PermissionService } from './core/services/common/permission.service';
 import { DeviceModule } from './device/device.module';
 import { FeatureModuleModule } from './feature-module/feature-module.module';
@@ -37,14 +39,11 @@ import { TagModule } from './tag/tag.module';
 import { UserFeatureModule } from './user-feature/group-feature.module';
 import { UserGroupModule } from './user-group/user-group.module';
 import { UserRoleModule } from './user-role/user-role.module';
-import { JwtService } from './core/services/common/jwt.service';
-import { UUID } from 'angular2-uuid';
 
 export function appInit(apiutil: ApiUtilService) {
   return () => apiutil.loadMenu('vivesha');
 }
 export function initPermission(permission: NgxPermissionsService, jwtService: JwtService) {
-  console.log('jwt window: ', jwtService.getWindow());
   const obj = localStorage.getItem(`${jwtService.getWindow()}permissions`);
   if (obj) {
     const permissions: string[] = JSON.parse(obj);
@@ -56,9 +55,7 @@ export function HttpLoaderFactory(
   document: any,
   config: ConfigService
 ) {
-  const langurl = _.isEmpty(config.get('api'))
-    ? `${document.location.protocol}//${document.location.host}/language/`
-    : `${config.get('api')}/language/`;
+  const langurl = _.isEmpty(config.get('api')) ? `${document.location.protocol}//${document.location.host}/language/` : `${config.get('api')}/language/`;
   return new TranslateHttpLoader(http, langurl, '.json?t=' + new Date());
 }
 @NgModule({
@@ -83,7 +80,6 @@ export function HttpLoaderFactory(
     AclModule,
     ModuleMangeModule,
     TranslateModule.forRoot({
-      defaultLanguage: 'us',
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
@@ -116,6 +112,9 @@ export class AppModule {
     window.name = _.isEmpty(window.name) ? UUID.UUID() : window.name;
     const urlParams = new URLSearchParams(window.location.search);
     jwtService.updateWmap(_.isEmpty(urlParams.get('w')) ? window.name : urlParams.get('w') || window.name);
+    const lang = _.isEmpty(urlParams.get('lang')) ? localStorage.getItem(`${window.name}lang`) || 'us' : urlParams.get('lang') || 'us';
+    console.log('language: ', lang);
+    localStorage.setItem(`${window.name}lang`, lang);
     permission.loadPermissions();
   }
 }

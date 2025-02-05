@@ -13,6 +13,8 @@ import * as _ from 'lodash';
 import { MenuTransportService } from '../../core/services/common/menu.transport.service';
 import { DOCUMENT } from '@angular/common';
 import { ResizedEvent } from 'angular-resize-event';
+import { ConfigService } from 'ng-config-service';
+import { AuthService } from '../../core/services/common/auth.service';
 
 @Component({
   selector: 'ceirpanel-view-ticket',
@@ -50,6 +52,8 @@ export class ViewTicketComponent implements OnInit {
     private translate: TranslateService,
     private apicall: ApiUtilService,
     private router: Router,
+    public config: ConfigService,
+    public authService: AuthService,
     private transport: MenuTransportService,
     @Inject(DOCUMENT) private document: any
   ) {

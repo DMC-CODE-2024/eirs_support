@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { GroupModel } from '../../core/models/group.model';
 import { UserModel } from '../../core/models/user.model';
 
 export enum ModalSize {
@@ -14,7 +13,7 @@ export enum ModalSize {
   selector: 'ceirpanel-user-group-delete',
   template: `
   <clr-modal [(clrModalOpen)]="open" [clrModalStaticBackdrop]="false" [clrModalSize]="modalSize.large" [clrModalClosable]="false">
-    <h3 class="modal-title">Remove User From Group</h3>
+    <h3 class="modal-title">Remove User From Groupp</h3>
     <div class="modal-body">
         <div *ngIf="group; then singleselect else multiselect"></div>
         <ng-template #singleselect>

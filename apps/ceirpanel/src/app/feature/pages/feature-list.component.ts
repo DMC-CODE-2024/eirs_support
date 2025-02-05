@@ -12,7 +12,7 @@ import * as _ from "lodash";
 import { ExportService } from '../../core/services/common/export.service';
 import { UploadService } from '../../core/services/common/upload.service';
 import { FeatureService } from '../service/feature.service';
-import { take } from 'rxjs';
+import { lastValueFrom, take } from 'rxjs';
 import { FeatureDeleteComponent } from '../component/feature-delete.component';
 
 @Component({
@@ -209,9 +209,14 @@ export class FeatureListComponent extends ExtendableListComponent {
     const st = _.cloneDeep(state);
     if(st && st.page) st.page.size = this.rowSizeForExport;
     this.apicall.post('/feature/pagination', st).subscribe({
-      next: (result) => {
+      next: async (result) => {
         const features = (result as FeatureList).content;
-        this.exportService.features(features, `${_.now()}_features`,{showLabels: true,headers: ["ID", "Created On", "Feature Name","Category","Status"]});
+        this.exportService.features(features, `${_.now()}_features`,{showLabels: true,headers: [
+          await lastValueFrom(this.translate.get('datalist.createDate')),
+          await lastValueFrom(this.translate.get('datalist.featureName')),
+          await lastValueFrom(this.translate.get('datalist.category')),
+          await lastValueFrom(this.translate.get('datalist.status'))
+        ]});
       }
     });
   }

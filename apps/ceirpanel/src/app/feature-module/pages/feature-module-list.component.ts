@@ -12,7 +12,7 @@ import { ExportService } from '../../core/services/common/export.service';
 import { DeviceService } from '../../core/services/device.service';
 import { FeatureModuleDto } from '../dto/feature.module.dto';
 import { FeatureModuleService } from '../service/feature.module.service';
-import { take } from 'rxjs';
+import { lastValueFrom, take } from 'rxjs';
 import { FeatureModuleDeleteComponent } from '../component/feature-module-delete.component';
 
 @Component({
@@ -202,9 +202,14 @@ export class FeatureModuleListComponent extends ExtendableListComponent {
     const st = _.cloneDeep(state);
     if(st && st.page) st.page.size = this.rowSizeForExport;
     this.featureModuleService.pagination(st).subscribe({
-      next: (feature: FeatureModuleDto) => {
+      next: async (feature: FeatureModuleDto) => {
         const modules = feature.content;
-        this.exportService.featureModules(modules, `${_.now()}_feature-modules`,{showLabels: true,headers: ["Created On", "Feature Name","Module Name", "Status"]});
+        this.exportService.featureModules(modules, `${_.now()}_feature-modules`,{showLabels: true,headers: [
+          await lastValueFrom(this.translate.get('datalist.createDate')),
+          await lastValueFrom(this.translate.get('datalist.featureName')),
+          await lastValueFrom(this.translate.get('datalist.moduleName')),
+          await lastValueFrom(this.translate.get('datalist.status'))
+        ]});
       }
     });
   }

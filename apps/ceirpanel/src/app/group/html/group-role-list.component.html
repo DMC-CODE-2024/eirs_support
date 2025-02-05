@@ -1,36 +1,43 @@
 <div class="card" style="overflow: hidden;min-height: 85vh;">
     <div class="card-header">
-      <div class="clr-row clr-justify-content-between">
-        <div class="clr-col-5" style="margin-top: 5px;">
+      <div class="row justify-content-between pe-3">
+        <div class="col-6" style="margin-top: 5px;">
           <h4 class="card-title">{{ "groupRole.pageTitle.list" | translate }}</h4>
         </div>
-        <div class="clr-col-7 m-0 p-0">
-          <div class="btn-group btn-primary float-end">
-            <ng-template [ngxPermissionsOnly]="['GROUP-ROLE_DELETE']" [ngxPermissionsOnlyThen]="showDelete"></ng-template>
-            <ng-template #showDelete>
-              <clr-toggle-container class="clr-toggle-right m-0 p-0 mt-1">
-                <clr-toggle-wrapper>
-                  <label>{{ "button.multiSelect" | translate }}</label>
-                  <input type="checkbox" clrToggle (change)="changeView($event)"/>
-                </clr-toggle-wrapper>
-              </clr-toggle-container>
-              <button class="btn btn-outline mx-1" aria-label="Check" [disabled]="!multiselect" (click)="openDeleteModel(selecton)">
-                {{ "groupRole.pageTitle.delete" | translate }}
-              </button>
+        <div class="col m-0 p-0">
+          <div class="row row-cols-auto justify-content-end">
+            <ng-template [ngxPermissionsOnly]="['GROUP-ROLE_DELETE']" [ngxPermissionsOnlyThen]="showToggle"></ng-template>
+            <ng-template #showToggle>
+              <div class="col m-0 p-0 mb-4 text-right">
+                <clr-toggle-container class="clr-toggle-right m-0 p-0 mt-1 float-end">
+                  <clr-toggle-wrapper>
+                    <label>{{ "button.multiSelect" | translate }}</label>
+                    <input type="checkbox" clrToggle (change)="changeView($event)"/>
+                  </clr-toggle-wrapper>
+                </clr-toggle-container>
+              </div>
             </ng-template>
-            <span>
-              <ng-template [ngxPermissionsOnly]="['GROUP-ROLE_ADD']" [ngxPermissionsOnlyThen]="showAdd"></ng-template>
-              <ng-template #showAdd>
-                <button class="btn" aria-label="Check" [routerLink]="['/group-role/add']">
-                  <cds-icon shape="plus" solid="true" inverse="true"></cds-icon> {{ "groupRole.pageTitle.add" | translate }}
-                </button>
-              </ng-template>
-            </span>
-          </div>  
+            <div class="col m-0 p-0">
+              <div class="btn-group btn-primary">
+                <ng-template [ngxPermissionsOnly]="['GROUP-ROLE_DELETE']" [ngxPermissionsOnlyThen]="showDelete"></ng-template>
+                <ng-template #showDelete>
+                  <button class="btn btn-outline mx-1" aria-label="Check" [disabled]="!multiselect" (click)="openDeleteModel(selecton)">
+                    {{ "groupRole.pageTitle.delete" | translate }}
+                  </button>
+                </ng-template>
+                <ng-template [ngxPermissionsOnly]="['GROUP-ROLE_ADD']" [ngxPermissionsOnlyThen]="showAdd"></ng-template>
+                <ng-template #showAdd>
+                  <button class="btn" aria-label="Check" [routerLink]="['add','']">
+                    <cds-icon shape="plus" solid="true" inverse="true"></cds-icon> {{ "groupRole.pageTitle.add" | translate }}
+                  </button>
+                </ng-template>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="card-block m-0 p-0">
+    <div class="card-block">
       <ng-template [ngxPermissionsOnly]="['GROUP-ROLE_FILTER']" [ngxPermissionsOnlyThen]="showFilter"></ng-template>
       <ng-template #showFilter>
         <ceirpanel-filter (filter)="applyFilter($event);refresh(state)" [startDate]="true" [endDate]="true" [groupName]="true" [roleName]="true"></ceirpanel-filter>

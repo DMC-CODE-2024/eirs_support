@@ -1,7 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ClrDatagridStateInterface } from '@clr/angular';
-import * as _ from "lodash";
 
 export enum ModalSize {
   small = 'sm',
@@ -17,13 +16,13 @@ export enum ModalSize {
     <div class="col-12 text-right">
       <ng-template [ngxPermissionsOnly]="[feature + '_FILTER']" [ngxPermissionsOnlyThen]="showFilter"></ng-template>
       <ng-template [ngxPermissionsOnly]="[feature + '_EXPORT']" [ngxPermissionsOnlyThen]="showExport"></ng-template>
-      <button type="button" class="btn btn-icon btn-secondary" (click)="refresh.emit(state)" *ngIf="!isTicket">
+      <!--button type="button" class="btn btn-icon btn-secondary" (click)="refresh.emit(state)" *ngIf="!isTicket">
         <cds-icon shape="refresh"></cds-icon>
-      </button>
+      </button-->
       <ng-template #showExport>
         <button type="button" class="btn btn-icon btn-secondary" (click)="download.emit(state)">
           {{ "button.export" | translate }}
-          <cds-icon shape="download"></cds-icon>
+          <img src="assets/images/export.svg"/>
         </button>
       </ng-template>
       <ng-template #showFilter>

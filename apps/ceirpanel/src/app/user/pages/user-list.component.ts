@@ -13,7 +13,7 @@ import {
 } from '@clr/angular';
 import * as _ from 'lodash';
 import { NgxPermissionsService } from 'ngx-permissions';
-import { take } from 'rxjs';
+import { lastValueFrom, take } from 'rxjs';
 import { ExtendableListComponent } from '../../ceir-common/extendable-list';
 import { UserList, UserModel } from '../../core/models/user.model';
 import { ExportService } from '../../core/services/common/export.service';
@@ -23,6 +23,7 @@ import { PasswordResetComponent } from '../component/password-reset';
 import { UserDeleteComponent } from '../component/user-delete.component';
 import { UserService } from '../service/user.service';
 import { ApiUtilService } from '../../core/services/common/api.util.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'ceirpanel-user-list',
@@ -57,7 +58,8 @@ export class UserListComponent extends ExtendableListComponent {
     public exportService: ExportService,
     private router: Router,
     public menuTransport: MenuTransportService,
-    private apicall: ApiUtilService
+    private apicall: ApiUtilService,
+    private translate: TranslateService
   ) {
     super();
     this.apicall.get('/config/frontend').subscribe({next: (data:any) => this.rowSizeForExport = data?.rowSizeForExport || 1000});
@@ -134,27 +136,19 @@ export class UserListComponent extends ExtendableListComponent {
   export(state: ClrDatagridStateInterface) {
     const st = _.cloneDeep(state);
     if (st && st.page) st.page.size = this.rowSizeForExport;
-    this.userService
-      .pagination(st)
-      .pipe(take(1))
-      .subscribe((result) => {
-        this.exportService.users(
-          (result as UserList).content,
-          `${_.now()}_users`,
-          {
-            showLabels: true,
-            headers: [
-              'ID',
-              'Created On',
-              'First Name',
-              'Last Name',
-              'User Name',
-              'Organization',
-              'Status',
-            ],
-          }
-        );
-      });
+    this.userService.pagination(st).subscribe({
+      next: async (result) => {
+        const users = (result as UserList).content;
+        this.exportService.users(users, `${_.now()}_users`,{showLabels: true,headers: [
+          await lastValueFrom(this.translate.get('datalist.createDate')),
+          await lastValueFrom(this.translate.get('datalist.firstName')),
+          await lastValueFrom(this.translate.get('datalist.lastName')),
+          await lastValueFrom(this.translate.get('datalist.userName')),
+          await lastValueFrom(this.translate.get('datalist.organization')),
+          await lastValueFrom(this.translate.get('datalist.status')),
+        ]});
+      }
+    });
   }
   assignGroup(data: Array<UserModel>) {
     const users: { id: number; userName: string }[] = [];

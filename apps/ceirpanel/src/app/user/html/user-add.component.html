@@ -75,7 +75,7 @@
               <div class="form-group">
                 <label class="clr-required-mark">{{ "user.address.country.label" | translate }}</label>
                 <select class="form-select form-control form-control-sm" [(ngModel)]="templateForm.address.country" name="country" required
-                  #country="ngModel" [ngClass]="{ 'is-invalid': f.submitted && country.errors }" (change)="onCountryChange($event)">
+                  #country="ngModel" [ngClass]="{ 'is-invalid': f.submitted && country.errors }" (change)="onCountryChange($event)" disabled>
                   <option selected [value]="''">{{ "user.address.country.placeholder" | translate }}</option>
                   <option *ngFor="let country of countries" [value]="country.name">{{country.name}}</option>
                 </select>
@@ -112,12 +112,15 @@
             </div>
             <div class="clr-col-4 mt-3">
               <div class="form-group">
-                <label>{{ "user.address.commune.label" | translate }}</label>
+                <label class="clr-required-mark">{{ "user.address.commune.label" | translate }}</label>
                 <select class="form-select form-control form-control-sm" [(ngModel)]="templateForm.address.commune" name="commune" 
-                  (change)="onCommuneChange($event)">
+                  (change)="onCommuneChange($event)" required #commune="ngModel" [ngClass]="{ 'is-invalid': f.submitted && commune.errors }">
                   <option selected [value]="''">{{ "user.address.commune.placeholder" | translate }}</option>
                   <option *ngFor="let commune of communes" [value]="commune.id">{{ translate.currentLang === 'us' ? commune.name : commune.communeKm}}</option>
                 </select>
+                <div *ngIf="f.submitted && commune.errors" class="invalid-feedback">
+                  <div *ngIf="commune.errors['required']">{{'user.address.commune.error' | translate}}</div>
+                </div>
               </div>
             </div>
             <div class="clr-col-4 mt-3">
@@ -355,7 +358,7 @@
               <label class="clr-required-mark">{{ "user.contact.email.label" | translate }}</label>
               <input type="text" [(ngModel)]="templateForm.contact.email" name="email" class="form-control form-control-sm" 
               [placeholder]="'user.contact.email.placeholder' | translate" #email="ngModel"
-              pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$" [required]="page==='add'" 
+              pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$" [required]="page==='add'" ceirpanelAppValidateEmail
               [ngClass]="{ 'is-invalid': (f.submitted && email.errors && email.errors['required']) || (f.touched && email.errors && !email.errors['required'])}"
               [disabled]="page==='view'" aria-autocomplete="none"/>
               <div *ngIf="f.submitted && email.errors" class="invalid-feedback">
@@ -372,7 +375,7 @@
           <div class="clr-col-6 m-0 p-0">
             <div class="form-group">
               <label class="clr-required-mark">{{ "user.contact.mobile.label" | translate }}</label>
-              <input type="text" [(ngModel)]="templateForm.contact.phoneNo" name="phoneNo" class="form-control form-control-sm" 
+              <input type="number" [(ngModel)]="templateForm.contact.phoneNo" name="phoneNo" class="form-control form-control-sm" 
                 [placeholder]="'user.contact.mobile.placeholder' | translate" [required]="page==='add'" #phoneNo="ngModel"
                 [disabled]="page==='view'" aria-autocomplete="none" [pattern]="cnf.get('authorityPhoneNoRegex') || '^[1-9][0-9]{6,7}$'"
                 [ngClass]="{ 'is-invalid': (f.submitted && phoneNo.errors && phoneNo.errors['required']) || (f.touched && phoneNo.errors && !phoneNo.errors['required'])}"/>

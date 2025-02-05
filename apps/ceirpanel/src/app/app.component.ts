@@ -65,6 +65,7 @@ import { DOCUMENT } from '@angular/common';
 import { JwtService } from './core/services/common/jwt.service';
 import { UserModel } from './core/models/user.model';
 import { UUID } from 'angular2-uuid';
+import { TranslateService } from '@ngx-translate/core';
 
 ClarityIcons.addIcons(
   userIcon,
@@ -141,8 +142,10 @@ export class AppComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private titleService:Title,
     private jwtService: JwtService,
+    private translate: TranslateService,
     @Inject(DOCUMENT) private document: any
   ) {
+    this.translate.use(localStorage.getItem(`${window.name}lang`) || 'us');
     this.inIframe = this.jwtService.getIframeLogin().inIframe;
     this.router.events.subscribe((val) => {
       if(val instanceof NavigationEnd) {
@@ -191,32 +194,35 @@ export class AppComponent implements OnInit, OnDestroy {
     
   }
   initialize() {
-    this.apiutil.get('/api/auth/isLogin').subscribe({
-      next: (data:any) => {
-        if(!_.isEmpty(this.token)) {
-          data.token = this.token;
-          this.authService.setAuth(data as UserModel, this.token);
-        }
-        if (_.isEqual(_.get(data, 'login'), true)) {
-          this.permissionService.loadPermissions();
-          if (_.isEqual(_.get(data, 'passwordExpire'), true)) {
-            this.router.navigate(['/change-password']);
+    try {
+      this.apiutil.get('/api/auth/isLogin').subscribe({
+        next: (data:any) => {
+          if(!_.isEmpty(this.token)) {
+            data.token = this.token;
+            this.authService.setAuth(data as UserModel, this.token);
           }
-          this.menuTransport.loader = false;
-          this.permissionService.load();
-          this.apiutil.loadMenu('vivesha').subscribe({
-            next: (menu) => {
-              this.menuTransport.menu = menu;
-              this.menuTransport.loader = true;
-            },
-          });
-        } else {
-          this.authService.purgeAuth('logout');
-          localStorage.removeItem(`${this.jwtService.getWindow()}permissions`);
+          if (_.isEqual(_.get(data, 'login'), true)) {
+            this.permissionService.loadPermissions();
+            if (_.isEqual(_.get(data, 'passwordExpire'), true)) {
+              this.router.navigate(['/change-password']);
+            }
+            this.menuTransport.loader = false;
+            this.permissionService.load();
+            this.apiutil.loadMenu('vivesha').subscribe({
+              next: (menu) => {
+                this.menuTransport.menu = menu;
+                this.menuTransport.loader = true;
+              },
+            });
+          } else {
+            this.authService.purgeAuth('logout');
+            localStorage.removeItem(`${this.jwtService.getWindow()}permissions`);
+          }
         }
-      }
-    });
-
+      });
+    } catch (e) {
+      console.log('error: ', e);
+    }
   }
   ngOnInit(): void {
     const urlParams = new URLSearchParams(window.location.search);

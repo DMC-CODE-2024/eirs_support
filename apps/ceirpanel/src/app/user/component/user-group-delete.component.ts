@@ -15,8 +15,8 @@ export enum ModalSize {
   <clr-modal [(clrModalOpen)]="open" [clrModalStaticBackdrop]="false" [clrModalSize]="modalSize.large" [clrModalClosable]="false">
     <h3 class="modal-title">
         <div *ngIf="status!=='21' && status !== '0'; then delete else active"></div>
-        <ng-template #delete>Remove User From Group</ng-template>
-        <ng-template #active>Active User For Group</ng-template>
+        <ng-template #delete>{{ "userGroup.action.remove" | translate }}</ng-template>
+        <ng-template #active>{{ "userGroup.action.active" | translate }}</ng-template>
     </h3>
     <div class="modal-body">
         <clr-alert [clrAlertClosable]="false" [clrAlertSizeSmall]="true" [clrAlertType]="'warning'" class="mb-2">

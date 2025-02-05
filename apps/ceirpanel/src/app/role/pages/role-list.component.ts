@@ -12,7 +12,7 @@ import { ExportService } from '../../core/services/common/export.service';
 import { DeviceService } from '../../core/services/device.service';
 import { RoleDeleteComponent } from '../component/role-delete.component';
 import { RoleService } from '../service/role.service';
-import { take } from 'rxjs';
+import { lastValueFrom, take } from 'rxjs';
 @Component({
   selector: 'ceirpanel-role-list',
   template: `
@@ -190,9 +190,14 @@ export class RoleListComponent extends ExtendableListComponent{
     const st = _.cloneDeep(state);
     if(st && st.page) st.page.size = this.rowSizeForExport;
     this.apicall.post('/role/pagination', st).subscribe({
-      next: (result) => {
+      next: async (result) => {
         const modules = (result as RoleList).content;
-        this.exportService.roles(modules, `${_.now()}-roles`,{showLabels: true,headers: ["ID", "Created On", "Role","Access","Status"]});
+        this.exportService.roles(modules, `${_.now()}-roles`,{showLabels: true,headers: [
+          await lastValueFrom(this.translate.get('datalist.createDate')),
+          await lastValueFrom(this.translate.get('datalist.roleName')),
+          await lastValueFrom(this.translate.get('datalist.access')),
+          await lastValueFrom(this.translate.get('datalist.status'))
+        ]});
       }
     });
   }

@@ -1,19 +1,24 @@
 <div class="card" style="min-height: 85vh;">
     <div class="card-header">
-      <div class="clr-row clr-justify-content-between">
-        <div class="clr-col-4" style="margin-top: 5px;">
+      <div class="row justify-content-between">
+        <div class="col-4" style="margin-top: 5px;">
           <h4 class="card-title">{{ "user.pageTitle.list" | translate }}</h4>
         </div>
-        <div class="clr-col-8 m-0 p-0">
+        <ng-template [ngxPermissionsOnly]="['USER_DELETE','USER_GROUP']" [ngxPermissionsOnlyThen]="showToggle"></ng-template>
+        <ng-template #showToggle>
+          <div class="col m-0 p-0 mb-4">
+            <clr-toggle-container class="clr-toggle-right m-0 p-0 mt-1 float-end">
+              <clr-toggle-wrapper>
+                <label>{{ "button.multiSelect" | translate }}</label>
+                <input type="checkbox" clrToggle (change)="changeView($event)"/>
+              </clr-toggle-wrapper>
+            </clr-toggle-container>
+          </div>
+        </ng-template>
+        <div class="col m-0 p-0">
           <div class="btn-group btn-primary float-end">
             <ng-template [ngxPermissionsOnly]="['USER_DELETE']" [ngxPermissionsOnlyThen]="showDelete"></ng-template>
             <ng-template #showDelete>
-              <clr-toggle-container class="clr-toggle-right m-0 p-0 mt-1">
-                <clr-toggle-wrapper>
-                  <label>{{ "button.multiSelect" | translate }}</label>
-                  <input type="checkbox" clrToggle (change)="changeView($event)"/>
-                </clr-toggle-wrapper>
-              </clr-toggle-container>
               <button class="btn btn-outline me-1" aria-label="Check" [disabled]="!multiselect" (click)="openDeleteModel(selecton)">
                 {{ "user.pageTitle.delete" | translate }}
               </button>
@@ -35,8 +40,8 @@
               <button class="btn border" aria-label="Check" [routerLink]="['add','']">
                 <cds-icon shape="plus" solid="true" inverse="true"></cds-icon>  {{ "user.pageTitle.add" | translate }}
               </button>
-            </ng-template>
-          </div>  
+            </ng-template>      
+          </div>
         </div>
       </div>
     </div>

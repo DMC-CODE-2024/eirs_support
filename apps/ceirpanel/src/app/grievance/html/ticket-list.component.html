@@ -45,58 +45,65 @@
         </ng-template>
         <clr-datagrid class="datagrid-compact" [clrDgLoading]="loading" (clrDgRefresh)="refresh($event)" [(clrDgSelected)]="selecton">
           <clr-dg-action-bar *ngIf="authService.isLogin()">
-            <ceirpanel-list-action [state]="state" (download)="export($event)" (refresh)="refresh($event)"
+            <ng-template [ngxPermissionsOnly]="['SSYSADMIN']" [ngxPermissionsOnlyThen]="sysadminaction" [ngxPermissionsOnlyElse]="nsysadminaction"></ng-template>  
+            <ng-template #sysadminaction>
+              <ceirpanel-list-action [state]="state" (download)="export($event)" (refresh)="refresh($event)"
               (filter)="callFilter()" (resetFilter)="resetFilter()" [feature]="'TICKET'"></ceirpanel-list-action>
+            </ng-template>
+            <ng-template #nsysadminaction>
+              <ceirpanel-list-action [state]="state" (download)="nonadminexport($event)" (refresh)="refresh($event)"
+              (filter)="callFilter()" (resetFilter)="resetFilter()" [feature]="'TICKET'"></ceirpanel-list-action>
+            </ng-template>
           </clr-dg-action-bar>
           <ng-template [ngxPermissionsOnly]="['SSYSADMIN']" [ngxPermissionsOnlyThen]="sysadmin" [ngxPermissionsOnlyElse]="nsysadmin"></ng-template>
           <ng-template #sysadmin>
-            <clr-dg-column [clrDgSortBy]="'ticketId'">{{ "datalist.ticketId" | translate }}</clr-dg-column>
-            <clr-dg-column [clrDgSortBy]="'subject'">{{ "datalist.subject" | translate }}</clr-dg-column>
             <clr-dg-column [clrDgSortBy]="'createDate'">{{ "datalist.createDate" | translate }}</clr-dg-column>
             <clr-dg-column [clrDgSortBy]="'modifiedDate'">{{ "datalist.modifiedDate" | translate }}</clr-dg-column>
+            <clr-dg-column [clrDgSortBy]="'ticketId'">{{ "datalist.ticketId" | translate }}</clr-dg-column>
+            <clr-dg-column [clrDgSortBy]="'subject'">{{ "datalist.subject" | translate }}</clr-dg-column>
             <clr-dg-column [clrDgSortBy]="'raisedBy'">{{ "datalist.userId" | translate }}</clr-dg-column>
             <clr-dg-column [clrDgSortBy]="'status'">{{ "datalist.status" | translate }}</clr-dg-column>
             <clr-dg-column>{{ "datalist.action" | translate }}</clr-dg-column>
             <clr-dg-row *ngFor="let ticket of tickets; let i = index;" [clrDgItem]="ticket">
-              <clr-dg-cell>{{ticket.ticketId}}</clr-dg-cell>
-              <clr-dg-cell>{{ticket.issue.subject}}</clr-dg-cell>
               <clr-dg-cell>{{ticket.issue.createdOn |date:'yyyy-MM-dd'}}</clr-dg-cell>
               <clr-dg-cell>{{ticket.issue.updatedOn |date:'yyyy-MM-dd'}}</clr-dg-cell>
+              <clr-dg-cell>{{ticket.ticketId}}</clr-dg-cell>
+              <clr-dg-cell>{{ticket.issue.subject}}</clr-dg-cell>
               <clr-dg-cell class="text-truncate">{{ticket.raisedBy}}</clr-dg-cell>
               <clr-dg-cell class="text-truncate">{{ticket.issue.status.name}}</clr-dg-cell>
               <clr-dg-cell *ngIf="!authService.isLogin()">
-                <button class="datagrid-action-toggle clr-anchor m-0 p-0" [routerLink]="['/ticket/ticket-thread',ticket.ticketId]">
-                  <cds-icon shape="eye"></cds-icon>
+                <button class="datagrid-action-toggle clr-anchor m-0 p-0" [routerLink]="['/ticket/ticket-thread',ticket.ticketId]" [title]="'button.view' | translate">
+                  <img src="assets/images/eye-icon.svg"/>
                 </button>
               </clr-dg-cell>
               <clr-dg-cell *ngIf="authService.isLogin()">
                 <ng-template [ngxPermissionsOnly]="['TICKET_VIEW']" [ngxPermissionsOnlyThen]="showView"></ng-template>
                 <ng-template #showView>
-                  <button class="btn btn-link btn-sm m-0 p-0" [routerLink]="['/ticket/ticket-thread',ticket.ticketId]">
-                    <cds-icon shape="eye"></cds-icon>
+                  <button class="btn btn-link btn-sm m-0 p-0" [routerLink]="['/ticket/ticket-thread',ticket.ticketId]" [title]="'button.view' | translate">
+                    <img src="assets/images/eye-icon.svg"/>
                   </button>
                 </ng-template>
               </clr-dg-cell>
             </clr-dg-row>
           </ng-template>
           <ng-template #nsysadmin>
+            <clr-dg-column [clrDgSortBy]="'createDate'">{{ "datalist.createDate" | translate }}</clr-dg-column>
+            <clr-dg-column [clrDgSortBy]="'modifiedDate'">{{ "datalist.modifiedDate" | translate }}</clr-dg-column>
             <clr-dg-column [clrDgSortBy]="'ticketId'">{{ "datalist.ticketId" | translate }}</clr-dg-column>
             <clr-dg-column [clrDgSortBy]="'phone'">{{ "datalist.contactNumber" | translate }}</clr-dg-column>
             <clr-dg-column [clrDgSortBy]="'subject'">{{ "datalist.subject" | translate }}</clr-dg-column>
-            <clr-dg-column [clrDgSortBy]="'createDate'">{{ "datalist.createDate" | translate }}</clr-dg-column>
-            <clr-dg-column [clrDgSortBy]="'modifiedDate'">{{ "datalist.modifiedDate" | translate }}</clr-dg-column>
             <clr-dg-column [clrDgSortBy]="'raisedBy'" [style.width.px]="130">{{ "datalist.raisedBy" | translate }}</clr-dg-column>
             <!--clr-dg-column [clrDgSortBy]="'userType'">{{ "datalist.userType" | translate }}</clr-dg-column-->
             <clr-dg-column [clrDgSortBy]="'status'">{{ "datalist.status" | translate }}</clr-dg-column>
             <clr-dg-column>{{ "datalist.action" | translate }}</clr-dg-column>
             <clr-dg-row *ngFor="let ticket of tickets; let i = index;" [clrDgItem]="ticket">
+              <clr-dg-cell>{{ticket.issue.createdOn |date:'yyyy-MM-dd'}}</clr-dg-cell>
+              <clr-dg-cell>{{ticket.issue.updatedOn |date:'yyyy-MM-dd'}}</clr-dg-cell>
               <clr-dg-cell><span [title]="ticket.ticketId">{{ticket.ticketId}}</span></clr-dg-cell>
               <clr-dg-cell>
                 <span [title]="config.get('countryCode') +' '+ ticket.mobileNumber">{{lodash.startsWith(ticket.mobileNumber, '+') ? ticket.mobileNumber: '+' + ticket.mobileNumber}}</span>
               </clr-dg-cell>
               <clr-dg-cell class="text-truncate"><span [title]="ticket.issue.subject">{{ticket.issue.subject}}</span></clr-dg-cell>
-              <clr-dg-cell>{{ticket.issue.createdOn |date:'yyyy-MM-dd'}}</clr-dg-cell>
-              <clr-dg-cell>{{ticket.issue.updatedOn |date:'yyyy-MM-dd'}}</clr-dg-cell>
               <clr-dg-cell class="text-truncate">
                 <div *ngIf="ticket.userType === 'END_USER'; then endUser else registerUser"></div>
                 <ng-template #endUser><span title="End User">End User</span></ng-template>

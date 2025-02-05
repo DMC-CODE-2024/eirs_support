@@ -35,7 +35,7 @@ import { SimpleTimer } from 'ng2-simple-timer';
           </figure>
           <div class="clr-row">
             <div class="clr-col-12 text-center m-0 p-0">
-              <ng-otp-input (onInputChange)="onOtpChange($event)" [config]="{ length: allowedOtpLength }"></ng-otp-input>
+              <ng-otp-input (onInputChange)="onOtpChange($event)" [config]="{ length: allowedOtpLength, allowNumbersOnly:true }"></ng-otp-input>
             </div>
           </div>
           <div class="clr-row mt-3">
@@ -115,7 +115,8 @@ export class VerifyOtpForTicketComponent extends ExtendableListComponent {
     this.finished = false;
     let countrycode = _.trim(this.config.get('countryCode') || '+265');
     countrycode = _.startsWith(countrycode, '+') ? countrycode.substring(1, countrycode.length) : countrycode;
-    this.apicall.get(`/ticket/send-otp/${countrycode}${this.mobileNumber}`).subscribe({
+    const lang = _.isEmpty(localStorage.getItem(`${window.name}lang`) || 'us') ? 'us' : localStorage.getItem(`${window.name}lang`) || 'us';
+    this.apicall.get(`/ticket/send-otp/${countrycode}${this.mobileNumber}/${lang}`).subscribe({
       next: (result) => {
         this.startTimer();
       },

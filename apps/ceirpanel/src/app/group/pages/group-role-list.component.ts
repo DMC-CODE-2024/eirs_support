@@ -3,7 +3,7 @@
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import * as _ from 'lodash';
-import { take } from 'rxjs';
+import { lastValueFrom, take } from 'rxjs';
 import { ExtendableListComponent } from '../../ceir-common/extendable-list';
 import { ExportService } from '../../core/services/common/export.service';
 import { GroupRoleDto } from '../dto/group.role.dto';
@@ -11,6 +11,7 @@ import { GroupRoleService } from '../service/group.role.service';
 import { GroupRoleDeleteComponent } from '../component/group-role-delete.component';
 import { ActivatedRoute } from '@angular/router';
 import { ApiUtilService } from '../../core/services/common/api.util.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'ceirpanel-group-role-list',
@@ -30,6 +31,7 @@ export class GroupRoleListComponent extends ExtendableListComponent {
   public loading = true;
   rowSizeForExport!: number;
   constructor(
+    private translate: TranslateService,
     private cdRef: ChangeDetectorRef,
     public exportService: ExportService,
     private groupRoleService: GroupRoleService,
@@ -60,15 +62,17 @@ export class GroupRoleListComponent extends ExtendableListComponent {
   export(state: ClrDatagridStateInterface) {
     const st = _.cloneDeep(state);
     if (st && st.page) st.page.size = this.rowSizeForExport;
-    this.groupRoleService.pagination(st).pipe(take(1)).subscribe((modules: GroupRoleDto) => {
-        this.exportService.groupRoles(
-            modules.content,
-            `${_.now()}-group-roles`,
-            {
-              showLabels: true,
-              headers: ['Created On', 'Group', 'Role','Status'],
-            }
-          );
+
+    this.groupRoleService.pagination(st).subscribe({
+      next: async (result: GroupRoleDto) => {
+        const modules = result.content;
+        this.exportService.groupRoles(result?.content, `${_.now()}-roles`,{showLabels: true,headers: [
+          await lastValueFrom(this.translate.get('datalist.createDate')),
+          await lastValueFrom(this.translate.get('datalist.groupName')),
+          await lastValueFrom(this.translate.get('datalist.roleName')),
+          await lastValueFrom(this.translate.get('datalist.status'))
+        ]});
+      }
     });
   }
   deleteRecord(data: GroupRoleDto | Array<GroupRoleDto>) {

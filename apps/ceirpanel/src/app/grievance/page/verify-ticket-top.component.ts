@@ -11,6 +11,7 @@ import { MenuTransportService } from '../../core/services/common/menu.transport.
 import { ConfigService } from 'ng-config-service';
 import { NgOtpInputComponent } from 'ng-otp-input';
 import { SimpleTimer } from 'ng2-simple-timer';
+import { AuthService } from '../../core/services/common/auth.service';
 
 @Component({
   selector: 'ceirpanel-ticket-otp',
@@ -41,6 +42,7 @@ export class VerifyTicketOtpComponent implements OnInit {
     private apicall: ApiUtilService,
     public config: ConfigService,
     public st: SimpleTimer,
+    public authService: AuthService,
     private router: Router,private transport: MenuTransportService) {
       this.ticket.mobileNumber = this.route.snapshot.paramMap.get('msisdn') || '';
       this.subscribeTimer = this.config.get('otpTimerTime') || 60;
@@ -111,7 +113,8 @@ export class VerifyTicketOtpComponent implements OnInit {
       countrycode = _.startsWith(countrycode, '+') ? countrycode.substring(1, countrycode.length) : countrycode;
       this.ngOtpInput.setValue('');
       this.otpCurrentLimit = this.otpCurrentLimit + 1;
-      this.apicall.get(`/ticket/send-otp/${countrycode}${this.ticket.mobileNumber}`).subscribe({
+      const lang = _.isEmpty(localStorage.getItem(`${window.name}lang`) || 'us') ? 'us' : localStorage.getItem(`${window.name}lang`) || 'us';
+      this.apicall.get(`/ticket/send-otp/${countrycode}${this.ticket.mobileNumber}/${lang}`).subscribe({
         next: (_data) => {
           if(_.isEqual((_data as any).message, 'sendOtpSuccess')) {
             this.transport.alert = {message: 'sendOtpSuccess',type: 'info'} as unknown;

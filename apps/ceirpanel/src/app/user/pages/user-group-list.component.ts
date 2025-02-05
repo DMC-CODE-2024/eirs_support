@@ -4,7 +4,7 @@ import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import * as _ from "lodash";
-import { take } from 'rxjs';
+import { lastValueFrom, take } from 'rxjs';
 import { ExtendableListComponent } from '../../ceir-common/extendable-list';
 import { ExportService } from '../../core/services/common/export.service';
 import { UserGroupDto } from '../../user-group/dto/user-group.dto';
@@ -12,6 +12,7 @@ import { UserGroupDeleteComponent } from '../component/user-group-delete.compone
 import { UserGroupService } from '../service/user.group.service';
 import { UserService } from '../service/user.service';
 import { ApiUtilService } from '../../core/services/common/api.util.service';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -32,7 +33,8 @@ export class UserGroupListComponent extends ExtendableListComponent {
     public exportService: ExportService,
     route: ActivatedRoute,
     private router: Router,
-    private apicall: ApiUtilService
+    private apicall: ApiUtilService,
+    private translate: TranslateService
   ) {
     super();
     route.params.subscribe(param => {
@@ -58,18 +60,18 @@ export class UserGroupListComponent extends ExtendableListComponent {
   export(state: ClrDatagridStateInterface) {
     const st = _.cloneDeep(state);
     if(st && st.page) st.page.size = this.rowSizeForExport;
+
     this.userGroupService
-      .pagination(st)
-      .pipe(take(1))
-      .subscribe((modules: UserGroupDto) => {
-        this.exportService.userGroups(
-          modules.content,
-          `${_.now()}-user-groups`,
-          {
-            showLabels: true,
-            headers: ['Created On', 'User', 'Group','Status'],
-          }
-        );
+      .pagination(st).subscribe({
+        next: async (data: UserGroupDto) => {
+          const list = data.content;
+          this.exportService.userGroups(list, `${_.now()}_user-groups`,{showLabels: true,headers: [
+            await lastValueFrom(this.translate.get('datalist.createDate')),
+            await lastValueFrom(this.translate.get('datalist.userName')),
+            await lastValueFrom(this.translate.get('datalist.groupName')),
+            await lastValueFrom(this.translate.get('datalist.status'))
+          ]});
+        }
       });
   }
 

@@ -134,9 +134,11 @@ export class CeirHeaderComponent implements OnInit{
     });
     const iframelogin =  this.jwtService.getIframeLogin();
     this.route.queryParams.subscribe((queryParams) => {
-      this.lang = queryParams['lang'] || _.isEmpty(iframelogin) || _.isUndefined(iframelogin.lang) ? queryParams['lang'] || localStorage.getItem('lang') || 'us': iframelogin.lang;
+      this.lang = queryParams['lang'] || _.isEmpty(iframelogin) || _.isUndefined(iframelogin.lang) ? queryParams['lang'] || localStorage.getItem(`${window.name}lang`) || 'us': iframelogin.lang;
       this.type = queryParams['type'] || _.isEmpty(iframelogin) || _.isUndefined(iframelogin.type) ? queryParams['type'] || 0: iframelogin.type;
       this.header = queryParams['header'] || _.isEmpty(iframelogin) || _.isUndefined(iframelogin.header) ? queryParams['header'] || 'yes': iframelogin.header;
+      const langlist:Array<any> = this.config.get('languages') || [];
+      this.lang = _.filter(langlist, _.matches({code: this.lang})).length === 0 ? 'us' : this.lang;
       this.changeSiteLanguage(this.lang);
       this.removestyle();
       this.addstyle();
@@ -169,8 +171,12 @@ export class CeirHeaderComponent implements OnInit{
         : _.some(['register-ticket'], (el) =>
             _.includes(this.router.url, el)
           )
-        ? 'ticket.pageTitle.add' : 'ticket.pageTitle.add';
-      //console.log('key: ',key);
+        ? 'ticket.pageTitle.add' : _.some(['verify-ticket-otp'], (el) =>
+          _.includes(this.router.url, el)
+        )
+      ? 'ticket.pageTitle.verifyOtp': _.some(['end-user'], (el) =>
+        _.includes(this.router.url, el)
+      ) ? 'ticket.viewTicket.endUserTicketList' : 'ticket.pageTitle.add';
       this.translate.get(key).subscribe((t) => {
         this.headertitle = t;
       });
@@ -185,7 +191,8 @@ export class CeirHeaderComponent implements OnInit{
       this.siteLanguage = selectedLanguage;
       this.translate.use(localeCode);
     }
-    localStorage.setItem('lang', this.localeCode);
+    console.log('locate: ', localeCode);
+    localStorage.setItem(`${window.name}lang`, this.localeCode);
     this.updateLanguage();
     
   }
@@ -195,6 +202,9 @@ export class CeirHeaderComponent implements OnInit{
         this.language = l;
       }
     });
+    if(!_.isEmpty(this.localeCode)) {
+      this.apiutil.get(`/language/update/${this.localeCode}`).subscribe({});
+    }
   }
   logout() {
     this.apiutil.get('/api/auth/logout').subscribe({

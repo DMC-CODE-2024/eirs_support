@@ -1,32 +1,39 @@
 <div class="card" style="min-height: 85vh;">
     <div class="card-header">
-      <div class="clr-row clr-justify-content-between">
-        <div class="clr-col-4" style="margin-top: 5px;">
+      <div class="row justify-content-between pe-3">
+        <div class="col-6" style="margin-top: 5px;">
           <h4 class="card-title">{{ "groupFeature.pageTitle.list" | translate }}</h4>
         </div>
-        <div class="clr-col-8 m-0 p-0">
-          <div class="btn-group btn-primary float-end">
-            <ng-template [ngxPermissionsOnly]="['GROUP-FEATURE_DELETE']" [ngxPermissionsOnlyThen]="showDelete"></ng-template>
-            <ng-template #showDelete>
-              <clr-toggle-container class="clr-toggle-right m-0 p-0 mt-1">
-                <clr-toggle-wrapper>
-                  <label>{{ "button.multiSelect" | translate }}</label>
-                  <input type="checkbox" clrToggle (change)="changeView($event)"/>
-                </clr-toggle-wrapper>
-              </clr-toggle-container>
-              <button class="btn btn-outline mx-1" aria-label="Check" [disabled]="!multiselect" (click)="openDeleteModel(selecton)">
-                {{ "groupFeature.pageTitle.delete" | translate }}
-              </button>
+        <div class="col m-0 p-0">
+          <div class="row row-cols-auto justify-content-end">
+            <ng-template [ngxPermissionsOnly]="['GROUP-FEATURE_DELETE']" [ngxPermissionsOnlyThen]="showToggle"></ng-template>
+            <ng-template #showToggle>
+              <div class="col m-0 p-0 mb-4 text-right">
+                <clr-toggle-container class="clr-toggle-right m-0 p-0 mt-1 float-end">
+                  <clr-toggle-wrapper>
+                    <label>{{ "button.multiSelect" | translate }}</label>
+                    <input type="checkbox" clrToggle (change)="changeView($event)"/>
+                  </clr-toggle-wrapper>
+                </clr-toggle-container>
+              </div>
             </ng-template>
-            <span>
-              <ng-template [ngxPermissionsOnly]="['GROUP-FEATURE_ADD']" [ngxPermissionsOnlyThen]="showAdd"></ng-template>
-              <ng-template #showAdd>
-                <button class="btn" aria-label="Check" [routerLink]="['/group-feature/add']">
-                  <cds-icon shape="plus" solid="true" inverse="true"></cds-icon> {{ "groupFeature.pageTitle.add" | translate }}
-                </button>
-              </ng-template>
-            </span>
-          </div>  
+            <div class="col m-0 p-0">
+              <div class="btn-group btn-primary">
+                <ng-template [ngxPermissionsOnly]="['GROUP-FEATURE_DELETE']" [ngxPermissionsOnlyThen]="showDelete"></ng-template>
+                <ng-template #showDelete>
+                  <button class="btn btn-outline mx-1" aria-label="Check" [disabled]="!multiselect" (click)="openDeleteModel(selecton)">
+                    {{ "groupFeature.pageTitle.delete" | translate }}
+                  </button>
+                </ng-template>
+                <ng-template [ngxPermissionsOnly]="['GROUP-FEATURE_ADD']" [ngxPermissionsOnlyThen]="showAdd"></ng-template>
+                <ng-template #showAdd>
+                  <button class="btn" aria-label="Check" [routerLink]="['add','']">
+                    <cds-icon shape="plus" solid="true" inverse="true"></cds-icon> {{ "groupFeature.pageTitle.add" | translate }}
+                  </button>
+                </ng-template>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

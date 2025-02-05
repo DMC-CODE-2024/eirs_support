@@ -13,42 +13,46 @@ import * as _ from "lodash";
 import { ExportService } from '../../core/services/common/export.service';
 import { ModuleDeleteComponent } from '../component/module-delete.component';
 import { ModuleService } from '../service/module.service';
-import { take } from 'rxjs';
+import { lastValueFrom, take } from 'rxjs';
 
 @Component({
   selector: 'ceirpanel-module-list',
   template: `
   <div class="card" style="min-height: 85vh;">
     <div class="card-header">
-      <div class="clr-row clr-justify-content-between">
-        <div class="clr-col-5" style="margin-top: 5px;">
+      <div class="row justify-content-between">
+        <div class="col-4" style="margin-top: 5px;">
           <h4 class="card-title">{{ "module.pageTitle.list" | translate }}</h4>
         </div>
-        <div class="clr-col-7 m-0 p-0">
-          <div class="btn-group btn-primary float-end">
-            <ng-template [ngxPermissionsOnly]="['MODULE_DELETE']" [ngxPermissionsOnlyThen]="showDelete"></ng-template>
-            <ng-template #showDelete>
-              <clr-toggle-container class="clr-toggle-right m-0 p-0 mt-1">
-                <clr-toggle-wrapper>
-                  <label>{{ "button.multiSelect" | translate }}</label>
-                  <input type="checkbox" clrToggle (change)="changeView($event)"/>
-                </clr-toggle-wrapper>
-              </clr-toggle-container>
-              <button class="btn btn-outline mx-1" aria-label="Check" [disabled]="!multiselect" (click)="openDeleteModel(selecton)">
-                {{ "module.pageTitle.delete" | translate }}
-              </button>
+        <div class="col m-0 p-0">
+          <div class="row row-cols-auto justify-content-end">
+            <ng-template [ngxPermissionsOnly]="['MODULE_DELETE']" [ngxPermissionsOnlyThen]="showToggle"></ng-template>
+            <ng-template #showToggle>
+              <div class="col m-0 p-0 mb-4 text-right">
+                <clr-toggle-container class="clr-toggle-right m-0 p-0 mt-1 float-end">
+                  <clr-toggle-wrapper>
+                    <label>{{ "button.multiSelect" | translate }}</label>
+                    <input type="checkbox" clrToggle (change)="changeView($event)"/>
+                  </clr-toggle-wrapper>
+                </clr-toggle-container>
+              </div>
             </ng-template>
-            <ng-template [ngxPermissionsOnly]="['MODULE_ADD']" [ngxPermissionsOnlyThen]="showAdd" [ngxPermissionsOnlyElse]="hideAdd"></ng-template>
-            <ng-template #showAdd>
-              <button class="btn" aria-label="Check" [routerLink]="['add','']">
-                <cds-icon shape="plus" solid="true" inverse="true"></cds-icon> {{ "module.pageTitle.add" | translate }}
-              </button>
-            </ng-template>
-            <ng-template #hideAdd>
-              <button class="btn" aria-label="Check" [routerLink]="['add','']" disabled>
-                <cds-icon shape="plus" solid="true" inverse="true"></cds-icon> {{ "module.pageTitle.add" | translate }}
-              </button>
-            </ng-template>
+            <div class="col m-0 p-0">
+              <div class="btn-group btn-primary">
+                <ng-template [ngxPermissionsOnly]="['MODULE_DELETE']" [ngxPermissionsOnlyThen]="showDelete"></ng-template>
+                <ng-template #showDelete>
+                  <button class="btn btn-outline mx-1" aria-label="Check" [disabled]="!multiselect" (click)="openDeleteModel(selecton)">
+                    {{ "module.pageTitle.delete" | translate }}
+                  </button>
+                </ng-template>
+                <ng-template [ngxPermissionsOnly]="['MODULE_ADD']" [ngxPermissionsOnlyThen]="showAdd"></ng-template>
+                <ng-template #showAdd>
+                  <button class="btn" aria-label="Check" [routerLink]="['add','']">
+                    <cds-icon shape="plus" solid="true" inverse="true"></cds-icon> {{ "module.pageTitle.add" | translate }}
+                  </button>
+                </ng-template>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -210,9 +214,14 @@ export class ModuleListComponent extends ExtendableListComponent {
     const st = _.cloneDeep(state);
     if(st && st.page) st.page.size = this.rowSizeForExport;
     this.apicall.post('/module/pagination', st).subscribe({
-      next: (result) => {
+      next: async (result) => {
         const tags = (result as ModuleMangeList).content;
-        this.exportService.modules(tags, `${_.now()}_modules`,{showLabels: true,headers: ["ID", "Created On", "Module Name","Status"]});
+        this.exportService.modules(tags, `${_.now()}_modules`,{showLabels: true,headers: [
+          await lastValueFrom(this.translate.get('datalist.createDate')),
+          await lastValueFrom(this.translate.get('datalist.modifiedDate')),
+          await lastValueFrom(this.translate.get('datalist.moduleName')),
+          await lastValueFrom(this.translate.get('datalist.status'))
+        ]});
       }
     });
   }

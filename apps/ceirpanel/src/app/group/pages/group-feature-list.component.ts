@@ -3,7 +3,7 @@
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import * as _ from 'lodash';
-import { take } from 'rxjs';
+import { lastValueFrom, take } from 'rxjs';
 import { ExtendableListComponent } from '../../ceir-common/extendable-list';
 import { ExportService } from '../../core/services/common/export.service';
 import { GroupFeatureDeleteComponent } from '../component/group-feature-delete.component';
@@ -11,6 +11,7 @@ import { GroupFeatureDto } from '../dto/group.feature.dto';
 import { GroupFeatureService } from '../service/group.feature.service';
 import { ActivatedRoute } from '@angular/router';
 import { ApiUtilService } from '../../core/services/common/api.util.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'ceirpanel-group-feature-list',
@@ -34,7 +35,8 @@ export class GroupFeatureListComponent extends ExtendableListComponent {
     public exportService: ExportService,
     private groupFeatureService: GroupFeatureService,
     route: ActivatedRoute,
-    private apicall: ApiUtilService
+    private apicall: ApiUtilService,
+    private translate: TranslateService
   ) {
     super();
     route.params.subscribe(param => {
@@ -62,17 +64,16 @@ export class GroupFeatureListComponent extends ExtendableListComponent {
     const st = _.cloneDeep(state);
     if(st && st.page) st.page.size = this.rowSizeForExport;
     this.groupFeatureService
-      .pagination(st)
-      .pipe(take(1))
-      .subscribe((modules: GroupFeatureDto) => {
-        this.exportService.groupFeatures(
-          modules.content,
-          `${_.now()}-group-features`,
-          {
-            showLabels: true,
-            headers: ['Created On', 'Group', 'Feature','Status'],
-          }
-        );
+      .pagination(st).subscribe({
+        next: async (data: GroupFeatureDto) => {
+          const list = data.content;
+          this.exportService.groupFeatures(list, `${_.now()}_group-features`,{showLabels: true,headers: [
+            await lastValueFrom(this.translate.get('datalist.createDate')),
+            await lastValueFrom(this.translate.get('datalist.groupName')),
+            await lastValueFrom(this.translate.get('datalist.featureName')),
+            await lastValueFrom(this.translate.get('datalist.status'))
+          ]});
+        }
       });
   }
   deleteRecord(data: GroupFeatureDto | Array<GroupFeatureDto>) {

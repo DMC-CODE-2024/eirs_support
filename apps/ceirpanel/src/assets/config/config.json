@@ -74,6 +74,10 @@
     "allowedUserEmpIdCardFileUploadSize": "2000000",
     "userFirstNameRegex": "^[a-zA-Z0-9 ]{5,50}$",
     "userLastNameRegex": "^[a-zA-Z0-9 ]{5,50}$",
+    "transactionIdRegex": "^[a-zA-Z0-9 ]{5,50}$",
+    "ticketSubjectRegex": "^[a-zA-Z0-9 ]{5,50}$",
+    "ticketDescriptionRegex": "^[a-zA-Z0-9 ]{5,50}$",
+    "addressRegex": "^[a-zA-Z0-9 ]{5,50}$",
     "maxUserFirstNameLength": 50,
 	"maxUserLastNameLength": 50,
     "otpMaxResendLimit": 3,
@@ -88,5 +92,7 @@
 	"employeeIdLength":32,
 	"natureOfEmploymentLength":32,
 	"authorityNameLength":50,
-	"authorityPhoneNoRegex":"^[1-9][0-9]{6,7}$"
+	"authorityPhoneNoRegex":"^[1-9][0-9]{6,8}$",
+    "ticketMobileRegex":"^[1-9][0-9]{6,8}$",
+    "ticketIdRegex": "^T[0-9]{16,16}$"
 }

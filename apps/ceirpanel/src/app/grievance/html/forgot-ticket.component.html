@@ -16,8 +16,8 @@
               <label class="form-label clr-required-mark">{{"ticket.forgotTicket.label" | translate}}</label>
               <div class="input-group input-group-sm">
                 <span class="input-group-text">{{config.get('countryCode') || '+855'}}</span>
-                <input type="text" class="form-control form-control-sm rounded-end" [placeholder]="'ticket.forgotTicket.placeholder' | translate" [(ngModel)]="ticket.mobileNumber" name="mobileNumber"
-                required #mobileNumber="ngModel" [ngClass]="{ 'is-invalid': (f.submitted || f.touched) && mobileNumber.errors }" [pattern]="mobileRegex" aria-autocomplete="none">
+                <input type="number" class="form-control form-control-sm rounded-end" [placeholder]="'ticket.forgotTicket.placeholder' | translate" [(ngModel)]="ticket.mobileNumber" name="mobileNumber"
+                required #mobileNumber="ngModel" [ngClass]="{ 'is-invalid': (f.submitted || f.touched) && mobileNumber.errors }" [pattern]="config.get('ticketMobileRegex') || '^[1-9][0-9]{6,7}$'" aria-autocomplete="none">
                 <div class="invalid-feedback" *ngIf="(f.submitted || f.touched) && mobileNumber.errors">
                   <div class="row justify-content-around">
                     <div class="col-6 m-0 p-0 mt-1" *ngIf="mobileNumber.errors['required']">{{'ticket.forgotTicket.error' | translate}}</div>
@@ -37,7 +37,7 @@
           </div>
           <div class="row mt-1 justify-content-center">
             <div class="col-9 text-center m-0 p-0">
-              <button type="submit" class="btn btn-primary btn-block m-0 p-0">{{"button.submit" | translate}}</button>
+              <button type="submit" class="btn btn-primary btn-block m-0 p-0" [ngClass]="{ 'orange-btn': !authService.isLogin() }">{{"button.submit" | translate}}</button>
             </div>
           </div>
         </form>

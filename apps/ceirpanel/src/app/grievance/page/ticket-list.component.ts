@@ -13,6 +13,8 @@ import { TicketList, TicketModel } from '../../core/models/ticket.model';
 import { ApiUtilService } from '../../core/services/common/api.util.service';
 import { AuthService } from '../../core/services/common/auth.service';
 import { ExportService } from '../../core/services/common/export.service';
+import { TranslateService } from '@ngx-translate/core';
+import { lastValueFrom } from 'rxjs';
 
 
 @Component({
@@ -40,7 +42,8 @@ export class TicketListComponent extends ExtendableListComponent implements OnIn
     private route: ActivatedRoute,
     public authService: AuthService,
     public permission: NgxPermissionsService,
-    public config: ConfigService) {
+    public config: ConfigService,
+    private translate: TranslateService) {
     super();
     this.apicall.get('/config/frontend').subscribe({next: (data:any) => this.rowSizeForExport = data?.rowSizeForExport || 1000});
   }
@@ -97,10 +100,36 @@ export class TicketListComponent extends ExtendableListComponent implements OnIn
     const st = _.cloneDeep(state);
     if(st && st.page) st.page.size = this.rowSizeForExport;
     this.apicall.post('/ticket/pagination', st).subscribe({
-      next: (result) => {
+      next: async (result) => {
         const groups = (result as TicketList).content;
         this.exportService.tickets(groups, `${_.now()}_viewticket`,
-        {showLabels: true,headers: ["Ticket","Phone","Subject", "Created On","Modified On", "Raised By","Status"]});
+        {showLabels: true,headers: [
+          await lastValueFrom(this.translate.get('datalist.createDate')),
+          await lastValueFrom(this.translate.get('datalist.modifiedDate')),
+          await lastValueFrom(this.translate.get('datalist.ticketId')),
+          await lastValueFrom(this.translate.get('datalist.subject')),
+          await lastValueFrom(this.translate.get('datalist.userId')),
+          await lastValueFrom(this.translate.get('datalist.status'))
+        ]});
+      }
+    });
+  }
+  nonadminexport(state: ClrDatagridStateInterface) {
+    const st = _.cloneDeep(state);
+    if(st && st.page) st.page.size = this.rowSizeForExport;
+    this.apicall.post('/ticket/pagination', st).subscribe({
+      next: async (result) => {
+        const groups = (result as TicketList).content;
+        this.exportService.ticketsnonadmin(groups, `${_.now()}_viewticket`,
+        {showLabels: true,headers: [
+          await lastValueFrom(this.translate.get('datalist.createDate')),
+          await lastValueFrom(this.translate.get('datalist.modifiedDate')),
+          await lastValueFrom(this.translate.get('datalist.ticketId')),
+          await lastValueFrom(this.translate.get('datalist.contactNumber')),
+          await lastValueFrom(this.translate.get('datalist.subject')),
+          await lastValueFrom(this.translate.get('datalist.raisedBy')),
+          await lastValueFrom(this.translate.get('datalist.status'))
+        ]});
       }
     });
   }

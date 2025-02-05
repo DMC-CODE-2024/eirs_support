@@ -35,22 +35,26 @@ export class LoginGuard {
       | UrlTree {
       return new Observable<boolean>(observer => {
         setTimeout(() => {
-          this.apiutil.get('/api/auth/isLogin').subscribe({
-            next: (data) => {
-              if (_.isEqual(_.get(data, 'login'), false)) {
-                this.authService.purgeAuth('logout');
-                this.router.navigate(['/']);
-                observer.next(true);
-              } else {
-                if (_.isEqual(_.get(data, 'passwordExpire'), true)) {
-                  this.router.navigate(['/change-password'],{queryParams:{hidesidebar: 'yes'}});
-                }else if (_.isEqual(_.get(data, 'temparoryPassword'), true)) {
-                  this.router.navigate(['/change-password'],{queryParams:{hidesidebar: 'yes'}});
+          try {
+            this.apiutil.get('/api/auth/isLogin').subscribe({
+              next: (data) => {
+                if (_.isEqual(_.get(data, 'login'), false)) {
+                  this.authService.purgeAuth('logout');
+                  this.router.navigate(['/']);
+                  observer.next(true);
+                } else {
+                  if (_.isEqual(_.get(data, 'passwordExpire'), true)) {
+                    this.router.navigate(['/change-password'],{queryParams:{hidesidebar: 'yes'}});
+                  }else if (_.isEqual(_.get(data, 'temparoryPassword'), true)) {
+                    this.router.navigate(['/change-password'],{queryParams:{hidesidebar: 'yes'}});
+                  }
+                  observer.next(true);
                 }
-                observer.next(true);
               }
-            }
-          });
+            });
+          } catch (e) {
+            console.log('error: ', e);
+          }
         }, 1000);
       });
   }

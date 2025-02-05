@@ -15,6 +15,7 @@ import { RoleModel } from '../../models/role.model';
 import { TagModel } from '../../models/tag.model';
 import { TicketModel } from '../../models/ticket.model';
 import { UserModel } from '../../models/user.model';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -26,21 +27,26 @@ export class ExportService {
   public users(users: Array<UserModel>, fileName: string, options: any) {
     const data: any[] = [] as any;
     users.forEach(u => {
+      const date = new DatePipe('en-US').transform(u?.createdOn, 'yyyy-MM-dd');
       const status = !u.currentStatus || u.currentStatus==='0' ? 'Inactive': u.currentStatus==='3' ? 'Active': u.currentStatus=='4' ? 'Suspended': u.currentStatus==='5' ? 'Locked': u.currentStatus==='21' ? 'Deleted': 'Inactive';
-      data.push({id:u.id,created: u.createdOn,firstName: u.profile.firstName, lastName: u.profile.lastName,userName:u?.userName,organization:u?.profile?.companyName,status});
+      data.push({created: date,firstName: u.profile.firstName, lastName: u.profile.lastName,userName:u?.userName,organization:u?.profile?.companyName,status});
     })
     this.export(data, fileName, options);
   }
   public groups(users: Array<GroupModel>, fileName: string, options: any) {
     const data: any[] = [] as any;
-    users.forEach(u => data.push({id:u?.id,created: u?.createdOn,groupName: u?.groupName, parentGroupName: u.parent? u.parent?.groupName: 'NA'}));
+    users.forEach(u => {
+      const date = new DatePipe('en-US').transform(u?.createdOn, 'yyyy-MM-dd');
+      data.push({id:u?.id,created: date,groupName: u?.groupName, parentGroupName: u.parent? u.parent?.groupName: 'NA'});
+    });
     this.export(data, fileName, options);
   }
   public features(users: Array<FeatureModel>, fileName: string, options: any) {
     const data: any[] = [] as any;
     users.forEach(u => {
+      const date = new DatePipe('en-US').transform(u?.createdOn, 'yyyy-MM-dd');
       const status = !u.status || u.status==='0' ? 'Inactive': u.status==='3' ? 'Active': u.status=='4' ? 'Suspended': u.status==='5' ? 'Locked': u.status==='21' ? 'Deleted': 'Inactive';
-      data.push({id:u?.id,created: u?.createdOn,featureName: u?.featureName, category: u.category,status});
+      data.push({created: date,featureName: u?.featureName, category: u.category,status});
     });
     this.export(data, fileName, options);
   }
@@ -48,15 +54,19 @@ export class ExportService {
     const data: any[] = [] as any;
     users.forEach(u => {
       const status = !u.status || u.status==='0' ? 'Inactive': u.status==='3' ? 'Active': u.status=='4' ? 'Suspended': u.status==='5' ? 'Locked': u.status==='21' ? 'Deleted': 'Inactive';
-      data.push({id:u?.id,created: u?.createdOn,featureName: u?.moduleTagName,status});
+      const created = new DatePipe('en-US').transform(u?.createdOn, 'yyyy-MM-dd');
+      const modified = new DatePipe('en-US').transform(u?.updatedOn, 'yyyy-MM-dd');
+      data.push({created: created, modifedOn: modified, featureName: u?.moduleTagName,status});
     });
     this.export(data, fileName, options);
   }
   public modules(users: Array<ModuleMangeModel>, fileName: string, options: any) {
     const data: any[] = [] as any;
     users.forEach(u => {
+      const created = new DatePipe('en-US').transform(u?.createdOn, 'yyyy-MM-dd');
+      const modified = new DatePipe('en-US').transform(u?.updatedOn, 'yyyy-MM-dd');
       const status = !u.status || u.status==='0' ? 'Inactive': u.status==='3' ? 'Active': u.status=='4' ? 'Suspended': u.status==='5' ? 'Locked': u.status==='21' ? 'Deleted': 'Inactive';
-      data.push({id:u?.id,created: u?.createdOn,moduleName: u.moduleName,status});
+      data.push({created: created, modifiedOn: modified,moduleName: u.moduleName,status});
     });
     this.export(data, fileName, options);
   }
@@ -64,7 +74,8 @@ export class ExportService {
     const data: any[] = [] as any;
     users.forEach(u => {
       const status = !u.status || u.status==='0' ? 'Inactive': u.status==='3' ? 'Active': u.status=='4' ? 'Suspended': u.status==='5' ? 'Locked': u.status==='21' ? 'Deleted': 'Inactive';
-      data.push({created:u?.createdOn,feature:u?.feature?.featureName,module: u?.module?.moduleName,status});
+      const date = new DatePipe('en-US').transform(u?.createdOn, 'yyyy-MM-dd');
+      data.push({created:date,feature:u?.feature?.featureName,module: u?.module?.moduleName,status});
     });
     this.export(data, fileName, options);
   }
@@ -72,7 +83,8 @@ export class ExportService {
     const data: any[] = [] as any;
     users.forEach(u => {
       const status = !u.status || u.status==='0' ? 'Inactive': u.status==='3' ? 'Active': u.status=='4' ? 'Suspended': u.status==='5' ? 'Locked': u.status==='21' ? 'Deleted': 'Inactive';
-      data.push({created: u?.createdOn,groupName: u?.group?.groupName, featureName: u?.feature?.featureName,status});
+      const date = new DatePipe('en-US').transform(u?.createdOn, 'yyyy-MM-dd');
+      data.push({created: date,groupName: u?.group?.groupName, featureName: u?.feature?.featureName,status});
     });
     this.export(data, fileName, options);
   }
@@ -80,7 +92,8 @@ export class ExportService {
     const data: any[] = [] as any;
     users.forEach(u => {
       const status = !u.status || u.status==='0' ? 'Inactive': u.status==='3' ? 'Active': u.status=='4' ? 'Suspended': u.status==='5' ? 'Locked': u.status==='21' ? 'Deleted': 'Inactive';
-      data.push({created: u?.createdOn,userName: u?.user?.userName, featureName: u?.feature?.featureName,status});
+      const date = new DatePipe('en-US').transform(u?.createdOn, 'yyyy-MM-dd');
+      data.push({created: date,userName: u?.user?.userName, featureName: u?.feature?.featureName,status});
     });
     this.export(data, fileName, options);
   }
@@ -88,7 +101,8 @@ export class ExportService {
     const data: any[] = [] as any;
     users.forEach(u => {
       const status = !u.status || u.status==='0' ? 'Inactive': u.status==='3' ? 'Active': u.status=='4' ? 'Suspended': u.status==='5' ? 'Locked': u.status==='21' ? 'Deleted': 'Inactive';
-      data.push({created: u?.createdOn,userName: u?.user?.userName, groupName: u?.group?.groupName,status});
+      const date = new DatePipe('en-US').transform(u?.createdOn, 'yyyy-MM-dd');
+      data.push({created: date,userName: u?.user?.userName, groupName: u?.group?.groupName,status});
     });
     this.export(data, fileName, options);
   }
@@ -96,7 +110,8 @@ export class ExportService {
     const data: any[] = [] as any;
     users.forEach(u => {
       const status = !u.status || u.status==='0' ? 'Inactive': u.status==='3' ? 'Active': u.status=='4' ? 'Suspended': u.status==='5' ? 'Locked': u.status==='21' ? 'Deleted': 'Inactive';
-      data.push({id:u?.id,created: u?.createdOn,roleName: u.roleName, access: u.access,status});
+      const date = new DatePipe('en-US').transform(u?.createdOn, 'yyyy-MM-dd');
+      data.push({created: date,roleName: u.roleName, access: u.access,status});
     });
     this.export(data, fileName, options);
   }
@@ -104,7 +119,8 @@ export class ExportService {
     const data: any[] = [] as any;
     users.forEach(u => {
       const status = !u.status || u.status==='0' ? 'Inactive': u.status==='3' ? 'Active': u.status=='4' ? 'Suspended': u.status==='5' ? 'Locked': u.status==='21' ? 'Deleted': 'Inactive';
-      data.push({created: u?.createdOn,userName: u?.user.userName, role: u?.role?.roleName,status});
+      const date = new DatePipe('en-US').transform(u?.createdOn, 'yyyy-MM-dd');
+      data.push({created: date,userName: u?.user.userName, role: u?.role?.roleName,status});
     });
     this.export(data, fileName, options);
   }
@@ -112,23 +128,36 @@ export class ExportService {
     const data: any[] = [] as any;
     users.forEach(u => {
       const status = !u.status || u.status==='0' ? 'Inactive': u.status==='3' ? 'Active': u.status=='4' ? 'Suspended': u.status==='5' ? 'Locked': u.status==='21' ? 'Deleted': 'Inactive';
-      data.push({created: u?.createdOn,groupName: u?.group?.groupName,role: u?.role?.roleName,status});
+      const date = new DatePipe('en-US').transform(u?.createdOn, 'yyyy-MM-dd');
+      data.push({created: date,groupName: u?.group?.groupName,role: u?.role?.roleName,status});
     });
     this.export(data, fileName, options);
   }
   public acl(users: Array<AclModel>, fileName: string, options: any) {
     const data: any[] = [] as any;
     users.forEach(u => {
-      data.push({created: u?.createdOn,roleName: u?.role?.roleName,feature: u?.feature?.featureName, module: u?.module?.moduleName});
+      const date = new DatePipe('en-US').transform(u?.createdOn, 'yyyy-MM-dd');
+      data.push({created: date,roleName: u?.role?.roleName,feature: u?.feature?.featureName, module: u?.module?.moduleName});
     });
     this.export(data, fileName, options);
   }
   public tickets(users: Array<TicketModel>, fileName: string, options: any) {
     const data: any[] = [] as any;
     users.forEach(u => {
-      const st = u?.issue?.status?.name;
-      const status = !st || st==='0' ? 'Inactive': st==='3' ? 'Active': st=='4' ? 'Suspended': st==='5' ? 'Locked': st==='21' ? 'Deleted': 'Inactive';
-      data.push({id:u?.ticketId,phone:u?.mobileNumber,subject:u.issue.subject,createdOn:u?.issue.createdOn,modifedOn:u?.issue.updatedOn,raisedBy:u?.raisedBy,status});
+      const status = u?.issue?.status?.name;
+      const created = new DatePipe('en-US').transform(u?.issue.createdOn, 'yyyy-MM-dd');
+      const modified = new DatePipe('en-US').transform(u?.issue?.updatedOn, 'yyyy-MM-dd');
+      data.push({createdOn:created,modifedOn:modified,ticketId: u?.ticketId,subject:u?.issue?.subject,raisedBy:u?.raisedBy,status});
+    });
+    this.export(data, fileName, options);
+  }
+  public ticketsnonadmin(users: Array<TicketModel>, fileName: string, options: any) {
+    const data: any[] = [] as any;
+    users.forEach(u => {
+      const status = u?.issue?.status?.name;
+      const created = new DatePipe('en-US').transform(u?.issue.createdOn, 'yyyy-MM-dd');
+      const modified = new DatePipe('en-US').transform(u?.issue?.updatedOn, 'yyyy-MM-dd');
+      data.push({createdOn:created,modifedOn:modified,ticketId: u?.ticketId,mobileNumber: u?.mobileNumber,subject:u?.issue?.subject,raisedBy:u?.raisedBy === 'END_USER' ? 'End User': 'Self',status});
     });
     this.export(data, fileName, options);
   }

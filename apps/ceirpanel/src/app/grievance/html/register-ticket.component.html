@@ -25,28 +25,39 @@
                 <div class="form-group">
                   <label for="firstName" class="form-label clr-required-mark fw-semibold">{{'ticket.firstName.label' | translate}}</label>
                   <input type="text" name="firstName" class="form-control form-control-sm" id="firstName" [(ngModel)]="ticket.firstName" required
-                  [placeholder]="'ticket.firstName.placeholder' | translate" #firstName="ngModel" [ngClass]="{ 'is-invalid': f.submitted && firstName.errors }"
-                  [maxlength]="config.get('maxNameSubjectLength') || 50" aria-autocomplete="none">
+                  [placeholder]="'ticket.firstName.placeholder' | translate" #firstName="ngModel"
+                   [ngClass]="{ 'is-invalid': (f.submitted && firstName.errors && firstName.errors['required']) || (f.touched && firstName.errors && !firstName.errors['required'])}"
+                   aria-autocomplete="none" [pattern]="config.get('userFirstNameRegex') || '^[0-9]{2,9}$'">
                   <div *ngIf="f.submitted && firstName.errors" class="invalid-feedback">
                     <div *ngIf="firstName.errors['required']">{{'ticket.firstName.error.required' | translate}}</div>
+                  </div>
+                  <div *ngIf="f.touched && firstName.errors" class="invalid-feedback">
+                    <div *ngIf="firstName.errors['pattern']">{{'user.name.firstName.pattern' | translate}}</div>
                   </div>
                 </div>
               </div>
               <div class="mb-2" [ngClass]="authService.isLogin() && header==='yes' ? 'col-5' : 'col-lg-6 col-md-6 col-sm-12 col-xs-12'">
-                <label for="lastName" class="form-label fw-semibold">{{'ticket.lastName.label' | translate}}</label>
-                <input type="text" name="lastName" class="form-control form-control-sm" id="lastName" [(ngModel)]="ticket.lastName"
-                  [placeholder]="'ticket.lastName.placeholder' | translate" autocomplete="ticketoff" [maxlength]="config.get('maxNameSubjectLength') || 50" aria-autocomplete="none">
+                <label for="lastName" class="form-label clr-required-mark fw-semibold">{{'ticket.lastName.label' | translate}}</label>
+                <input type="text" name="lastName" class="form-control form-control-sm" id="lastName" [(ngModel)]="ticket.lastName" #lastName="ngModel" 
+                  [placeholder]="'ticket.lastName.placeholder' | translate" autocomplete="ticketoff" aria-autocomplete="none" required
+                  [pattern]="config.get('userLastNameRegex') || '^[0-9]{2,9}$'" [ngClass]="{ 'is-invalid': (f.touched || f.submitted) && lastName.errors }">
+                  <div *ngIf="f.submitted && lastName.errors" class="invalid-feedback">
+                    <div *ngIf="lastName.errors['required']">{{'ticket.lastName.error.required' | translate}}</div>
+                  </div>
+                  <div *ngIf="f.touched && lastName.errors" class="invalid-feedback">
+                    <div *ngIf="lastName.errors['pattern']">{{'user.name.lastName.pattern' | translate}}</div>
+                  </div>
               </div>
               <div class="mb-2" [ngClass]="authService.isLogin() && header==='yes' ? 'col-5' : 'col-lg-6 col-md-6 col-sm-12 col-xs-12'">
                 <label for="mobileNumber" class="form-label clr-required-mark fw-semibold">{{'ticket.phone.label' | translate}}</label>
                 <div class="input-group input-group-sm">
                   <span class="input-group-text">{{config.get('countryCode') || '+855'}}</span>
-                  <input type="text" name="mobileNumber" class="form-control form-control-sm" id="mobileNumber" [(ngModel)]="ticket.mobileNumber" required
-                   [pattern]="mobileRegex" [placeholder]="'ticket.phone.placeholder' | translate" #mobileNumber="ngModel"
+                  <input type="number" name="mobileNumber" class="form-control form-control-sm" id="mobileNumber" [(ngModel)]="ticket.mobileNumber" required
+                   [pattern]="config.get('ticketMobileRegex') || '^[1-9][0-9]{6,7}$'" [placeholder]="'ticket.phone.placeholder' | translate" #mobileNumber="ngModel"
                     [ngClass]="{ 'is-invalid': (f.submitted || f.touched) && mobileNumber.errors }" autocomplete="ticketoff">
                   <div *ngIf="(f.submitted || f.touched) && mobileNumber.errors" class="invalid-feedback">
                     <div *ngIf="mobileNumber.errors['required']">{{'ticket.phone.error.required' | translate}}</div>
-                    <div *ngIf="mobileNumber.errors['pattern']">Enter a valid contact number</div>
+                    <div *ngIf="mobileNumber.errors['pattern']">{{'ticket.phone.error.pattern' | translate}}</div>
                   </div>
                 </div>
               </div>
@@ -54,11 +65,11 @@
                 <label for="alternateMobileNumber" class="form-label fw-semibold">{{'ticket.alternateMobileNumber.label' | translate}}</label>
                 <div class="input-group input-group-sm">
                   <span class="input-group-text">{{config.get('countryCode') || '+855'}}</span>
-                  <input type="text" name="alternateMobileNumber" class="form-control form-control-sm" id="alternateMobileNumber"
-                  [(ngModel)]="ticket.alternateMobileNumber" #alternateMobileNumber="ngModel" ceirpanelBlankMobileValidator [ngClass]="{ 'is-invalid': (f.touched || f.submitted) && alternateMobileNumber.errors }"
-                    [placeholder]="'ticket.alternateMobileNumber.placeholder' | translate" autocomplete="ticketoff">
+                  <input type="number" name="alternateMobileNumber" class="form-control form-control-sm" id="alternateMobileNumber"
+                  [(ngModel)]="ticket.alternateMobileNumber" #alternateMobileNumber="ngModel" [ngClass]="{ 'is-invalid': (f.touched || f.submitted) && alternateMobileNumber.errors }"
+                    [placeholder]="'ticket.alternateMobileNumber.placeholder' | translate" autocomplete="ticketoff" [pattern]="config.get('ticketMobileRegex') || '^[1-9][0-9]{6,7}$'">
                     <div *ngIf="f.touched && alternateMobileNumber.errors" class="invalid-feedback">
-                      <div *ngIf="alternateMobileNumber.errors['invalid']===false">{{ "user.contact.mobile.invalidMobile" | translate }}</div>
+                      <div *ngIf="alternateMobileNumber.errors['pattern']">{{ "user.contact.mobile.invalidMobile" | translate }}</div>
                     </div>
                 </div>
               </div>
@@ -69,9 +80,11 @@
                     <label for="transactionId" class="form-label fw-semibold" [ngClass]="ticket.category===duplicate ? 'clr-required-mark' : '' ">{{'ticket.tid.label' | translate}}</label>
                     <input type="text" name="transactionId" class="form-control form-control-sm" id="transactionId" [(ngModel)]="ticket.transactionId" #transactionId="ngModel"
                     [placeholder]="'ticket.tid.placeholder' | translate" [required]="ticket.category===duplicate "
-                     [ngClass]="{ 'is-invalid': (f.submitted || f.touched) && transactionId.errors }" [maxlength]="config.get('maxTidLength') || 40" aria-autocomplete="none">
+                     [ngClass]="{ 'is-invalid': (f.submitted || f.touched) && transactionId.errors }" [maxlength]="config.get('maxTidLength') || 40" aria-autocomplete="none"
+                     [pattern]="config.get('transactionIdRegex') || '^[0-9]{2,9}$'">
                     <div *ngIf="(f.submitted || f.touched) && transactionId.errors" class="invalid-feedback">
                       <div *ngIf="transactionId.errors['required']">{{'ticket.tid.error.required' | translate}}</div>
+                      <div *ngIf="transactionId.errors['pattern']">{{'ticket.tid.error.pattern' | translate}}</div>
                     </div>
                   </div>
                 </div>
@@ -105,9 +118,13 @@
                     <label class="clr-required-mark">{{ "ticket.address.addressLine.label" | translate }}</label>
                     <input type="text" name="address" class="form-control form-control-sm" id="address" [(ngModel)]="ticket.address"
                     [placeholder]="'ticket.address.addressLine.placeholder' | translate" #address="ngModel" required
-                     [ngClass]="{ 'is-invalid': (f.touched || f.submitted) && address.errors }" autocomplete="addressoff">
+                    [ngClass]="{ 'is-invalid': (f.submitted && address.errors && address.errors['required']) || (f.touched && address.errors && !address.errors['required'])}"
+                     autocomplete="addressoff" [pattern]="config.get('addressRegex') || '^[0-9]{2,9}$'">
                     <div *ngIf="f.touched && address.errors" class="invalid-feedback">
                       <div *ngIf="address.errors['required']">{{'ticket.address.addressLine.required' | translate}}</div>
+                    </div>
+                    <div *ngIf="f.touched && address.errors" class="invalid-feedback">
+                      <div *ngIf="address.errors['pattern']">{{'ticket.address.error.pattern' | translate}}</div>
                     </div>
                   </div>
                 </div>
@@ -116,7 +133,7 @@
                   <select class="form-select form-control form-control-sm" [(ngModel)]="ticket.province" required name="province" 
                     #province="ngModel" [ngClass]="{ 'is-invalid': f.submitted && province.errors }" (change)="onProvinceChange($event)">
                     <option selected [value]="''">{{ "user.address.state.placeholder" | translate }}</option>
-                    <option *ngFor="let province of provinces" [value]="province.name">{{province.name}}</option>
+                    <option *ngFor="let province of provinces" [value]="province.name">{{ translate.currentLang==='us' ? province.name : province.provinceKm}}</option>
                   </select>
                   <div *ngIf="f.submitted && province.errors" class="invalid-feedback">
                     <div *ngIf="province.errors['required']">{{'user.address.state.error' | translate}}</div>
@@ -127,7 +144,7 @@
                   <select class="form-select form-control form-control-sm" [(ngModel)]="ticket.district" required name="district" 
                     #district="ngModel" [ngClass]="{ 'is-invalid': f.submitted && district.errors }"  (change)="onDistrictChange($event)">
                     <option selected [value]="''">{{ "user.address.district.placeholder" | translate }}</option>
-                    <option *ngFor="let district of districts" [value]="district.name">{{district.name}}</option>
+                    <option *ngFor="let district of districts" [value]="district.name">{{ translate.currentLang==='us' ? district.name : district.districtKm}}</option>
                   </select>
                   <div *ngIf="f.submitted && district.errors" class="invalid-feedback">
                     <div *ngIf="district.errors['required']">{{'user.address.district.error' | translate}}</div>
@@ -138,7 +155,7 @@
                   <select class="form-select form-control form-control-sm" [(ngModel)]="ticket.commune" name="commune"
                   required #commune="ngModel" [ngClass]="{ 'is-invalid': f.submitted && commune.errors }">
                     <option selected [value]="''">{{ "user.address.commune.placeholder" | translate }}</option>
-                    <option *ngFor="let commune of communes" [value]="commune.name">{{commune.name}}</option>
+                    <option *ngFor="let commune of communes" [value]="commune.name">{{ translate.currentLang==='us' ? commune?.name : commune?.communeKm}}</option>
                   </select>
                   <div *ngIf="f.submitted && commune.errors" class="invalid-feedback">
                     <div *ngIf="commune.errors['required']">{{'user.address.commune.error' | translate}}</div>
@@ -151,9 +168,13 @@
                 <label for="subject" class="form-label clr-required-mark fw-semibold">{{'ticket.subject.label' | translate}}</label>
                 <input type="text" name="subject" class="form-control form-control-sm" id="subject" [(ngModel)]="ticket.subject"
                  [placeholder]="'ticket.subject.placeholder' | translate" required #subject="ngModel"
-                  [ngClass]="{ 'is-invalid': f.submitted && subject.errors }" [maxlength]="config.get('maxNameSubjectLength') || 50" aria-autocomplete="none">
+                 [ngClass]="{ 'is-invalid': (f.submitted && subject.errors && subject.errors['required']) || (f.touched && subject.errors && !subject.errors['required'])}"
+                  aria-autocomplete="none" [pattern]="config.get('ticketSubjectRegex') || '^[0-9]{2,9}$'">
                 <div *ngIf="f.submitted && subject.errors" class="invalid-feedback">
                   <div *ngIf="subject.errors['required']">{{'ticket.subject.error.required' | translate}}</div>
+                </div>
+                <div *ngIf="f.touched && subject.errors" class="invalid-feedback">
+                  <div *ngIf="subject.errors['pattern']">{{'ticket.subject.error.pattern' | translate}}</div>
                 </div>
               </div>
             </div>
@@ -171,9 +192,14 @@
               <div class="form-group">
                 <label for="subject" class="form-label clr-required-mark fw-semibold">{{'ticket.description.label' | translate}}</label>
                 <textarea name="description" class="form-control form-control-sm" id="description" [(ngModel)]="ticket.description"
-                  [placeholder]="'ticket.description.placeholder' | translate" required #description="ngModel" [ngClass]="{ 'is-invalid': f.submitted && description.errors }"></textarea>
+                  [placeholder]="'ticket.description.placeholder' | translate" required #description="ngModel" 
+                  [ngClass]="{ 'is-invalid': (f.submitted && description.errors && description.errors['required']) || (f.touched && description.errors && !description.errors['required'])}"
+                  [pattern]="config.get('ticketDescriptionRegex') || '^[0-9]{2,9}$'"></textarea>
                   <div *ngIf="f.submitted && description.errors" class="invalid-feedback">
                     <div *ngIf="description.errors['required']">{{'ticket.description.error.required' | translate}}</div>
+                  </div>
+                  <div *ngIf="f.touched && description.errors" class="invalid-feedback">
+                    <div *ngIf="description.errors['pattern']">{{'ticket.description.error.pattern' | translate}}</div>
                   </div>
               </div>
             </div>
@@ -211,13 +237,13 @@
                 <div class="row m-0 p-0 mt-2 row-cols-auto">
                   <div class="m-0 p-0 col">
                     <input type="file" accept="image/png, image/jpg, image/jpeg, application/pdf" #document style="display: none;" (change)="documentSelect($event)" multiple>
-                    <button type="button" class="btn btn-primary-outline text-black" (click)="document.click()" style="border-style: dotted;">
-                      {{ "ticket.document.placeholder" | translate }}<cds-icon shape="paperclip"></cds-icon>
+                    <button type="button" class="btn btn-primary btn-block" (click)="document.click()" style="border-style: dotted;" [ngClass]="{ 'orange-btn': !authService.isLogin() }">
+                      {{ "ticket.document.placeholder" | translate }}&nbsp;<cds-icon shape="paperclip"></cds-icon>
                     </button>
                   </div>
                   <div class="m-0 p-0 col">
-                    <p class="m-0 p-0 lh-sm">{{'ticket.image.accept1' | translate}}</p>
-                    <p class="m-0 p-0 lh-sm">{{'ticket.image.accept2' | translate}}</p>
+                    <p class="m-0 p-0 lh-sm">&nbsp;&nbsp;{{'ticket.image.accept1' | translate}}</p>
+                    <p class="m-0 p-0 lh-sm">&nbsp;&nbsp;{{'ticket.image.accept2' | translate}}</p>
                   </div>
                 </div>
               </div>
@@ -231,7 +257,7 @@
             </div>
             <div class="clr-row m-0 p-0 mt-2" *ngFor="let img of documentObject;let i = index">
               <div class="m-0 p-0 clr-col-12'">
-                <a href="javascript://" class="label label-blue clickable border border-0" (click)="documentObject.splice(i, 1)">
+                <a href="javascript://" class="label label-blue clickable border border-0" [ngClass]="{ 'orange-btn text-white': !authService.isLogin() }" (click)="documentObject.splice(i, 1)">
                   <span class="text">{{img?.name}}({{img?.size?.size+img?.size.type}})</span>
                   <cds-icon shape="close"></cds-icon>
                 </a>
@@ -271,10 +297,10 @@
               <div [ngClass]="authService.isLogin() && header==='yes' ? 'clr-col-10':'clr-col-12'">
                 <div class="clr-row clr-justify-content-start">
                   <div class="clr-col-5 clr-col-lg-2" *ngIf="authService.isLogin()">
-                    <button type="button" class="btn btn-outline btn-block" routerLink="/ticket">{{ 'button.back' | translate }}</button>
+                    <button type="button" class="btn btn-outline btn-block" routerLink="/ticket" [ngClass]="{ 'orange-btn': !authService.isLogin() }">{{ 'button.back' | translate }}</button>
                   </div>
                   <div class="clr-col-5 clr-col-lg-2">
-                    <button type="submit" class="btn btn-primary btn-block">{{ 'button.register' | translate }}</button>
+                    <button type="submit" class="btn btn-primary btn-block" [ngClass]="{ 'orange-btn': !authService.isLogin() }">{{ 'button.register' | translate }}</button>
                   </div>
                 </div>
               </div>
@@ -283,10 +309,10 @@
               <div [ngClass]="authService.isLogin() && header==='yes' ? 'clr-col-10':'clr-col-12'">
                 <div class="clr-row" [ngClass]="authService.isLogin() && header==='yes' ? 'clr-justify-content-end': 'clr-justify-content-start'">
                   <div class="clr-col-5 clr-col-lg-2">
-                    <button type="submit" class="btn btn-primary btn-block">{{ 'button.register' | translate }}</button>
+                    <button type="submit" class="btn btn-primary btn-block" [ngClass]="{ 'orange-btn': !authService.isLogin() }">{{ 'button.register' | translate }}</button>
                   </div>
                   <div class="clr-col-5 clr-col-lg-2" *ngIf="authService.isLogin()">
-                    <button type="button" class="btn btn-outline btn-block" (click)="f.reset()">{{ "button.reset" | translate }}</button>
+                    <button type="button" class="btn btn-outline btn-block" (click)="f.reset()" [ngClass]="{ 'orange-btn': !authService.isLogin() }">{{ "button.reset" | translate }}</button>
                   </div>
                 </div>
               </div>

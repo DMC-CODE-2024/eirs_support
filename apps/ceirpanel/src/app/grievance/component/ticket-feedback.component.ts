@@ -7,6 +7,7 @@ import { ApiUtilService } from '../../core/services/common/api.util.service';
 import { ConfigService } from 'ng-config-service';
 import { NgForm } from '@angular/forms';
 import { ClrForm } from '@clr/angular';
+import { AuthService } from '../../core/services/common/auth.service';
 
 export enum ModalSize {
     small = 'sm',
@@ -18,7 +19,8 @@ export enum ModalSize {
 @Component({
   selector: 'ceirpanel-ticket-feedback',
   template: `
-  <clr-modal [(clrModalOpen)]="open" [clrModalStaticBackdrop]="false" [clrModalSize]="modalSize.large" [clrModalClosable]="true">
+  <clr-modal [(clrModalOpen)]="open" [clrModalStaticBackdrop]="false" [clrModalSize]="modalSize.medium" [clrModalClosable]="true"
+   (clrModalAlternateClose)="open = false;confirmation.emit({open: false, resolve: 'no'})" [clrModalStaticBackdrop]="true" [clrModalPreventClose]="true">
     <h3 class="modal-title">{{ "ticket.feedback.label" | translate }}</h3>
     <div class="modal-body m-0 p-0">
       <form clrForm clrLayout="vertical" #f="ngForm" (ngSubmit)="f.form.valid && onSubmit(f)" novalidate>
@@ -29,7 +31,7 @@ export enum ModalSize {
           </div>
           <div class="clr-col-12 m-0 p-0">
             <div class="form-group">
-                <label>{{ "ticket.feedback.write" | translate }}</label>
+                <label class="form-label clr-required-mark">{{ "ticket.feedback.write" | translate }}</label>
                 <textarea [(ngModel)]="rate.feedback" name="feedback" class="form-control"
                  [placeholder]="'ticket.feedback.placeholder' | translate" #noteObj="ngModel" [ngClass]="{ 'is-invalid': f.submitted && noteObj.errors }"
                   aria-autocomplete="none" autocomplete="off" [maxlength]="config.get('maxCommentLength') || 200" required></textarea>
@@ -39,8 +41,8 @@ export enum ModalSize {
             </div>
           </div>
           <div class="clr-col-12 m-0 p-0 d-flex justify-content-center mt-4">
-            <button type="submit" class="btn btn-primary">{{ "button.yes" | translate }}</button>
-            <button type="button" class="btn btn-outline" (click)="open = false;confirmation.emit({open: false, resolve: 'no'})">{{ "button.no" | translate }}</button>
+            <button type="submit" class="btn btn-primary" [ngClass]="{ 'orange-btn': !authService.isLogin() }">{{ "button.yes" | translate }}</button>
+            <button type="button" class="btn btn-primary" [ngClass]="{ 'orange-btn': !authService.isLogin() }" (click)="open = false;confirmation.emit({open: false, resolve: 'no'})">{{ "button.no" | translate }}</button>
           </div>
         </div>
       </form>
@@ -66,7 +68,7 @@ export class TicketFeedbackComponent implements OnInit{
     @ViewChild(ClrForm, { static: true }) public clrForm!: ClrForm;
     public rate: TicketFeedbackDto = {ratings: 0} as any;
 
-    constructor(private apicall: ApiUtilService, public config: ConfigService){}
+    constructor(private apicall: ApiUtilService, public config: ConfigService, public authService: AuthService){}
     
     ngOnInit(): void {
         

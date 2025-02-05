@@ -88,7 +88,7 @@ export class RegisterTicketComponent implements OnInit {
     private ticketService: TicketService,
     public authService: AuthService,
     public config: ConfigService,
-    private translate: TranslateService,
+    public translate: TranslateService,
     @Inject(DOCUMENT) private document: Document,
     private auth: AuthService,
     private jwtService: JwtService
@@ -168,8 +168,9 @@ export class RegisterTicketComponent implements OnInit {
       formData.append('documents', d.file);
       objmap[d.name] = d.documentType; 
     });
+    console.log('ticket: ', this.ticket)
     const request: TicketModel = JSON.parse(JSON.stringify(this.ticket));
-    request.mobileNumber = !_.isEmpty(request.mobileNumber) ? `${this.countryCode}${request.mobileNumber}` : '';
+    request.mobileNumber = _.isNumber(request.mobileNumber) ? `${this.countryCode}${request.mobileNumber}` : '';
     if(!_.isEmpty(request.alternateMobileNumber)) {
       request.alternateMobileNumber = `${this.countryCode}${request.alternateMobileNumber}`;
     }
@@ -183,6 +184,7 @@ export class RegisterTicketComponent implements OnInit {
       this.header = iframelogin.header;
     }
     formData.append('fileWithDocuments', JSON.stringify(objmap));
+    formData.append('language', _.isEmpty(localStorage.getItem(`${window.name}lang`) || 'us') ? 'us' : localStorage.getItem(`${window.name}lang`) || 'us');
     this.apicall.post('/ticket/save', formData).subscribe({
       next: (_data) => {
         if (_.isEqual(_.get(_data, 'message'), 'registerTicketFailed')) {

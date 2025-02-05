@@ -11,7 +11,7 @@ import { ExportService } from '../../core/services/common/export.service';
 import * as _ from "lodash";
 import { AclDeleteComponent } from '../component/acl-delete.component';
 import { AclService } from '../services/acl.service';
-import { take } from 'rxjs';
+import { lastValueFrom, take } from 'rxjs';
 
 @Component({
   selector: 'ceirpanel-acl-list',
@@ -186,9 +186,14 @@ export class AclListComponent extends ExtendableListComponent {
     const st = _.cloneDeep(state);
     if(st && st.page) st.page.size = this.rowSizeForExport;
     this.apicall.post('/acl/pagination', st).subscribe({
-      next: (result) => {
+      next: async (result) => {
         const modules = (result as AclList).content;
-        this.exportService.acl(modules, `${_.now()}-acl`,{showLabels: true,headers: ["Created On", "Role Name","Feature", "Module"]});
+        this.exportService.acl(modules, `${_.now()}-acl`,{showLabels: true,headers: [
+          await lastValueFrom(this.translate.get('datalist.createDate')),
+          await lastValueFrom(this.translate.get('datalist.roleName')),
+          await lastValueFrom(this.translate.get('datalist.featureName')),
+          await lastValueFrom(this.translate.get('datalist.status'))
+        ]});
       }
     });
   }

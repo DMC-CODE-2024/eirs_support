@@ -11,7 +11,7 @@ import { ExtendableListComponent } from '../../ceir-common/extendable-list';
 import { ExportService } from '../../core/services/common/export.service';
 import * as _ from "lodash";
 import { TagService } from '../service/tag.service';
-import { take } from 'rxjs';
+import { lastValueFrom, take } from 'rxjs';
 import { TagDeleteComponent } from '../component/tag-delete.component';
 
 @Component({
@@ -19,30 +19,39 @@ import { TagDeleteComponent } from '../component/tag-delete.component';
   template: `
   <div class="card" style="min-height: 85vh;">
     <div class="card-header">
-      <div class="clr-row clr-justify-content-between">
-        <div class="clr-col-4" style="margin-top: 5px;">
+      <div class="row justify-content-between">
+        <div class="col-4" style="margin-top: 5px;">
           <h4 class="card-title">{{ "tag.pageTitle.list" | translate }}</h4>
         </div>
-        <div class="clr-col-8 m-0 p-0">
-          <div class="btn-group btn-primary float-end">
-            <ng-template [ngxPermissionsOnly]="['TAG_DELETE']" [ngxPermissionsOnlyThen]="showDelete"></ng-template>
-            <ng-template #showDelete>
-              <clr-toggle-container class="clr-toggle-right m-0 p-0 mt-1">
-                <clr-toggle-wrapper>
-                  <label>{{ "button.multiSelect" | translate }}</label>
-                  <input type="checkbox" clrToggle (change)="changeView($event)"/>
-                </clr-toggle-wrapper>
-              </clr-toggle-container>
-              <button class="btn btn-outline mx-1" aria-label="Check" [disabled]="!multiselect" (click)="openDeleteModel(selecton)">
-                {{ "tag.pageTitle.delete" | translate }}
-              </button>
+        <div class="col">
+          <div class="row row-cols-auto justify-content-end">
+            <ng-template [ngxPermissionsOnly]="['TAG_DELETE']" [ngxPermissionsOnlyThen]="showToggle"></ng-template>
+            <ng-template #showToggle>
+              <div class="col m-0 p-0 mb-4 text-right">
+                <clr-toggle-container class="clr-toggle-right m-0 p-0 mt-1 float-end">
+                  <clr-toggle-wrapper>
+                    <label>{{ "button.multiSelect" | translate }}</label>
+                    <input type="checkbox" clrToggle (change)="changeView($event)"/>
+                  </clr-toggle-wrapper>
+                </clr-toggle-container>
+              </div>
             </ng-template>
-            <ng-template [ngxPermissionsOnly]="['TAG_ADD']" [ngxPermissionsOnlyThen]="showAdd"></ng-template>
-            <ng-template #showAdd>
-              <button class="btn" aria-label="Check" [routerLink]="['add','']">
-                <cds-icon shape="plus" solid="true" inverse="true"></cds-icon> {{ "tag.pageTitle.add" | translate }}
-              </button>
-            </ng-template>
+            <div class="col m-0 p-0">
+              <div class="btn-group btn-primary">
+                <ng-template [ngxPermissionsOnly]="['TAG_DELETE']" [ngxPermissionsOnlyThen]="showDelete"></ng-template>
+                <ng-template #showDelete>
+                  <button class="btn btn-outline mx-1" aria-label="Check" [disabled]="!multiselect" (click)="openDeleteModel(selecton)">
+                    {{ "tag.pageTitle.delete" | translate }}
+                  </button>
+                </ng-template>
+                <ng-template [ngxPermissionsOnly]="['TAG_ADD']" [ngxPermissionsOnlyThen]="showAdd"></ng-template>
+                <ng-template #showAdd>
+                  <button class="btn" aria-label="Check" [routerLink]="['add','']">
+                    <cds-icon shape="plus" solid="true" inverse="true"></cds-icon> {{ "tag.pageTitle.add" | translate }}
+                  </button>
+                </ng-template>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -150,7 +159,7 @@ export class TagListComponent extends ExtendableListComponent{
     private translate: TranslateService,
     private apicall: ApiUtilService,
     public exportService: ExportService,
-    private tagService: TagService) { 
+    private tagService: TagService,) { 
       super();
       this.apicall.get('/config/frontend').subscribe({next: (data:any) => this.rowSizeForExport = data?.rowSizeForExport || 1000});
     }
@@ -208,9 +217,14 @@ export class TagListComponent extends ExtendableListComponent{
     const st = _.cloneDeep(state);
     if(st && st.page) st.page.size = this.rowSizeForExport;
     this.apicall.post('/tag/pagination', st).subscribe({
-      next: (result) => {
+      next: async (result) => {
         const tags = (result as TagList).content;
-        this.exportService.tags(tags, `${_.now()}_tags`,{showLabels: true,headers: ["ID", "Created On", "Tag Name","Status"]});
+        this.exportService.tags(tags, `${_.now()}_tags`,{showLabels: true,headers: [
+          await lastValueFrom(this.translate.get('datalist.createDate')),
+          await lastValueFrom(this.translate.get('datalist.modifiedDate')),
+          await lastValueFrom(this.translate.get('datalist.moduleTagName')),
+          await lastValueFrom(this.translate.get('datalist.status')),
+        ]});
       }
     });
   }

@@ -42,6 +42,7 @@ export class UserMobileEmailVerificationComponent implements OnInit, AfterViewIn
   msgobj: any = {};
   otpCurrentLimit = 0;
   otpMaxResendLimit = 3;
+  id = 0;
 
   constructor(
     private cdref: ChangeDetectorRef, 
@@ -61,6 +62,7 @@ export class UserMobileEmailVerificationComponent implements OnInit, AfterViewIn
     this.msisdn = this.route.snapshot.paramMap.get('msisdn') || '';
     this.route.queryParams.subscribe((queryParams) => {
         this.url = queryParams['url'] || '/user';
+        this.id = Number(queryParams['id'] || 0);
     });
   }
   ngAfterViewInit(): void {
@@ -188,7 +190,7 @@ export class UserMobileEmailVerificationComponent implements OnInit, AfterViewIn
       this.timeLeft = this.subscribeTimer;
       this.startTimer();
       if(this.email !== this.user.profile.email) {
-          this.apicall.get(`/user/send-otp/EMAIL/${this.user.profile.email}`).subscribe({
+          this.apicall.get(`/user/send-otp/EMAIL/${this.user.profile.email}/${this.id}`).subscribe({
               next: (_email) => {
                   if(_.isEqual((_email as any).message, 'sendOtpSuccess')) {
                     this.transport.alert = {message: 'sendOtpSuccess', type: 'info'} as unknown;
@@ -200,7 +202,7 @@ export class UserMobileEmailVerificationComponent implements OnInit, AfterViewIn
       }
       if(this.msisdn !== this.user.profile.phoneNo) {
           const msisdn = _.startsWith(this.user.profile.phoneNo, this.countryCode) ? this.user.profile.phoneNo : this.countryCode + this.user.profile.phoneNo;
-          this.apicall.get(`/user/send-otp/SMS/${msisdn}`).subscribe({
+          this.apicall.get(`/user/send-otp/SMS/${msisdn}/${this.id}`).subscribe({
               next: (_sms) => {
                 if(_.isEqual((_sms as any).message, 'sendOtpSuccess')) {
                   this.transport.alert = {message: 'sendOtpSuccess',type: 'info',} as unknown;
