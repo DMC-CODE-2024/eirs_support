@@ -33,6 +33,7 @@ import { TreeSidebarComponent } from './tree.sidebar.component';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/en-CA';
 import { AlertComponent } from '../core/components/alert.component';
+import { RegionServiceNotAvailableComponent } from '../core/components/region-service-not-available.component';
 
 registerLocaleData(localeFr);
 
@@ -46,7 +47,7 @@ export function appInit(apiutil: ApiUtilService) {
     DropdownSidebarComponent, TreeSidebarComponent, 
     ConfirmationComponent, FilterComponent, CancelComponent, ListActionComponent,
     AccessDeniedComponent, Includes, AppAlertComponent, SortByOrderPipe, AlertComponent, 
-    RegionDeniedComponent
+    RegionDeniedComponent, RegionServiceNotAvailableComponent
   ],
   imports: [
     FormsModule,

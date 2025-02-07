@@ -112,7 +112,7 @@ import { FilterModel } from '../core/models/filter.model';
             </div>
         </div>
         <div class="clr-col-3 m-0 p-0 ms-1" *ngIf="phoneNo">
-            <div class="form-group m-0 p-0">
+            <div class="form-group m-0 p-0" id="filter">
                 <label>{{ "filter.phoneNo" | translate }}</label>
                 <div class="input-group input-group-sm m-0 p-0">
                     <span class="input-group-text">{{config.get('countryCode') || '+265'}}</span>

@@ -24,6 +24,7 @@ import { UserFeatureAddComponent } from './user-feature/pages/user-feature-add.c
 import { UserRoleAddComponent } from './user-role/pages/user-role-add.component';
 import { ChangePasswordComponent } from './user/pages/change.password.component';
 import { RegionDeniedComponent } from './core/components/region-denied.component';
+import { RegionServiceNotAvailableComponent } from './core/components/region-service-not-available.component';
 
 
 export const appRoutes: Route[] = [
@@ -205,5 +206,6 @@ export const appRoutes: Route[] = [
         path, component: AclAddComponent
     })),
     {path: 'access-denied', component: AccessDeniedComponent},
-    {path: 'region-denied', component: RegionDeniedComponent}
+    {path: 'region-denied', component: RegionDeniedComponent},
+    {path: 'region-service-not-available', component: RegionServiceNotAvailableComponent}
 ];

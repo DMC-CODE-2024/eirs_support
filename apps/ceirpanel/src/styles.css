@@ -1533,3 +1533,16 @@ input[type=number]::-webkit-outer-spin-button {
     appearance: none;
     margin: 0; 
 }
+.center-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 70vh;
+  }
+#filter > .input-group-sm>.btn, #filter > .input-group-sm>.form-control, #filter > .input-group-sm>.form-select, #filter > .input-group-sm>.input-group-text {
+    background-color:#eef4fe !important;
+}
+#filter > .input-group>:not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+  background-color:#eef4fe !important;
+}

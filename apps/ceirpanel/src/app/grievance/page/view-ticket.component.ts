@@ -67,6 +67,17 @@ export class ViewTicketComponent implements OnInit {
       this.lang = queryParams['lang'] || 'us';
       this.header = queryParams['header'] || window.self !== window.top ? 'no': 'yes';
     });
+    if(!authService.isLogin()) {
+      this.apicall.get('/acl/isAllowInYourRegion').subscribe({
+        next: (data:any) => {
+          if(_.isEqual(_.get(data, 'servicedown'), 'yes')){
+            this.router.navigate(['/region-service-not-available'],{queryParams:{lang: this.lang,header: this.header,titlefromcache:'yes'}});
+          } else if (_.isEqual(_.get(data, 'allow'), 'no')) {
+            this.router.navigate(['/region-denied'],{queryParams:{lang: this.lang,header: this.header,titlefromcache:'yes'}});
+          }
+        }
+      });
+    }
   }
   onResized(event: ResizedEvent) {
     if (event.newRect.width < 302) {

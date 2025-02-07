@@ -10,8 +10,8 @@ import { AuthService } from '../services/common/auth.service';
       <div class="row justify-content-center center-screen">
         <div class="col-md-12 text-center align-middle">
           <div class="clearfix">
-            <img src="assets/images/ban.svg" alt="" />
-            <p class="access-deny">{{"message.outOfRegionMessage" | translate}}</p>
+            <img src="assets/images/TriangleWarning.svg" alt="" />
+            <p class="access-deny">{{"message.regionServiceNotAvailable" | translate}}</p>
           </div>
         </div>
       </div>
@@ -20,7 +20,7 @@ import { AuthService } from '../services/common/auth.service';
   `,
   styles: [``],
 })
-export class RegionDeniedComponent {
+export class RegionServiceNotAvailableComponent {
   constructor(private router: Router, public authService: AuthService) { }
 
 }

@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,800;1,800&display=swap');
 
+
 *{
     font-family: "Nunito", serif !important;
     font-optical-sizing: auto;
@@ -163,4 +164,11 @@ p{
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
+}
+.access-deny{
+    font-family: "Nunito", serif !important;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 2px;
 }

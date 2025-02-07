@@ -8,7 +8,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash';
@@ -50,11 +50,7 @@ export function initPermission(permission: NgxPermissionsService, jwtService: Jw
     permissions.forEach((p) => permission.addPermission(p));
   }
 }
-export function HttpLoaderFactory(
-  http: HttpClient,
-  document: any,
-  config: ConfigService
-) {
+export function HttpLoaderFactory(http: HttpClient,document: any,config: ConfigService) {
   const langurl = _.isEmpty(config.get('api')) ? `${document.location.protocol}//${document.location.host}/language/` : `${config.get('api')}/language/`;
   return new TranslateHttpLoader(http, langurl, '.json?t=' + new Date());
 }
@@ -113,7 +109,6 @@ export class AppModule {
     const urlParams = new URLSearchParams(window.location.search);
     jwtService.updateWmap(_.isEmpty(urlParams.get('w')) ? window.name : urlParams.get('w') || window.name);
     const lang = _.isEmpty(urlParams.get('lang')) ? localStorage.getItem(`${window.name}lang`) || 'us' : urlParams.get('lang') || 'us';
-    console.log('language: ', lang);
     localStorage.setItem(`${window.name}lang`, lang);
     permission.loadPermissions();
   }

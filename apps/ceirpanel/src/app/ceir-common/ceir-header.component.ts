@@ -47,7 +47,7 @@ import { Title } from '@angular/platform-browser';
   ],
 })
 export class CeirHeaderComponent implements OnInit{
-  @Input() title = 'ceirpanel';
+  @Input() title = '';
   siteLanguage = 'English';
   localeCode = 'us';
   languageList = [
@@ -66,6 +66,7 @@ export class CeirHeaderComponent implements OnInit{
   lang = 'us';
   url = '/user';
   headertitle = this.title
+  titlefromcache = 'no';
   private style?: HTMLLinkElement;
   languages:Array<any> = [];
   language = {name:'',image:'',code:''};
@@ -138,6 +139,7 @@ export class CeirHeaderComponent implements OnInit{
       this.type = queryParams['type'] || _.isEmpty(iframelogin) || _.isUndefined(iframelogin.type) ? queryParams['type'] || 0: iframelogin.type;
       this.header = queryParams['header'] || _.isEmpty(iframelogin) || _.isUndefined(iframelogin.header) ? queryParams['header'] || 'yes': iframelogin.header;
       const langlist:Array<any> = this.config.get('languages') || [];
+      this.titlefromcache = queryParams['titlefromcache'] || 'no';
       this.lang = _.filter(langlist, _.matches({code: this.lang})).length === 0 ? 'us' : this.lang;
       this.changeSiteLanguage(this.lang);
       this.removestyle();
@@ -160,6 +162,10 @@ export class CeirHeaderComponent implements OnInit{
   }
   setTitle() {
     if (_.isEqual(this.header, 'no')) {
+      let titleformcache = 'ticket.pageTitle.add';
+      if (_.isEqual(this.titlefromcache, 'yes')) {
+        titleformcache = localStorage.getItem(`${window.name}title`) || titleformcache;
+      }
       const key = _.some(['register-ticket-success'], (el) =>
         _.includes(this.router.url, el)
       )
@@ -176,7 +182,8 @@ export class CeirHeaderComponent implements OnInit{
         )
       ? 'ticket.pageTitle.verifyOtp': _.some(['end-user'], (el) =>
         _.includes(this.router.url, el)
-      ) ? 'ticket.viewTicket.endUserTicketList' : 'ticket.pageTitle.add';
+      ) ? 'ticket.viewTicket.endUserTicketList' : titleformcache;
+      localStorage.setItem(`${window.name}title`, key);
       this.translate.get(key).subscribe((t) => {
         this.headertitle = t;
       });
